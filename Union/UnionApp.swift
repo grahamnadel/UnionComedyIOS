@@ -20,25 +20,12 @@ struct UnionApp: App {
         }
     }
     @StateObject var viewModel = ViewModel()
-    
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    @StateObject var festivalViewModel = FestivalViewModel()
 
     var body: some Scene {
         WindowGroup {
-            MainView(viewModel)
+            MainView(viewModel, festivalViewModel)
                 .environmentObject(voteStore)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

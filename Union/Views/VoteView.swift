@@ -13,17 +13,25 @@ struct VoteView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     @ObservedObject var viewModel: ViewModel
+    @State private var teamVotedFor = ""
 
     var body: some View {
+        VStack {
             HStack{
                 ForEach(viewModel.teams) { team in
                     Button(action: {
                         viewModel.voteFor(team)
+                        teamVotedFor = team.name
                     }) {
                         TeamView(teamColor: team.color, teamName: team.name)
                     }
                 }
             }
+            .padding()
+            if viewModel.hasVoted {
+                Text("You voted for team \(teamVotedFor)")
+            }
+        }
             .padding()
     }
     

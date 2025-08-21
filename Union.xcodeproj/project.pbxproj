@@ -3,11 +3,30 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5366F1272E0CB1DC00BEC56A /* FIrebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5366F1262E0CB1DC00BEC56A /* FIrebaseManager.swift */; };
+		530C184D2E1D74D8000A80E0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C184C2E1D74D8000A80E0 /* SettingsView.swift */; };
+		531DDD852E54F07A00E210EE /* PerformerSelectionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */; };
+		531DDD872E5775E000E210EE /* IssuesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD862E5775E000E210EE /* IssuesList.swift */; };
+		531DDD892E577A9A00E210EE /* PerformerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD882E577A9A00E210EE /* PerformerDetailView.swift */; };
+		53343A122E4E4F1700224553 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A112E4E4F1700224553 /* LoginView.swift */; };
+		53343A142E4E587300224553 /* TeamDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A132E4E587300224553 /* TeamDetailView.swift */; };
+		53343A162E4E59E500224553 /* PerformanceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A152E4E59E500224553 /* PerformanceRow.swift */; };
+		533468762E426DB000E069DB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 533468752E426DB000E069DB /* GoogleService-Info.plist */; };
+		533468782E426E9D00E069DB /* FestivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468772E426E9D00E069DB /* FestivalView.swift */; };
+		5334687A2E4272CD00E069DB /* PerformerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468792E4272CD00E069DB /* PerformerListView.swift */; };
+		5334687C2E4272FF00E069DB /* TeamListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5334687B2E4272FF00E069DB /* TeamListView.swift */; };
+		5334687E2E42731A00E069DB /* DateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5334687D2E42731A00E069DB /* DateListView.swift */; };
+		533468802E42740300E069DB /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5334687F2E42740300E069DB /* Performance.swift */; };
+		533468822E42752D00E069DB /* FestivalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468812E42752D00E069DB /* FestivalViewModel.swift */; };
+		533468842E42759700E069DB /* AddPerformanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468832E42759700E069DB /* AddPerformanceView.swift */; };
+		533468862E44F5B700E069DB /* PerformerSuggestionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468852E44F5B700E069DB /* PerformerSuggestionList.swift */; };
+		533468882E44F5E500E069DB /* SelectedPerformerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468872E44F5E500E069DB /* SelectedPerformerList.swift */; };
+		5334688A2E44F8E700E069DB /* Performer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468892E44F8E700E069DB /* Performer.swift */; };
+		5334688C2E44FACD00E069DB /* PerformerPhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5334688B2E44FACD00E069DB /* PerformerPhotoPicker.swift */; };
+		5366F1272E0CB1DC00BEC56A /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5366F1262E0CB1DC00BEC56A /* FirebaseManager.swift */; };
 		5366F12F2E0CB30F00BEC56A /* FirebaseAI in Frameworks */ = {isa = PBXBuildFile; productRef = 5366F12E2E0CB30F00BEC56A /* FirebaseAI */; };
 		5366F1312E0CB30F00BEC56A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5366F1302E0CB30F00BEC56A /* FirebaseAnalytics */; };
 		5366F1332E0CB30F00BEC56A /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5366F1322E0CB30F00BEC56A /* FirebaseAnalyticsCore */; };
@@ -35,6 +54,9 @@
 		5366F15F2E0CB30F00BEC56A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 5366F15E2E0CB30F00BEC56A /* FirebaseStorage */; };
 		5366F1612E0CB30F00BEC56A /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 5366F1602E0CB30F00BEC56A /* FirebaseStorageCombine-Community */; };
 		5366F1632E0CB30F00BEC56A /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 5366F1622E0CB30F00BEC56A /* FirebaseVertexAI */; };
+		537C49D02E1C4E0D00104B36 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 537C49CF2E1C4E0D00104B36 /* FirebaseAuth */; };
+		537C49D22E1C4E0D00104B36 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 537C49D12E1C4E0D00104B36 /* FirebaseCore */; };
+		537C49D42E1C4E0D00104B36 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 537C49D32E1C4E0D00104B36 /* FirebaseFirestore */; };
 		53829C302E0DC6AF00F284B7 /* VoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53829C2F2E0DC6AF00F284B7 /* VoteStore.swift */; };
 		53847C7B2E02F10E00EE649A /* UnionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C7A2E02F10E00EE649A /* UnionApp.swift */; };
 		53847C7D2E02F10E00EE649A /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C7C2E02F10E00EE649A /* VoteView.swift */; };
@@ -46,7 +68,6 @@
 		53847C8F2E02FEBA00EE649A /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C8E2E02FEBA00EE649A /* Model.swift */; };
 		53847C912E02FEBF00EE649A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C902E02FEBF00EE649A /* ViewModel.swift */; };
 		53847C932E03019300EE649A /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C922E03019300EE649A /* Team.swift */; };
-		53847C952E03058900EE649A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 53847C942E03058900EE649A /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,7 +88,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5366F1262E0CB1DC00BEC56A /* FIrebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIrebaseManager.swift; sourceTree = "<group>"; };
+		530C184B2E1C5462000A80E0 /* Union.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Union.entitlements; sourceTree = "<group>"; };
+		530C184C2E1D74D8000A80E0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerSelectionList.swift; sourceTree = "<group>"; };
+		531DDD862E5775E000E210EE /* IssuesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuesList.swift; sourceTree = "<group>"; };
+		531DDD882E577A9A00E210EE /* PerformerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerDetailView.swift; sourceTree = "<group>"; };
+		53343A112E4E4F1700224553 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		53343A132E4E587300224553 /* TeamDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailView.swift; sourceTree = "<group>"; };
+		53343A152E4E59E500224553 /* PerformanceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceRow.swift; sourceTree = "<group>"; };
+		533468752E426DB000E069DB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		533468772E426E9D00E069DB /* FestivalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalView.swift; sourceTree = "<group>"; };
+		533468792E4272CD00E069DB /* PerformerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerListView.swift; sourceTree = "<group>"; };
+		5334687B2E4272FF00E069DB /* TeamListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListView.swift; sourceTree = "<group>"; };
+		5334687D2E42731A00E069DB /* DateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateListView.swift; sourceTree = "<group>"; };
+		5334687F2E42740300E069DB /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
+		533468812E42752D00E069DB /* FestivalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalViewModel.swift; sourceTree = "<group>"; };
+		533468832E42759700E069DB /* AddPerformanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPerformanceView.swift; sourceTree = "<group>"; };
+		533468852E44F5B700E069DB /* PerformerSuggestionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerSuggestionList.swift; sourceTree = "<group>"; };
+		533468872E44F5E500E069DB /* SelectedPerformerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPerformerList.swift; sourceTree = "<group>"; };
+		533468892E44F8E700E069DB /* Performer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performer.swift; sourceTree = "<group>"; };
+		5334688B2E44FACD00E069DB /* PerformerPhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerPhotoPicker.swift; sourceTree = "<group>"; };
+		5366F1262E0CB1DC00BEC56A /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		537C49942E1C428F00104B36 /* UnionComedyMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnionComedyMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		537C49A62E1C429100104B36 /* UnionComedyMacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnionComedyMacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		537C49B02E1C429100104B36 /* UnionComedyMacUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnionComedyMacUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,20 +124,16 @@
 		53847C8E2E02FEBA00EE649A /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		53847C902E02FEBF00EE649A /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		53847C922E03019300EE649A /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
-		53847C942E03058900EE649A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		537C49952E1C428F00104B36 /* UnionComedyMac */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UnionComedyMac; sourceTree = "<group>"; };
-		537C49A92E1C429100104B36 /* UnionComedyMacTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UnionComedyMacTests; sourceTree = "<group>"; };
-		537C49B32E1C429100104B36 /* UnionComedyMacUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UnionComedyMacUITests; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		537C49912E1C428F00104B36 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				537C49D22E1C4E0D00104B36 /* FirebaseCore in Frameworks */,
+				537C49D02E1C4E0D00104B36 /* FirebaseAuth in Frameworks */,
+				537C49D42E1C4E0D00104B36 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,13 +188,73 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		53343A172E53C27A00224553 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				53847C8A2E02FB7700EE649A /* MainView.swift */,
+				533468772E426E9D00E069DB /* FestivalView.swift */,
+				5334687B2E4272FF00E069DB /* TeamListView.swift */,
+				530C184C2E1D74D8000A80E0 /* SettingsView.swift */,
+				53847C7C2E02F10E00EE649A /* VoteView.swift */,
+				53847C8C2E02FC9800EE649A /* TeamView.swift */,
+				5334687D2E42731A00E069DB /* DateListView.swift */,
+				53343A132E4E587300224553 /* TeamDetailView.swift */,
+				53343A112E4E4F1700224553 /* LoginView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		53343A182E53C2A900224553 /* MVVM */ = {
+			isa = PBXGroup;
+			children = (
+				53847C902E02FEBF00EE649A /* ViewModel.swift */,
+				533468812E42752D00E069DB /* FestivalViewModel.swift */,
+				53847C8E2E02FEBA00EE649A /* Model.swift */,
+			);
+			path = MVVM;
+			sourceTree = "<group>";
+		};
+		53343A192E53C2C700224553 /* AddPerformance */ = {
+			isa = PBXGroup;
+			children = (
+				5334687F2E42740300E069DB /* Performance.swift */,
+				533468832E42759700E069DB /* AddPerformanceView.swift */,
+				53343A152E4E59E500224553 /* PerformanceRow.swift */,
+				53343A1B2E53C44F00224553 /* Performer */,
+			);
+			path = AddPerformance;
+			sourceTree = "<group>";
+		};
+		53343A1A2E53C32500224553 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				5366F1262E0CB1DC00BEC56A /* FirebaseManager.swift */,
+				53847C922E03019300EE649A /* Team.swift */,
+				53829C2F2E0DC6AF00F284B7 /* VoteStore.swift */,
+				53847C7E2E02F10E00EE649A /* Item.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		53343A1B2E53C44F00224553 /* Performer */ = {
+			isa = PBXGroup;
+			children = (
+				533468892E44F8E700E069DB /* Performer.swift */,
+				531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */,
+				533468852E44F5B700E069DB /* PerformerSuggestionList.swift */,
+				533468872E44F5E500E069DB /* SelectedPerformerList.swift */,
+				533468792E4272CD00E069DB /* PerformerListView.swift */,
+				5334688B2E44FACD00E069DB /* PerformerPhotoPicker.swift */,
+			);
+			path = Performer;
+			sourceTree = "<group>";
+		};
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				531DDD882E577A9A00E210EE /* PerformerDetailView.swift */,
+				531DDD862E5775E000E210EE /* IssuesList.swift */,
 				53847C792E02F10E00EE649A /* Union */,
-				537C49952E1C428F00104B36 /* UnionComedyMac */,
-				537C49A92E1C429100104B36 /* UnionComedyMacTests */,
-				537C49B32E1C429100104B36 /* UnionComedyMacUITests */,
 				53847C782E02F10E00EE649A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -176,17 +273,13 @@
 		53847C792E02F10E00EE649A /* Union */ = {
 			isa = PBXGroup;
 			children = (
+				530C184B2E1C5462000A80E0 /* Union.entitlements */,
 				53847C7A2E02F10E00EE649A /* UnionApp.swift */,
-				53829C2F2E0DC6AF00F284B7 /* VoteStore.swift */,
-				53847C8E2E02FEBA00EE649A /* Model.swift */,
-				53847C902E02FEBF00EE649A /* ViewModel.swift */,
-				53847C8A2E02FB7700EE649A /* MainView.swift */,
-				53847C7C2E02F10E00EE649A /* VoteView.swift */,
-				53847C8C2E02FC9800EE649A /* TeamView.swift */,
-				5366F1262E0CB1DC00BEC56A /* FIrebaseManager.swift */,
-				53847C922E03019300EE649A /* Team.swift */,
-				53847C7E2E02F10E00EE649A /* Item.swift */,
-				53847C942E03058900EE649A /* GoogleService-Info.plist */,
+				53343A1A2E53C32500224553 /* Data */,
+				53343A192E53C2C700224553 /* AddPerformance */,
+				53343A182E53C2A900224553 /* MVVM */,
+				53343A172E53C27A00224553 /* Views */,
+				533468752E426DB000E069DB /* GoogleService-Info.plist */,
 				53847C802E02F10F00EE649A /* Assets.xcassets */,
 				53847C822E02F10F00EE649A /* Preview Content */,
 			);
@@ -216,11 +309,11 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				537C49952E1C428F00104B36 /* UnionComedyMac */,
-			);
 			name = UnionComedyMac;
 			packageProductDependencies = (
+				537C49CF2E1C4E0D00104B36 /* FirebaseAuth */,
+				537C49D12E1C4E0D00104B36 /* FirebaseCore */,
+				537C49D32E1C4E0D00104B36 /* FirebaseFirestore */,
 			);
 			productName = UnionComedyMac;
 			productReference = 537C49942E1C428F00104B36 /* UnionComedyMac.app */;
@@ -238,9 +331,6 @@
 			);
 			dependencies = (
 				537C49A82E1C429100104B36 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				537C49A92E1C429100104B36 /* UnionComedyMacTests */,
 			);
 			name = UnionComedyMacTests;
 			packageProductDependencies = (
@@ -261,9 +351,6 @@
 			);
 			dependencies = (
 				537C49B22E1C429100104B36 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				537C49B32E1C429100104B36 /* UnionComedyMacUITests */,
 			);
 			name = UnionComedyMacUITests;
 			packageProductDependencies = (
@@ -326,7 +413,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					537C49932E1C428F00104B36 = {
 						CreatedOnToolsVersion = 16.0;
@@ -395,8 +482,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				53847C842E02F10F00EE649A /* Preview Assets.xcassets in Resources */,
+				533468762E426DB000E069DB /* GoogleService-Info.plist in Resources */,
 				53847C812E02F10F00EE649A /* Assets.xcassets in Resources */,
-				53847C952E03058900EE649A /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,16 +515,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				531DDD892E577A9A00E210EE /* PerformerDetailView.swift in Sources */,
+				5334688A2E44F8E700E069DB /* Performer.swift in Sources */,
+				531DDD852E54F07A00E210EE /* PerformerSelectionList.swift in Sources */,
+				531DDD872E5775E000E210EE /* IssuesList.swift in Sources */,
+				533468822E42752D00E069DB /* FestivalViewModel.swift in Sources */,
+				5334687A2E4272CD00E069DB /* PerformerListView.swift in Sources */,
 				53847C7D2E02F10E00EE649A /* VoteView.swift in Sources */,
+				53343A122E4E4F1700224553 /* LoginView.swift in Sources */,
+				533468862E44F5B700E069DB /* PerformerSuggestionList.swift in Sources */,
 				53847C8B2E02FB7700EE649A /* MainView.swift in Sources */,
-				5366F1272E0CB1DC00BEC56A /* FIrebaseManager.swift in Sources */,
+				5366F1272E0CB1DC00BEC56A /* FirebaseManager.swift in Sources */,
 				53829C302E0DC6AF00F284B7 /* VoteStore.swift in Sources */,
 				53847C8D2E02FC9800EE649A /* TeamView.swift in Sources */,
+				5334688C2E44FACD00E069DB /* PerformerPhotoPicker.swift in Sources */,
 				53847C8F2E02FEBA00EE649A /* Model.swift in Sources */,
+				53343A142E4E587300224553 /* TeamDetailView.swift in Sources */,
+				533468882E44F5E500E069DB /* SelectedPerformerList.swift in Sources */,
 				53847C932E03019300EE649A /* Team.swift in Sources */,
 				53847C7F2E02F10E00EE649A /* Item.swift in Sources */,
+				5334687C2E4272FF00E069DB /* TeamListView.swift in Sources */,
 				53847C7B2E02F10E00EE649A /* UnionApp.swift in Sources */,
+				53343A162E4E59E500224553 /* PerformanceRow.swift in Sources */,
 				53847C912E02FEBF00EE649A /* ViewModel.swift in Sources */,
+				5334687E2E42731A00E069DB /* DateListView.swift in Sources */,
+				533468782E426E9D00E069DB /* FestivalView.swift in Sources */,
+				530C184D2E1D74D8000A80E0 /* SettingsView.swift in Sources */,
+				533468802E42740300E069DB /* Performance.swift in Sources */,
+				533468842E42759700E069DB /* AddPerformanceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +571,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"UnionComedyMac/Preview Content\"";
 				DEVELOPMENT_TEAM = R72MW9XTRD;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -495,6 +601,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"UnionComedyMac/Preview Content\"";
 				DEVELOPMENT_TEAM = R72MW9XTRD;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -521,6 +628,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = R72MW9XTRD;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
@@ -540,6 +648,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = R72MW9XTRD;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
@@ -558,6 +667,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = R72MW9XTRD;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
@@ -576,6 +686,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = R72MW9XTRD;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
@@ -713,6 +824,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Union/Union.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Union/Preview Content\"";
@@ -731,6 +843,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Tuner.Union;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -742,6 +856,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Union/Union.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Union/Preview Content\"";
@@ -760,6 +875,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Tuner.Union;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -962,6 +1079,18 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5366F12D2E0CB30F00BEC56A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseVertexAI;
+		};
+		537C49CF2E1C4E0D00104B36 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseAuth;
+		};
+		537C49D12E1C4E0D00104B36 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseCore;
+		};
+		537C49D32E1C4E0D00104B36 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

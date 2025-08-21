@@ -7,13 +7,13 @@ import FirebaseAuth
 class ViewModel: ObservableObject {
     @Published var voteCounts: [String: Int] = [:]
     @Published var hasVoted = false
-    
-    private var db = Firestore.firestore()
-
-    var teams = [
+    @Published var teams = [
         Team(name: "Team 1", id: UUID(), color: .blue),
         Team(name: "Team 2", id: UUID(), color: .red)
     ]
+    let correctPassword = "UnionComedy"
+    
+    private var db = Firestore.firestore()
 
     init() {
         FirebaseManager.shared.listenToVoteCounts { [weak self] counts in
