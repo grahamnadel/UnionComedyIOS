@@ -13,5 +13,5 @@ struct Performance: Identifiable, Codable, Hashable {
     var id = UUID()
     let teamName: String
     let showTime: Date
-    let performers: [String]
+    var performers: [String]
 }

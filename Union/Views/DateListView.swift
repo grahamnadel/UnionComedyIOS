@@ -28,6 +28,11 @@ struct DateListView: View {
                         }
                         .padding(.vertical, 2)
                     }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            festivalViewModel.deletePerformance(performances[index])
+                        }
+                    }
                 }
             }
         }

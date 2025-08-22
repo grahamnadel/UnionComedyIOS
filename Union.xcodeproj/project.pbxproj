@@ -11,6 +11,10 @@
 		531DDD852E54F07A00E210EE /* PerformerSelectionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */; };
 		531DDD872E5775E000E210EE /* IssuesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD862E5775E000E210EE /* IssuesList.swift */; };
 		531DDD892E577A9A00E210EE /* PerformerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD882E577A9A00E210EE /* PerformerDetailView.swift */; };
+		531DDD8B2E57828200E210EE /* PerformanceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */; };
+		531DDD8D2E58FF6800E210EE /* PerformerTeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8C2E58FF6800E210EE /* PerformerTeamsView.swift */; };
+		531DDD8F2E59018600E210EE /* PerformerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8E2E59018600E210EE /* PerformerImageView.swift */; };
+		531DDD912E5902F700E210EE /* TeamsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD902E5902F700E210EE /* TeamsListView.swift */; };
 		53343A122E4E4F1700224553 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A112E4E4F1700224553 /* LoginView.swift */; };
 		53343A142E4E587300224553 /* TeamDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A132E4E587300224553 /* TeamDetailView.swift */; };
 		53343A162E4E59E500224553 /* PerformanceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A152E4E59E500224553 /* PerformanceRow.swift */; };
@@ -22,7 +26,6 @@
 		533468802E42740300E069DB /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5334687F2E42740300E069DB /* Performance.swift */; };
 		533468822E42752D00E069DB /* FestivalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468812E42752D00E069DB /* FestivalViewModel.swift */; };
 		533468842E42759700E069DB /* AddPerformanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468832E42759700E069DB /* AddPerformanceView.swift */; };
-		533468862E44F5B700E069DB /* PerformerSuggestionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468852E44F5B700E069DB /* PerformerSuggestionList.swift */; };
 		533468882E44F5E500E069DB /* SelectedPerformerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468872E44F5E500E069DB /* SelectedPerformerList.swift */; };
 		5334688A2E44F8E700E069DB /* Performer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468892E44F8E700E069DB /* Performer.swift */; };
 		5334688C2E44FACD00E069DB /* PerformerPhotoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5334688B2E44FACD00E069DB /* PerformerPhotoPicker.swift */; };
@@ -93,6 +96,10 @@
 		531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerSelectionList.swift; sourceTree = "<group>"; };
 		531DDD862E5775E000E210EE /* IssuesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuesList.swift; sourceTree = "<group>"; };
 		531DDD882E577A9A00E210EE /* PerformerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerDetailView.swift; sourceTree = "<group>"; };
+		531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceDetailView.swift; sourceTree = "<group>"; };
+		531DDD8C2E58FF6800E210EE /* PerformerTeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerTeamsView.swift; sourceTree = "<group>"; };
+		531DDD8E2E59018600E210EE /* PerformerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerImageView.swift; sourceTree = "<group>"; };
+		531DDD902E5902F700E210EE /* TeamsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsListView.swift; sourceTree = "<group>"; };
 		53343A112E4E4F1700224553 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		53343A132E4E587300224553 /* TeamDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailView.swift; sourceTree = "<group>"; };
 		53343A152E4E59E500224553 /* PerformanceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceRow.swift; sourceTree = "<group>"; };
@@ -104,7 +111,6 @@
 		5334687F2E42740300E069DB /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
 		533468812E42752D00E069DB /* FestivalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalViewModel.swift; sourceTree = "<group>"; };
 		533468832E42759700E069DB /* AddPerformanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPerformanceView.swift; sourceTree = "<group>"; };
-		533468852E44F5B700E069DB /* PerformerSuggestionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerSuggestionList.swift; sourceTree = "<group>"; };
 		533468872E44F5E500E069DB /* SelectedPerformerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPerformerList.swift; sourceTree = "<group>"; };
 		533468892E44F8E700E069DB /* Performer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performer.swift; sourceTree = "<group>"; };
 		5334688B2E44FACD00E069DB /* PerformerPhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerPhotoPicker.swift; sourceTree = "<group>"; };
@@ -240,8 +246,11 @@
 			isa = PBXGroup;
 			children = (
 				533468892E44F8E700E069DB /* Performer.swift */,
+				531DDD882E577A9A00E210EE /* PerformerDetailView.swift */,
+				531DDD8E2E59018600E210EE /* PerformerImageView.swift */,
+				531DDD8C2E58FF6800E210EE /* PerformerTeamsView.swift */,
+				531DDD902E5902F700E210EE /* TeamsListView.swift */,
 				531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */,
-				533468852E44F5B700E069DB /* PerformerSuggestionList.swift */,
 				533468872E44F5E500E069DB /* SelectedPerformerList.swift */,
 				533468792E4272CD00E069DB /* PerformerListView.swift */,
 				5334688B2E44FACD00E069DB /* PerformerPhotoPicker.swift */,
@@ -252,7 +261,7 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
-				531DDD882E577A9A00E210EE /* PerformerDetailView.swift */,
+				531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */,
 				531DDD862E5775E000E210EE /* IssuesList.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,
@@ -519,11 +528,11 @@
 				5334688A2E44F8E700E069DB /* Performer.swift in Sources */,
 				531DDD852E54F07A00E210EE /* PerformerSelectionList.swift in Sources */,
 				531DDD872E5775E000E210EE /* IssuesList.swift in Sources */,
+				531DDD8F2E59018600E210EE /* PerformerImageView.swift in Sources */,
 				533468822E42752D00E069DB /* FestivalViewModel.swift in Sources */,
 				5334687A2E4272CD00E069DB /* PerformerListView.swift in Sources */,
 				53847C7D2E02F10E00EE649A /* VoteView.swift in Sources */,
 				53343A122E4E4F1700224553 /* LoginView.swift in Sources */,
-				533468862E44F5B700E069DB /* PerformerSuggestionList.swift in Sources */,
 				53847C8B2E02FB7700EE649A /* MainView.swift in Sources */,
 				5366F1272E0CB1DC00BEC56A /* FirebaseManager.swift in Sources */,
 				53829C302E0DC6AF00F284B7 /* VoteStore.swift in Sources */,
@@ -532,7 +541,10 @@
 				53847C8F2E02FEBA00EE649A /* Model.swift in Sources */,
 				53343A142E4E587300224553 /* TeamDetailView.swift in Sources */,
 				533468882E44F5E500E069DB /* SelectedPerformerList.swift in Sources */,
+				531DDD8D2E58FF6800E210EE /* PerformerTeamsView.swift in Sources */,
+				531DDD912E5902F700E210EE /* TeamsListView.swift in Sources */,
 				53847C932E03019300EE649A /* Team.swift in Sources */,
+				531DDD8B2E57828200E210EE /* PerformanceDetailView.swift in Sources */,
 				53847C7F2E02F10E00EE649A /* Item.swift in Sources */,
 				5334687C2E4272FF00E069DB /* TeamListView.swift in Sources */,
 				53847C7B2E02F10E00EE649A /* UnionApp.swift in Sources */,
