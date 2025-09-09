@@ -225,6 +225,7 @@
 			children = (
 				5334687F2E42740300E069DB /* Performance.swift */,
 				533468832E42759700E069DB /* AddPerformanceView.swift */,
+				531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */,
 				53343A152E4E59E500224553 /* PerformanceRow.swift */,
 				53343A1B2E53C44F00224553 /* Performer */,
 			);
@@ -261,7 +262,6 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
-				531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */,
 				531DDD862E5775E000E210EE /* IssuesList.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,

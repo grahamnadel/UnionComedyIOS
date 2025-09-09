@@ -13,45 +13,53 @@ struct PerformerListView: View {
     
     var body: some View {
         NavigationStack {
-            List(sortedPerformers, id: \.self) { performer in
-                let performerURL = festivalViewModel.getImageURL(for: performer)
-                HStack {
-                    // Profile image
-                    AsyncImage(url: performerURL) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.gray.opacity(0.3))
-                            .overlay(
-                                Image(systemName: "person.fill")
-                                    .foregroundColor(.gray)
-                            )
-                    }
-                    .frame(width: 50, height: 50)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    
-                    NavigationLink(destination: PerformerDetailView(performer: performer, performerURL: performerURL ?? nil, festivalViewModel: festivalViewModel)) {
-                        Text(performer)
-                            .font(.body)
-                    }
-                    
-                    Spacer()
-                    
-                    // Add photo button for admins
-                    if festivalViewModel.isAdminLoggedIn && !festivalViewModel.hasImage(for: performer) {
-                        Button(action: {
-                            selectedPerformer = performer
-                            isShowingPhotoPicker = true
-                        }) {
-                            Image(systemName: "camera.fill")
-                                .foregroundColor(.blue)
+            List {
+                ForEach(sortedPerformers, id: \.self) { performer in
+                    let performerURL = festivalViewModel.getImageURL(for: performer)
+                    HStack {
+                        // Profile image
+                        AsyncImage(url: performerURL) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.gray.opacity(0.3))
+                                .overlay(
+                                    Image(systemName: "person.fill")
+                                        .foregroundColor(.gray)
+                                )
                         }
-                        .buttonStyle(PlainButtonStyle())
+                        .frame(width: 50, height: 50)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        
+                        NavigationLink(destination: PerformerDetailView(performer: performer, performerURL: performerURL ?? nil, festivalViewModel: festivalViewModel)) {
+                            Text(performer)
+                                .font(.body)
+                        }
+                        
+                        Spacer()
+                        
+                        // Add photo button for admins
+                        if festivalViewModel.isAdminLoggedIn && !festivalViewModel.hasImage(for: performer) {
+                            Button(action: {
+                                selectedPerformer = performer
+                                isShowingPhotoPicker = true
+                            }) {
+                                Image(systemName: "camera.fill")
+                                    .foregroundColor(.blue)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
+                .onDelete { indexSet in
+                    for index in indexSet {
+                        let performerToDelete = sortedPerformers[index]
+                        festivalViewModel.deletePerformer(named: performerToDelete)
                     }
                 }
-                .padding(.vertical, 4)
             }
             .navigationTitle("Performers")
             .photosPicker(

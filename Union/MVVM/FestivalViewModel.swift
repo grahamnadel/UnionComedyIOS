@@ -40,6 +40,22 @@ class FestivalViewModel: ObservableObject {
             performances.remove(at: index)
         }
     }
+    
+    // MARK: - Performer Management
+    
+    /// Deletes a performer and removes them from all teams and performances.
+    func deletePerformer(named performer: String) {
+        // Remove the performer from the main list of known performers
+        knownPerformers.remove(performer)
+        
+        // Iterate through all performances and remove the performer
+        for i in performances.indices {
+            performances[i].performers.removeAll(where: { $0 == performer })
+        }
+        
+        // Delete the associated image from the file system
+        deleteImage(for: performer)
+    }
 
     func saveImage(for performer: String, imageData: Data) {
         let fileName = sanitizeFilename(performer) + ".jpg"
@@ -79,9 +95,9 @@ class FestivalViewModel: ObservableObject {
     
     private func sanitizeFilename(_ name: String) -> String {
         return name.replacingOccurrences(of: " ", with: "_")
-                  .replacingOccurrences(of: "/", with: "_")
-                  .replacingOccurrences(of: "\\", with: "_")
-                  .replacingOccurrences(of: ":", with: "_")
+                    .replacingOccurrences(of: "/", with: "_")
+                    .replacingOccurrences(of: "\\", with: "_")
+                    .replacingOccurrences(of: ":", with: "_")
     }
     
     private func getDocumentsDirectory() -> URL {
