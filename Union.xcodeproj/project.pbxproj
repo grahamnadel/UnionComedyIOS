@@ -15,6 +15,8 @@
 		531DDD8D2E58FF6800E210EE /* PerformerTeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8C2E58FF6800E210EE /* PerformerTeamsView.swift */; };
 		531DDD8F2E59018600E210EE /* PerformerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8E2E59018600E210EE /* PerformerImageView.swift */; };
 		531DDD912E5902F700E210EE /* TeamsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD902E5902F700E210EE /* TeamsListView.swift */; };
+		531DDDB52E70A56500E210EE /* EditTeamPerformersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDDB42E70A56500E210EE /* EditTeamPerformersView.swift */; };
+		531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDDB62E70AB1400E210EE /* CreatePerformerView.swift */; };
 		53343A122E4E4F1700224553 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A112E4E4F1700224553 /* LoginView.swift */; };
 		53343A142E4E587300224553 /* TeamDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A132E4E587300224553 /* TeamDetailView.swift */; };
 		53343A162E4E59E500224553 /* PerformanceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A152E4E59E500224553 /* PerformanceRow.swift */; };
@@ -100,6 +102,8 @@
 		531DDD8C2E58FF6800E210EE /* PerformerTeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerTeamsView.swift; sourceTree = "<group>"; };
 		531DDD8E2E59018600E210EE /* PerformerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerImageView.swift; sourceTree = "<group>"; };
 		531DDD902E5902F700E210EE /* TeamsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsListView.swift; sourceTree = "<group>"; };
+		531DDDB42E70A56500E210EE /* EditTeamPerformersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTeamPerformersView.swift; sourceTree = "<group>"; };
+		531DDDB62E70AB1400E210EE /* CreatePerformerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePerformerView.swift; sourceTree = "<group>"; };
 		53343A112E4E4F1700224553 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		53343A132E4E587300224553 /* TeamDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailView.swift; sourceTree = "<group>"; };
 		53343A152E4E59E500224553 /* PerformanceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceRow.swift; sourceTree = "<group>"; };
@@ -262,6 +266,8 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				531DDDB62E70AB1400E210EE /* CreatePerformerView.swift */,
+				531DDDB42E70A56500E210EE /* EditTeamPerformersView.swift */,
 				531DDD862E5775E000E210EE /* IssuesList.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,
@@ -528,6 +534,7 @@
 				5334688A2E44F8E700E069DB /* Performer.swift in Sources */,
 				531DDD852E54F07A00E210EE /* PerformerSelectionList.swift in Sources */,
 				531DDD872E5775E000E210EE /* IssuesList.swift in Sources */,
+				531DDDB52E70A56500E210EE /* EditTeamPerformersView.swift in Sources */,
 				531DDD8F2E59018600E210EE /* PerformerImageView.swift in Sources */,
 				533468822E42752D00E069DB /* FestivalViewModel.swift in Sources */,
 				5334687A2E4272CD00E069DB /* PerformerListView.swift in Sources */,
@@ -553,6 +560,7 @@
 				5334687E2E42731A00E069DB /* DateListView.swift in Sources */,
 				533468782E426E9D00E069DB /* FestivalView.swift in Sources */,
 				530C184D2E1D74D8000A80E0 /* SettingsView.swift in Sources */,
+				531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */,
 				533468802E42740300E069DB /* Performance.swift in Sources */,
 				533468842E42759700E069DB /* AddPerformanceView.swift in Sources */,
 			);

@@ -39,5 +39,14 @@ struct TeamDetailView: View {
             }
         }
         .navigationTitle(team)
+        .toolbar {
+            if festivalViewModel.isAdminLoggedIn {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: EditTeamPerformersView(festivalViewModel: festivalViewModel, teamName: team)) {
+                        Image(systemName: "pencil")
+                    }
+                }
+            }
+        }
     }
 }

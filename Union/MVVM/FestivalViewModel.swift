@@ -34,7 +34,7 @@ class FestivalViewModel: ObservableObject {
         performances.append(performance)
         knownPerformers.formUnion(performance.performers)
     }
-
+    
     func deletePerformance(_ performance: Performance) {
         if let index = performances.firstIndex(where: { $0.id == performance.id }) {
             performances.remove(at: index)
@@ -42,19 +42,41 @@ class FestivalViewModel: ObservableObject {
     }
     
     // MARK: - Performer Management
+    /// Adds a performer to a specific team's performances and to the known performers list.
+    func addPerformer(named performerName: String, toTeam teamName: String) {
+        knownPerformers.insert(performerName)
+        
+        for i in performances.indices {
+            if performances[i].teamName == teamName {
+                if !performances[i].performers.contains(performerName) {
+                    performances[i].performers.append(performerName)
+                }
+            }
+        }
+    }
     
     /// Deletes a performer and removes them from all teams and performances.
-    func deletePerformer(named performer: String) {
-        // Remove the performer from the main list of known performers
-        knownPerformers.remove(performer)
-        
+    func deletePerformer(named performer: String,  fromTeam teamName: String?) {
         // Iterate through all performances and remove the performer
-        for i in performances.indices {
-            performances[i].performers.removeAll(where: { $0 == performer })
+        if let teamName = teamName {
+            for i in performances.indices {
+                if performances[i].teamName == teamName {
+                    performances[i].performers.removeAll(where: { $0 == performer })
+                }
+            }
+        } else {
+//            If the user supplies a team name, this means they are removing the performer from a team and not
+//            from the list of all performers
+            // Remove the performer from the main list of known performers
+            knownPerformers.remove(performer)
+            
+            for i in performances.indices {
+                performances[i].performers.removeAll(where: { $0 == performer })
+            }
+            
+            // Delete the associated image from the file system
+            deleteImage(for: performer)
         }
-        
-        // Delete the associated image from the file system
-        deleteImage(for: performer)
     }
 
     func saveImage(for performer: String, imageData: Data) {
@@ -95,9 +117,9 @@ class FestivalViewModel: ObservableObject {
     
     private func sanitizeFilename(_ name: String) -> String {
         return name.replacingOccurrences(of: " ", with: "_")
-                    .replacingOccurrences(of: "/", with: "_")
-                    .replacingOccurrences(of: "\\", with: "_")
-                    .replacingOccurrences(of: ":", with: "_")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "\\", with: "_")
+            .replacingOccurrences(of: ":", with: "_")
     }
     
     private func getDocumentsDirectory() -> URL {

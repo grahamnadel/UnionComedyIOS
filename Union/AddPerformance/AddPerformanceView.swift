@@ -6,12 +6,21 @@ struct AddPerformanceView: View {
     @ObservedObject var festivalViewModel: FestivalViewModel
 
     @State private var date = Date()
+    @State private var selectedDates: Set<Date> = Set()
     @State private var teamName = ""
+    @State private var selectedTeamName: String? = nil
+    @State private var newTeamNameInput = ""
     @State private var performerInput = ""
     @State private var performerInputs: Set<PerformerInput> = Set()
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var selectedImageData: Data?
     @State private var selectedPerformerForPhoto: UUID? = nil
+    
+    // Computed property to get all unique team names from performances
+    var allTeams: [String] {
+        let teams = Set(festivalViewModel.performances.map { $0.teamName })
+        return Array(teams).sorted()
+    }
 
     // This computed property filters suggestions for the user as they type.
     var filteredSuggestions: [String] {
@@ -30,10 +39,49 @@ struct AddPerformanceView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // MARK: - Performance Details
-                Section(header: Text("Performance Details")) {
-                    DatePicker("Date", selection: $date, displayedComponents: [.date, .hourAndMinute])
-                    TextField("Team Name", text: $teamName)
+                // MARK: - Team Details
+                Section(header: Text("Team Details")) {
+                    Picker("Team Name", selection: $selectedTeamName) {
+                        // Option to create a new team
+                        Text("New Team...").tag(nil as String?)
+                        
+                        ForEach(allTeams, id: \.self) { team in
+                            Text(team).tag(team as String?)
+                        }
+                    }
+                    
+                    // Show a text field only if "New Team..." is selected
+                    if selectedTeamName == nil {
+                        TextField("New Team Name", text: $newTeamNameInput)
+                            .onChange(of: newTeamNameInput) { _ in
+                                teamName = newTeamNameInput
+                            }
+                    }
+                }
+
+                // MARK: - Add Dates
+                Section(header: Text("Add Dates")) {
+                    DatePicker("Show Date", selection: $date, displayedComponents: [.date, .hourAndMinute])
+                    
+                    Button("Add Date") {
+                        selectedDates.insert(date)
+                    }
+                    .disabled(selectedDates.contains(date))
+                }
+                
+                // MARK: - List of Selected Dates
+                if !selectedDates.isEmpty {
+                    Section(header: Text("Dates to Add")) {
+                        let sortedDates = selectedDates.sorted()
+                        ForEach(sortedDates, id: \.self) { selectedDate in
+                            Text(selectedDate, style: .date) + Text(", ") + Text(selectedDate, style: .time)
+                        }
+                        .onDelete { indexSet in
+                            let sortedDates = selectedDates.sorted()
+                            let datesToRemove = indexSet.map { sortedDates[$0] }
+                            selectedDates.subtract(datesToRemove)
+                        }
+                    }
                 }
 
                 // MARK: - Add Performers
@@ -83,7 +131,7 @@ struct AddPerformanceView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { savePerformance() }
-                        .disabled(teamName.isEmpty || performerInputs.isEmpty)
+                        .disabled(teamName.isEmpty || performerInputs.isEmpty || selectedDates.isEmpty)
                 }
             }
             .onChange(of: selectedPhoto) { newItem in
@@ -98,6 +146,31 @@ struct AddPerformanceView: View {
                             performerInputs.update(with: performerToUpdate)
                         }
                     }
+                }
+            }
+            .onAppear {
+                if let firstTeam = allTeams.first {
+                    selectedTeamName = firstTeam
+                    teamName = firstTeam
+                }
+            }
+            .onChange(of: selectedTeamName) { newTeam in
+                // Clear existing performers
+                performerInputs.removeAll()
+                if let newTeam = newTeam {
+                    teamName = newTeam
+                    
+                    // Find all performers for this team
+                    let existingPerformers = festivalViewModel.performances
+                        .filter { $0.teamName == newTeam }
+                        .flatMap { $0.performers }
+                    
+                    // Add unique performers to the selected list
+                    for performerName in Set(existingPerformers) {
+                        performerInputs.insert(PerformerInput(name: performerName))
+                    }
+                } else {
+                    teamName = ""
                 }
             }
         }
@@ -116,12 +189,16 @@ struct AddPerformanceView: View {
 
     private func savePerformance() {
         // Create the performance object and add it via the view model.
-        let newPerformance = Performance(
-            teamName: teamName,
-            showTime: date,
-            performers: performerInputs.map { $0.name }
-        )
-        festivalViewModel.addPerformance(newPerformance)
+        let teamToSave = teamName.isEmpty ? newTeamNameInput : teamName
+        
+        for date in selectedDates {
+            let newPerformance = Performance(
+                teamName: teamToSave,
+                showTime: date,
+                performers: performerInputs.map { $0.name }
+            )
+            festivalViewModel.addPerformance(newPerformance)
+        }
 
         // Save any images that were associated with performers.
         for performer in performerInputs {

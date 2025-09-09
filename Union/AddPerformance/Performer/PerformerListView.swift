@@ -57,7 +57,7 @@ struct PerformerListView: View {
                 .onDelete { indexSet in
                     for index in indexSet {
                         let performerToDelete = sortedPerformers[index]
-                        festivalViewModel.deletePerformer(named: performerToDelete)
+                        festivalViewModel.deletePerformer(named: performerToDelete, fromTeam: nil)
                     }
                 }
             }
