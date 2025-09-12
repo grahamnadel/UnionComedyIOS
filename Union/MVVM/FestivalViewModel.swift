@@ -151,6 +151,7 @@ class FestivalViewModel: ObservableObject {
 }
 
 // Wrapper struct for encoding/decoding
+// TODO: Add the teams to the list?
 struct FestivalData: Codable {
     var performances: [Performance]
     var knownPerformers: [String]

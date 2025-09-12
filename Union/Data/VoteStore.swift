@@ -35,12 +35,17 @@ class VoteStore: ObservableObject {
     func voteFor(option: String) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let vote = Vote(id: uid, option: option)
+        
+        // Use the completion handler to check for errors
         do {
-            try db.collection("votes").document(uid).setData(from: vote)
+            try db.collection("votes").document(uid).setData(from: vote) { error in
+                print("Error in voteFor: \(String(describing: error))")
+            }
         } catch {
-            print("Error writing vote: \(error)")
+            print("error encoding vote: \(vote)")
         }
     }
+
 
     deinit {
         listener?.remove()

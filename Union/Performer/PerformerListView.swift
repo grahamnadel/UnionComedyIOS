@@ -71,8 +71,8 @@ struct PerformerListView: View {
                 matching: .images,
                 photoLibrary: .shared()
             )
-            .onChange(of: selectedPhoto) { newValue in
-                if let selectedPhoto = newValue,
+            .onChange(of: selectedPhoto) {
+                if let selectedPhoto = selectedPhoto,
                    let performer = selectedPerformer {
                     loadImage(from: selectedPhoto, for: performer)
                 }

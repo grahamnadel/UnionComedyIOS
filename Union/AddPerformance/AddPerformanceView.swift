@@ -53,7 +53,7 @@ struct AddPerformanceView: View {
                     // Show a text field only if "New Team..." is selected
                     if selectedTeamName == nil {
                         TextField("New Team Name", text: $newTeamNameInput)
-                            .onChange(of: newTeamNameInput) { _ in
+                            .onChange(of: newTeamNameInput) {
                                 teamName = newTeamNameInput
                             }
                     }
@@ -131,9 +131,9 @@ struct AddPerformanceView: View {
                         .disabled(teamName.isEmpty || performerInputs.isEmpty || selectedDates.isEmpty)
                 }
             }
-            .onChange(of: selectedPhoto) { newItem in
+            .onChange(of: selectedPhoto) {
                 Task {
-                    if let item = newItem,
+                    if let item = selectedPhoto,
                        let data = try? await item.loadTransferable(type: Data.self) {
                         // Logic to associate the selected photo data with the correct performer
                         if let performerId = selectedPerformerForPhoto,
@@ -151,10 +151,10 @@ struct AddPerformanceView: View {
                     teamName = firstTeam
                 }
             }
-            .onChange(of: selectedTeamName) { newTeam in
+            .onChange(of: selectedTeamName) {
                 // Clear existing performers
                 performerInputs.removeAll()
-                if let newTeam = newTeam {
+                if let newTeam = selectedTeamName {
                     teamName = newTeam
                     
                     // Find all performers for this team
