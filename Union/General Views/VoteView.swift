@@ -12,7 +12,7 @@ import SwiftData
 struct VoteView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
-    @ObservedObject var viewModel: ViewModel
+    @EnvironmentObject var viewModel: ViewModel
     @State private var teamVotedFor = ""
 
     var body: some View {

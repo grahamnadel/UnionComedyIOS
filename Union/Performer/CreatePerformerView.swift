@@ -3,7 +3,7 @@ import SwiftUI
 struct CreatePerformerView: View {
     @Environment(\.dismiss) var dismiss
     
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     let teamName: String
     
     @State private var newPerformerName: String = ""

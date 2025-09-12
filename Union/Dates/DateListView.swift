@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DateListView: View {
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     @State private var editingPerformance: Performance?
     @State private var newShowTime = Date()
     

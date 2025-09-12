@@ -198,20 +198,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		53343A172E53C27A00224553 /* Views */ = {
+		531DDDB82E70B07400E210EE /* Teams */ = {
+			isa = PBXGroup;
+			children = (
+				531DDD902E5902F700E210EE /* TeamsListView.swift */,
+				5334687B2E4272FF00E069DB /* TeamListView.swift */,
+				53343A132E4E587300224553 /* TeamDetailView.swift */,
+				53847C8C2E02FC9800EE649A /* TeamView.swift */,
+				531DDDB42E70A56500E210EE /* EditTeamPerformersView.swift */,
+			);
+			path = Teams;
+			sourceTree = "<group>";
+		};
+		531DDDB92E70B10F00E210EE /* Dates */ = {
+			isa = PBXGroup;
+			children = (
+				5334687D2E42731A00E069DB /* DateListView.swift */,
+			);
+			path = Dates;
+			sourceTree = "<group>";
+		};
+		53343A172E53C27A00224553 /* General Views */ = {
 			isa = PBXGroup;
 			children = (
 				53847C8A2E02FB7700EE649A /* MainView.swift */,
 				533468772E426E9D00E069DB /* FestivalView.swift */,
-				5334687B2E4272FF00E069DB /* TeamListView.swift */,
 				530C184C2E1D74D8000A80E0 /* SettingsView.swift */,
 				53847C7C2E02F10E00EE649A /* VoteView.swift */,
-				53847C8C2E02FC9800EE649A /* TeamView.swift */,
-				5334687D2E42731A00E069DB /* DateListView.swift */,
-				53343A132E4E587300224553 /* TeamDetailView.swift */,
 				53343A112E4E4F1700224553 /* LoginView.swift */,
 			);
-			path = Views;
+			path = "General Views";
 			sourceTree = "<group>";
 		};
 		53343A182E53C2A900224553 /* MVVM */ = {
@@ -231,7 +247,6 @@
 				533468832E42759700E069DB /* AddPerformanceView.swift */,
 				531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */,
 				53343A152E4E59E500224553 /* PerformanceRow.swift */,
-				53343A1B2E53C44F00224553 /* Performer */,
 			);
 			path = AddPerformance;
 			sourceTree = "<group>";
@@ -254,11 +269,11 @@
 				531DDD882E577A9A00E210EE /* PerformerDetailView.swift */,
 				531DDD8E2E59018600E210EE /* PerformerImageView.swift */,
 				531DDD8C2E58FF6800E210EE /* PerformerTeamsView.swift */,
-				531DDD902E5902F700E210EE /* TeamsListView.swift */,
 				531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */,
 				533468872E44F5E500E069DB /* SelectedPerformerList.swift */,
 				533468792E4272CD00E069DB /* PerformerListView.swift */,
 				5334688B2E44FACD00E069DB /* PerformerPhotoPicker.swift */,
+				531DDDB62E70AB1400E210EE /* CreatePerformerView.swift */,
 			);
 			path = Performer;
 			sourceTree = "<group>";
@@ -266,8 +281,6 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
-				531DDDB62E70AB1400E210EE /* CreatePerformerView.swift */,
-				531DDDB42E70A56500E210EE /* EditTeamPerformersView.swift */,
 				531DDD862E5775E000E210EE /* IssuesList.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,
@@ -290,10 +303,13 @@
 			children = (
 				530C184B2E1C5462000A80E0 /* Union.entitlements */,
 				53847C7A2E02F10E00EE649A /* UnionApp.swift */,
+				531DDDB92E70B10F00E210EE /* Dates */,
+				53343A1B2E53C44F00224553 /* Performer */,
+				531DDDB82E70B07400E210EE /* Teams */,
 				53343A1A2E53C32500224553 /* Data */,
 				53343A192E53C2C700224553 /* AddPerformance */,
 				53343A182E53C2A900224553 /* MVVM */,
-				53343A172E53C27A00224553 /* Views */,
+				53343A172E53C27A00224553 /* General Views */,
 				533468752E426DB000E069DB /* GoogleService-Info.plist */,
 				53847C802E02F10F00EE649A /* Assets.xcassets */,
 				53847C822E02F10F00EE649A /* Preview Content */,

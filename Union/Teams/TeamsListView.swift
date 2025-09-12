@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TeamsListView: View {
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     let performerName: String
     
     // Get all unique teams in the festival

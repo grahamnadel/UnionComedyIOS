@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TeamListView: View {
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     
     var sortedTeams: [String] {
         // Get all unique team names from performances
@@ -12,7 +12,7 @@ struct TeamListView: View {
     var body: some View {
         NavigationStack {
             List(sortedTeams, id: \.self) { team in
-                NavigationLink(destination: TeamDetailView(team: team, festivalViewModel: festivalViewModel)) {
+                NavigationLink(destination: TeamDetailView(team: team)) {
                     Text(team)
                 }
             }

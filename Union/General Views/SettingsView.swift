@@ -9,12 +9,9 @@ import Foundation
 import SwiftUI
 
 struct SettingsView: View {
-    @ObservedObject var viewModel: ViewModel
+    @EnvironmentObject var viewModel: ViewModel
     @State private var showResetConfirmation = false
     
-    init(_ viewModel: ViewModel) {
-        self.viewModel = viewModel
-    }
     
     var body: some View {
         VStack {

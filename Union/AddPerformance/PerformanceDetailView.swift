@@ -2,7 +2,7 @@ import SwiftUI
 
 //// Detail view showing all performances for a given performer
 struct PerformanceDetailView: View {
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     let performance: Performance
     
     var body: some View {

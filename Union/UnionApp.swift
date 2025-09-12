@@ -24,8 +24,10 @@ struct UnionApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView(viewModel, festivalViewModel)
+            MainView()
                 .environmentObject(voteStore)
+                .environmentObject(viewModel)
+                .environmentObject(festivalViewModel)
         }
     }
 }

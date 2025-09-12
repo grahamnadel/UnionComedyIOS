@@ -8,7 +8,7 @@ struct FestivalView: View {
         case teams = "Teams"
     }
     
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     @State private var selected: sortSelection = .date
     @State private var showAddPerformance = false
     @State private var showSettings = false
@@ -26,11 +26,11 @@ struct FestivalView: View {
                 
                 switch selected {
                 case .date:
-                    DateListView(festivalViewModel: festivalViewModel)
+                    DateListView()
                 case .performers:
-                    PerformerListView(festivalViewModel: festivalViewModel)
+                    PerformerListView()
                 case .teams:
-                    TeamListView(festivalViewModel: festivalViewModel)
+                    TeamListView()
                 }
                 
                 Spacer()
@@ -58,10 +58,10 @@ struct FestivalView: View {
                 }
             }
             .sheet(isPresented: $showAddPerformance) {
-                AddPerformanceView(festivalViewModel: festivalViewModel)
+                AddPerformanceView()
             }
             .sheet(isPresented: $showSettings) {
-                LoginView(festivalViewModel: festivalViewModel)
+                LoginView()
             }
             .onChange(of: festivalViewModel.isAdminLoggedIn) {
                 if festivalViewModel.isAdminLoggedIn {

@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 
 struct PerformerListView: View {
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var isShowingPhotoPicker = false
@@ -33,7 +33,10 @@ struct PerformerListView: View {
                         .frame(width: 50, height: 50)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         
-                        NavigationLink(destination: PerformerDetailView(performer: performer, performerURL: performerURL ?? nil, festivalViewModel: festivalViewModel)) {
+                        NavigationLink(destination: PerformerDetailView(
+                            performer: performer,
+                            performerURL: performerURL ?? nil
+                        )) {
                             Text(performer)
                                 .font(.body)
                         }

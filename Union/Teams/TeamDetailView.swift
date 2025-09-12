@@ -11,8 +11,8 @@ import SwiftUI
 
 // Detail view showing all performances for a given team
 struct TeamDetailView: View {
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     let team: String
-    @ObservedObject var festivalViewModel: FestivalViewModel
     
     var performancesForTeam: [Performance] {
         festivalViewModel.performances
@@ -42,7 +42,7 @@ struct TeamDetailView: View {
         .toolbar {
             if festivalViewModel.isAdminLoggedIn {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: EditTeamPerformersView(festivalViewModel: festivalViewModel, teamName: team)) {
+                    NavigationLink(destination: EditTeamPerformersView(teamName: team)) {
                         Image(systemName: "pencil")
                     }
                 }

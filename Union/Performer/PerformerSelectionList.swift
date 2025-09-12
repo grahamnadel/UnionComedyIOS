@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PerformerSelectionList: View {
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     @Binding var performerInputs: Set<PerformerInput>
     
     var body: some View {

@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct LoginView: View {
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     @State private var password: String = ""
     @State private var showAlert = false
     

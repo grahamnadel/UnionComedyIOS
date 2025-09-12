@@ -9,24 +9,20 @@ import Foundation
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var viewModel: ViewModel
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     
     @State private var showPasswordPrompt = false
     @State private var showSettings = false
     @State private var password = ""
     @State private var passwordError = false
-    
-    init(_ viewModel: ViewModel, _ festivalViewModel: FestivalViewModel) {
-        self.viewModel = viewModel
-        self.festivalViewModel = festivalViewModel
-    }
+
     
     var body: some View {
         TabView {
             NavigationStack {
                 VStack {
-                    VoteView(viewModel: viewModel)
+                    VoteView()
                         .tabItem {
                             Label("Vote", systemImage: "figure.boxing")
                         }
@@ -44,7 +40,7 @@ struct MainView: View {
                     }
                 }
                 .sheet(isPresented: $showSettings) {
-                    SettingsView(viewModel)
+                    SettingsView()
                 }
                 .sheet(isPresented: $showPasswordPrompt) {
                                     VStack(spacing: 20) {
@@ -91,7 +87,7 @@ struct MainView: View {
                 Label("Vote", systemImage: "figure.boxing")
             }
             
-            FestivalView(festivalViewModel: festivalViewModel)
+            FestivalView()
                 .tabItem {
                     Label("Festival", systemImage: "chart.bar.fill")
                 }

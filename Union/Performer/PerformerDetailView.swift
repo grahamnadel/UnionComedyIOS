@@ -4,7 +4,7 @@ import SwiftUI
 struct PerformerDetailView: View {
     let performer: String
     let performerURL: URL?
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     
     var performancesForPerformer: [Performance] {
         festivalViewModel.performances.filter { $0.performers.contains(performer) }
@@ -31,7 +31,7 @@ struct PerformerDetailView: View {
             
             if festivalViewModel.isAdminLoggedIn {
                 NavigationLink("Manage Teams") {
-                    TeamsListView(festivalViewModel: festivalViewModel, performerName: performer)
+                    TeamsListView(performerName: performer)
                 }
             }
         }

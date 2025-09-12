@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct EditTeamPerformersView: View {
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     
     let teamName: String
     @State private var showCreatePerformer = false
@@ -38,10 +38,7 @@ struct EditTeamPerformersView: View {
             }
         }
         .sheet(isPresented: $showCreatePerformer) {
-            CreatePerformerView(
-                festivalViewModel: festivalViewModel,
-                teamName: teamName
-            )
+            CreatePerformerView(teamName: teamName)
         }
     }
     

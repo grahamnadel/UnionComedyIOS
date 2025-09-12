@@ -3,7 +3,7 @@ import PhotosUI
 
 struct AddPerformanceView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
 
     @State private var date = Date()
     @State private var selectedDates: Set<Date> = Set()
@@ -94,10 +94,7 @@ struct AddPerformanceView: View {
                         .disabled(performerInput.trimmingCharacters(in: .whitespaces).isEmpty)
                     }
                     
-                    PerformerSelectionList(
-                        festivalViewModel: festivalViewModel,
-                        performerInputs: $performerInputs
-                    )
+                    PerformerSelectionList(performerInputs: $performerInputs)
                 }
 
                 // MARK: - Selected Performers List
