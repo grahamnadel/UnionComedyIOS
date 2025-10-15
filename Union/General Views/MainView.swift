@@ -22,23 +22,23 @@ struct MainView: View {
         TabView {
             NavigationStack {
                 VStack {
-                    VoteView()
-                        .tabItem {
-                            Label("Vote", systemImage: "figure.boxing")
-                        }
-                        .navigationTitle("Cage Match")
-                        .navigationBarTitleDisplayMode(.large)
+//                    VoteView()
+//                        .tabItem {
+//                            Label("Vote", systemImage: "figure.boxing")
+//                        }
+//                        .navigationTitle("Cage Match")
+//                        .navigationBarTitleDisplayMode(.large)
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            print("Settings tapped")
-                            showPasswordPrompt = true
-                        } label: {
-                            Image(systemName: "gearshape")
-                        }
-                    }
-                }
+//                .toolbar {
+//                    ToolbarItem(placement: .navigationBarTrailing) {
+//                        Button {
+//                            print("Settings tapped")
+//                            showPasswordPrompt = true
+//                        } label: {
+//                            Image(systemName: "gearshape")
+//                        }
+//                    }
+//                }
                 .sheet(isPresented: $showSettings) {
                     SettingsView()
                 }
@@ -83,9 +83,9 @@ struct MainView: View {
                                     .presentationDetents([.fraction(0.3)])
                                 }
             }
-            .tabItem {
-                Label("Vote", systemImage: "figure.boxing")
-            }
+//            .tabItem {
+//                Label("Vote", systemImage: "figure.boxing")
+//            }
             
             FestivalView()
                 .tabItem {

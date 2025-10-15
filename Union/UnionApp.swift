@@ -12,21 +12,23 @@ import Firebase
 
 @main
 struct UnionApp: App {
-    @StateObject private var voteStore = VoteStore()
+//    @StateObject private var voteStore = VoteStore()
     
     init() {
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
     }
-    @StateObject var viewModel = ViewModel()
+//    @StateObject var viewModel = ViewModel()
     @StateObject var festivalViewModel = FestivalViewModel()
 
     var body: some Scene {
         WindowGroup {
-            MainView()
-                .environmentObject(voteStore)
-                .environmentObject(viewModel)
+//            MainView()
+//                .environmentObject(voteStore)
+////                .environmentObject(viewModel)
+//                .environmentObject(festivalViewModel)
+            FestivalView()
                 .environmentObject(festivalViewModel)
         }
     }

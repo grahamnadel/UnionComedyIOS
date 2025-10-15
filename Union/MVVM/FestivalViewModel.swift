@@ -1,6 +1,9 @@
+import SwiftUI
 import Foundation
+import FirebaseFirestore
+import FirebaseAuth
 
-class FestivalViewModel: ObservableObject {
+class FestivalViewModel: ObservableObject {    
     @Published var performances: [Performance] = [] {
         didSet { saveData() }
     }
@@ -148,11 +151,9 @@ class FestivalViewModel: ObservableObject {
             print("No previous data found or failed to load:", error)
         }
     }
+    
+    func createPerformance(id: String, teamName: String, performerIds: [String], date: Date) {
+        FirebaseManager.shared.createPerformance(id: id, teamName: teamName, performerIds: performerIds, date: date)
+    }
 }
 
-// Wrapper struct for encoding/decoding
-// TODO: Add the teams to the list?
-struct FestivalData: Codable {
-    var performances: [Performance]
-    var knownPerformers: [String]
-}

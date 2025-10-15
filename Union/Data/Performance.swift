@@ -15,3 +15,15 @@ struct Performance: Identifiable, Codable, Hashable {
     var showTime: Date
     var performers: [String]
 }
+
+struct Team: Identifiable {
+    var name: String
+    let id: UUID
+    let color: Color
+}
+
+struct FestivalData: Codable {
+    var performances: [Performance]
+    var knownPerformers: [String]
+}
+

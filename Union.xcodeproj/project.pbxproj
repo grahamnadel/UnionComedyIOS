@@ -72,7 +72,6 @@
 		53847C8D2E02FC9800EE649A /* TeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C8C2E02FC9800EE649A /* TeamView.swift */; };
 		53847C8F2E02FEBA00EE649A /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C8E2E02FEBA00EE649A /* Model.swift */; };
 		53847C912E02FEBF00EE649A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C902E02FEBF00EE649A /* ViewModel.swift */; };
-		53847C932E03019300EE649A /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C922E03019300EE649A /* Team.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,7 +132,6 @@
 		53847C8C2E02FC9800EE649A /* TeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamView.swift; sourceTree = "<group>"; };
 		53847C8E2E02FEBA00EE649A /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		53847C902E02FEBF00EE649A /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		53847C922E03019300EE649A /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -243,7 +241,6 @@
 		53343A192E53C2C700224553 /* AddPerformance */ = {
 			isa = PBXGroup;
 			children = (
-				5334687F2E42740300E069DB /* Performance.swift */,
 				533468832E42759700E069DB /* AddPerformanceView.swift */,
 				531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */,
 				53343A152E4E59E500224553 /* PerformanceRow.swift */,
@@ -255,9 +252,9 @@
 			isa = PBXGroup;
 			children = (
 				5366F1262E0CB1DC00BEC56A /* FirebaseManager.swift */,
-				53847C922E03019300EE649A /* Team.swift */,
 				53829C2F2E0DC6AF00F284B7 /* VoteStore.swift */,
 				53847C7E2E02F10E00EE649A /* Item.swift */,
+				5334687F2E42740300E069DB /* Performance.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -566,7 +563,6 @@
 				533468882E44F5E500E069DB /* SelectedPerformerList.swift in Sources */,
 				531DDD8D2E58FF6800E210EE /* PerformerTeamsView.swift in Sources */,
 				531DDD912E5902F700E210EE /* TeamsListView.swift in Sources */,
-				53847C932E03019300EE649A /* Team.swift in Sources */,
 				531DDD8B2E57828200E210EE /* PerformanceDetailView.swift in Sources */,
 				53847C7F2E02F10E00EE649A /* Item.swift in Sources */,
 				5334687C2E4272FF00E069DB /* TeamListView.swift in Sources */,

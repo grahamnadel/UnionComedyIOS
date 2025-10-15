@@ -1,6 +1,8 @@
 import Foundation
 import SwiftUI
 
+//            New Feature:
+
 struct FestivalView: View {
     enum sortSelection: String, CaseIterable {
         case date = "Date"

@@ -195,6 +195,8 @@ struct AddPerformanceView: View {
                 performers: performerInputs.map { $0.name }
             )
             festivalViewModel.addPerformance(newPerformance)
+//            New Feature:
+            festivalViewModel.createPerformance(id: UUID().uuidString, teamName: teamToSave, performerIds: performerInputs.map { $0.name }, date: date)
         }
 
         // Save any images that were associated with performers.
