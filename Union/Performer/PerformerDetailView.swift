@@ -28,12 +28,12 @@ struct PerformerDetailView: View {
                 teamsForPerformer: teamsForPerformer,
                 performancesForPerformer: performancesForPerformer
             )
-            
-//            if festivalViewModel.isAdminLoggedIn {
-//                NavigationLink("Manage Teams") {
-//                    TeamsListView(performerName: performer)
-//                }
-//            }
+            Button {
+                festivalViewModel.toggleFavoritePerformer(performer)
+            } label: {
+                Image(systemName: festivalViewModel.favoritePerformers.contains(performer) ? "star.fill" : "star")
+                    .foregroundColor(festivalViewModel.favoritePerformerColor)
+            }
         }
     }
 }

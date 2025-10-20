@@ -11,13 +11,63 @@ class FestivalViewModel: ObservableObject {
     @Published var knownPerformers: Set<String> = []
     // TODO: Set this to false in the final product
     @Published var isAdminLoggedIn = true
+
+    // USER FAVORITES
+    @Published var favoriteTeams: [String] = []
+    @Published var favoritePerformers: [String] = []
+    @AppStorage("favoriteTeams") private var favoriteTeamsData: Data = Data()
+    @AppStorage("favoritePerformers") private var favoritePerformersData: Data = Data()
+    
+    let favoriteTeamColor = Color.yellow
+    let favoritePerformerColor = Color.purple
     
     let adminPassword = "Union Comedy"
     
     init() {
         loadData()
+        loadFavorites()
     }
     
+    
+    func toggleFavoriteTeam(_ team: String) {
+        if favoriteTeams.contains(team) {
+            favoriteTeams.removeAll { $0 == team }
+        } else {
+            favoriteTeams.append(team)
+        }
+        saveFavorites()
+    }
+    
+
+    func toggleFavoritePerformer(_ name: String) {
+        if favoritePerformers.contains(name) {
+            favoritePerformers.removeAll { $0 == name }
+        } else {
+            favoritePerformers.append(name)
+        }
+        saveFavorites()
+    }
+    
+
+    // MARK: - Local Persistence
+        private func saveFavorites() {
+            if let teamData = try? JSONEncoder().encode(favoriteTeams) {
+                favoriteTeamsData = teamData
+            }
+            if let performerData = try? JSONEncoder().encode(favoritePerformers) {
+                favoritePerformersData = performerData
+            }
+        }
+
+        private func loadFavorites() {
+            if let loadedTeams = try? JSONDecoder().decode([String].self, from: favoriteTeamsData) {
+                favoriteTeams = loadedTeams
+            }
+            if let loadedPerformers = try? JSONDecoder().decode([String].self, from: favoritePerformersData) {
+                favoritePerformers = loadedPerformers
+            }
+        }
+
     
     func attemptLogin(with password: String) -> Bool {
         if password == adminPassword {

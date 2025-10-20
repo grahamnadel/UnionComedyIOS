@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TeamListView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
-    @State private var searchText = ""   // <-- NEW: search text
+    @State private var searchText = ""   // Search field text
     
     // Filtered & sorted teams
     var filteredTeams: [String] {
@@ -24,9 +24,24 @@ struct TeamListView: View {
                     .padding(.horizontal)
                 
                 List(filteredTeams, id: \.self) { team in
-                    NavigationLink(destination: TeamDetailView(team: team)) {
+                    HStack {
                         Text(team)
+                            .font(.body)
+                        
+                        Spacer()
+                        
+                        // Show star if team is a favorite
+                        if festivalViewModel.favoriteTeams.contains(team) {
+                            Image(systemName: "star.fill")
+                                .foregroundColor(festivalViewModel.favoriteTeamColor)
+                        }
                     }
+                    .contentShape(Rectangle())  // Make entire row tappable
+                    .background(
+                        NavigationLink("", destination: TeamDetailView(teamName: team))
+                            .opacity(0) // Invisible link for full-row navigation
+                    )
+                    .padding(.vertical, 4)
                 }
                 .listStyle(.insetGrouped)
                 .refreshable {

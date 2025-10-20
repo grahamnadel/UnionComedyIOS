@@ -35,16 +35,33 @@ struct DateListView: View {
                 ForEach(groupedPerformances, id: \.key) { date, performances in
                     Section(header: Text(date, style: .date)) {
                         ForEach(performances, id: \.id) { performance in
-                            VStack(alignment: .leading) {
-                                Text(performance.teamName)
-                                    .font(.headline)
-                                Text(performance.showTime, style: .time)
-                                    .font(.subheadline)
-                                Text("Performers: \(performance.performers.joined(separator: ", "))")
-                                    .font(.footnote)
-                                    .foregroundColor(.secondary)
+                            HStack(alignment: .top, spacing: 8) {
+                                VStack(alignment: .leading) {
+                                    Text(performance.teamName)
+                                        .font(.headline)
+                                    Text(performance.showTime, style: .time)
+                                        .font(.subheadline)
+                                    Text("Performers: \(performance.performers.joined(separator: ", "))")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
+                                }
+
+                                Spacer()
+
+                                // Favorite indicators
+                                VStack(spacing: 4) {
+                                    if festivalViewModel.favoriteTeams.contains(performance.teamName) {
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(festivalViewModel.favoriteTeamColor)
+                                    }
+                                    if performance.performers.contains(where: { festivalViewModel.favoritePerformers.contains($0) }) {
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(festivalViewModel.favoritePerformerColor)
+                                    }
+                                }
                             }
-                            .padding(.vertical, 2)
+                            .padding(.vertical, 8)
+                            .contentShape(Rectangle())       // <-- Make entire HStack tappable
                             .onTapGesture {
                                 if festivalViewModel.isAdminLoggedIn {
                                     editingPerformance = performance

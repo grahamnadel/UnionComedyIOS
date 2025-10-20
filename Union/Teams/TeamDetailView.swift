@@ -12,37 +12,45 @@ import SwiftUI
 // Detail view showing all performances for a given team
 struct TeamDetailView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
-    let team: String
+    let teamName: String
     
     var performancesForTeam: [Performance] {
         festivalViewModel.performances
-            .filter { $0.teamName == team }
+            .filter { $0.teamName == teamName }
             .sorted { $0.showTime < $1.showTime }
     }
     
     var body: some View {
-        List {
-            if festivalViewModel.isAdminLoggedIn {
-                ForEach(performancesForTeam, id: \.id) { performance in
-                    PerformanceRow(performance: performance)
-                }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        let perf = performancesForTeam[index]
-                        festivalViewModel.deletePerformance(perf)
+        VStack {
+            List {
+                if festivalViewModel.isAdminLoggedIn {
+                    ForEach(performancesForTeam, id: \.id) { performance in
+                        PerformanceRow(performance: performance)
+                    }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            let perf = performancesForTeam[index]
+                            festivalViewModel.deletePerformance(perf)
+                        }
+                    }
+                } else {
+                    ForEach(performancesForTeam, id: \.id) { performance in
+                        PerformanceRow(performance: performance)
                     }
                 }
-            } else {
-                ForEach(performancesForTeam, id: \.id) { performance in
-                    PerformanceRow(performance: performance)
-                }
+            }
+            Button {
+                festivalViewModel.toggleFavoriteTeam(teamName)
+            } label: {
+                Image(systemName: festivalViewModel.favoriteTeams.contains(teamName) ? "star.fill" : "star")
+                    .foregroundColor(festivalViewModel.favoriteTeamColor)
             }
         }
-        .navigationTitle(team)
+        .navigationTitle(teamName)
         .toolbar {
             if festivalViewModel.isAdminLoggedIn {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: EditTeamPerformersView(teamName: team)) {
+                    NavigationLink(destination: EditTeamPerformersView(teamName: teamName)) {
                         Image(systemName: "pencil")
                     }
                 }
