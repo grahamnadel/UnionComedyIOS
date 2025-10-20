@@ -2,22 +2,38 @@ import SwiftUI
 
 struct TeamListView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @State private var searchText = ""   // <-- NEW: search text
     
-    var sortedTeams: [String] {
-        // Get all unique team names from performances
+    // Filtered & sorted teams
+    var filteredTeams: [String] {
         let teams = Set(festivalViewModel.performances.map { $0.teamName })
-        return teams.sorted()
+        if searchText.isEmpty {
+            return teams.sorted()
+        } else {
+            return teams.filter {
+                $0.localizedCaseInsensitiveContains(searchText)
+            }.sorted()
+        }
     }
     
     var body: some View {
         NavigationStack {
-            List(sortedTeams, id: \.self) { team in
-                NavigationLink(destination: TeamDetailView(team: team)) {
-                    Text(team)
+            VStack {
+                // 🔍 Add the Search Bar
+                SearchBar(searchCategory: "team", searchText: $searchText)
+                    .padding(.horizontal)
+                
+                List(filteredTeams, id: \.self) { team in
+                    NavigationLink(destination: TeamDetailView(team: team)) {
+                        Text(team)
+                    }
+                }
+                .listStyle(.insetGrouped)
+                .refreshable {
+                    festivalViewModel.loadData()
                 }
             }
-            .navigationTitle("Sort By")
+            .navigationTitle("Teams")
         }
     }
 }
-

@@ -194,7 +194,9 @@ struct AddPerformanceView: View {
         // Save any images that were associated with performers.
         for performer in performerInputs {
             if let imageData = performer.imageData {
-                festivalViewModel.saveImage(for: performer.name, imageData: imageData)
+                Task { @MainActor in
+                    await festivalViewModel.saveImage(for: performer.name, imageData: imageData)
+                }
             }
         }
         

@@ -72,6 +72,7 @@
 		53847C8D2E02FC9800EE649A /* TeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C8C2E02FC9800EE649A /* TeamView.swift */; };
 		53847C8F2E02FEBA00EE649A /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C8E2E02FEBA00EE649A /* Model.swift */; };
 		53847C912E02FEBF00EE649A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C902E02FEBF00EE649A /* ViewModel.swift */; };
+		53B815B32EA6A1F100854645 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815B22EA6A1F100854645 /* SearchBar.swift */; };
 		53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EAA6F12EA14F4E00BA49C6 /* Team.swift */; };
 /* End PBXBuildFile section */
 
@@ -133,6 +134,7 @@
 		53847C8C2E02FC9800EE649A /* TeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamView.swift; sourceTree = "<group>"; };
 		53847C8E2E02FEBA00EE649A /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		53847C902E02FEBF00EE649A /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		53B815B22EA6A1F100854645 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		53EAA6F12EA14F4E00BA49C6 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -280,6 +282,7 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				53B815B22EA6A1F100854645 /* SearchBar.swift */,
 				53EAA6F12EA14F4E00BA49C6 /* Team.swift */,
 				531DDD862E5775E000E210EE /* IssuesList.swift */,
 				53847C792E02F10E00EE649A /* Union */,
@@ -561,6 +564,7 @@
 				53829C302E0DC6AF00F284B7 /* VoteStore.swift in Sources */,
 				53847C8D2E02FC9800EE649A /* TeamView.swift in Sources */,
 				5334688C2E44FACD00E069DB /* PerformerPhotoPicker.swift in Sources */,
+				53B815B32EA6A1F100854645 /* SearchBar.swift in Sources */,
 				53847C8F2E02FEBA00EE649A /* Model.swift in Sources */,
 				53343A142E4E587300224553 /* TeamDetailView.swift in Sources */,
 				533468882E44F5E500E069DB /* SelectedPerformerList.swift in Sources */,

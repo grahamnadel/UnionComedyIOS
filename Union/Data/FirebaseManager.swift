@@ -77,20 +77,6 @@ class FirebaseManager {
         }
     }
     
-    func checkForExistingTeam(teamName: String, completion: @escaping (Bool) -> Void) {
-        db.collection("festivalTeams")
-            .whereField("name", isEqualTo: teamName)
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    print("Error checking team name: \(error.localizedDescription)")
-                    completion(false)
-                    return
-                }
-                
-                let exists = !(snapshot?.documents.isEmpty ?? true)
-                completion(exists)
-            }
-    }
     
     func checkForExistingPerformers(performerName: String, completion: @escaping (Bool) -> Void) {
         db.collection("performers")
@@ -109,11 +95,51 @@ class FirebaseManager {
     }
     
     
-    //            New Feature:
+    func checkForExistingTeam(teamName: String, completion: @escaping (Bool) -> Void) {
+        db.collection("festivalTeams")
+            .whereField("name", isEqualTo: teamName)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("Error checking team name: \(error.localizedDescription)")
+                    completion(false)
+                    return
+                }
+                
+                let exists = !(snapshot?.documents.isEmpty ?? true)
+                completion(exists)
+            }
+    }
+    
+    
     func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date]) {
         checkForExistingTeam(teamName: teamName) { exists in
             if exists {
-                print("✅ Team exists — you can proceed.")
+                self.db.collection("festivalTeams").whereField("name", isEqualTo: teamName).getDocuments { snapshot, error in
+                    if let error = error {
+                        print("❌ Error finding team: \(error)")
+                        return
+                    }
+
+                    guard let document = snapshot?.documents.first else {
+                        print("⚠️ No document found for team: \(teamName)")
+                        return
+                    }
+
+                    let docRef = self.db.collection("festivalTeams").document(document.documentID)
+
+                    // Convert Date array to Firestore Timestamp array
+                    let timestamps = dates.map { Timestamp(date: $0) }
+
+                    docRef.updateData([
+                        "showTimes": FieldValue.arrayUnion(timestamps)
+                    ]) { error in
+                        if let error = error {
+                            print("❌ Failed to update showTimes: \(error)")
+                        } else {
+                            print("✅ Successfully added dates to team \(teamName)")
+                        }
+                    }
+                }
             } else {
                 print("Team not found")
                 
@@ -129,47 +155,12 @@ class FirebaseManager {
                         print("Team successfully written!")
                     }
                 }
-                
-//                for performer in performerIds {
-//                    self.checkForExistingPerformers(performerName: performer) { exists in
-//                        if exists {
-//                            print("✅ performer exists.")
-//                        } else {
-//                            print("Performer not found")
-//                            
-//                            self.db.collection("performers").document(id).setData([
-//                                "name": performer,
-//                                "id": performer
-//                            ]) { error in
-//                                if let error = error {
-//                                    print("Error writing performer: \(error)")
-//                                } else {
-//                                    print("Performer successfully written!")
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
             }
-            
-//            self.db.collection("performances").document(id).setData([
-//                "name": teamName,
-//                "date": dates,
-//                "id": id
-//            ]) { error in
-//                if let error = error {
-//                    print("Error writing team: \(error)")
-//                } else {
-//                    print("Team successfully written!")
-//                }
-//            }
         }
     }
     
     
     func loadFestivalTeams(completion: @escaping ([TeamData]) -> Void) {
-        let db = Firestore.firestore()
-        
         db.collection("festivalTeams").getDocuments { (snapshot, error) in
             if let error = error {
                 print("❌ Error loading teams: \(error.localizedDescription)")
@@ -198,8 +189,6 @@ class FirebaseManager {
                     print("⚠️ error loading showTimes for team: \(name)")
                 }
             }
-            
-            print("✅ Loaded \(festivalTeams.count) teams")
             completion(festivalTeams)
         }
     }

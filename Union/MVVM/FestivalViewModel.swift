@@ -2,28 +2,22 @@ import SwiftUI
 import Foundation
 import FirebaseFirestore
 import FirebaseAuth
+import FirebaseStorage
+
 
 class FestivalViewModel: ObservableObject {
     @Published var festivalTeams = [TeamData]()
-    @Published var performances: [Performance] = [] {
-        didSet { saveData() }
-    }
-    @Published var knownPerformers: Set<String> = [] {
-        didSet { saveData() }
-    }
+    @Published var performances: [Performance] = []
+    @Published var knownPerformers: Set<String> = []
     // TODO: Set this to false in the final product
     @Published var isAdminLoggedIn = true
     
     let adminPassword = "Union Comedy"
     
-    private let fileURL: URL = {
-        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return documentDirectory.appendingPathComponent("festivalData.json")
-    }()
-    
     init() {
         loadData()
     }
+    
     
     func attemptLogin(with password: String) -> Bool {
         if password == adminPassword {
@@ -34,66 +28,163 @@ class FestivalViewModel: ObservableObject {
         }
     }
     
-    func addPerformance(_ performance: Performance) {
-        performances.append(performance)
-        knownPerformers.formUnion(performance.performers)
-    }
     
     func deletePerformance(_ performance: Performance) {
-        if let index = performances.firstIndex(where: { $0.id == performance.id }) {
-            performances.remove(at: index)
+        let db = Firestore.firestore()
+        let teamsRef = db.collection("festivalTeams")
+        let teamName = performance.teamName
+        let showTime = performance.showTime
+        
+        teamsRef.whereField("name", isEqualTo: teamName).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error finding team \(teamName): \(error)")
+                return
+            }
+            
+            guard let document = snapshot?.documents.first else {
+                print("No team found with name: \(teamName)")
+                return
+            }
+            
+            let docRef = teamsRef.document(document.documentID)
+            
+            // Convert Firestore Timestamps to Dates
+            let timestampArray = document.data()["showTimes"] as? [Timestamp] ?? []
+            var showTimes = timestampArray.map { $0.dateValue() }
+            
+            // Remove the selected showTime
+            showTimes.removeAll { $0 == showTime }
+            
+            if showTimes.isEmpty {
+                // Delete entire team document
+                docRef.delete { error in
+                    if let error = error {
+                        print("Error deleting team \(teamName): \(error)")
+                    } else {
+                        print("Deleted team \(teamName)")
+                        
+                        // 🔁 Remove local data for this team
+                        DispatchQueue.main.async {
+                            self.performances.removeAll {
+                                $0.teamName == teamName
+                            }
+                            self.festivalTeams.removeAll {
+                                $0.teamName == teamName
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Update remaining showTimes
+                let updatedTimestamps = showTimes.map { Timestamp(date: $0) }
+                docRef.updateData(["showTimes": updatedTimestamps]) { error in
+                    if let error = error {
+                        print("Error updating showTimes for \(teamName): \(error)")
+                    } else {
+                        print("Updated showTimes for team \(teamName)")
+                        
+                        // 🔁 Remove this performance from local list
+                        DispatchQueue.main.async {
+                            self.performances.removeAll {
+                                $0.teamName == teamName && $0.showTime == showTime
+                            }
+                            
+                            // Also update the matching team in `festivalTeams`
+                            if let index = self.festivalTeams.firstIndex(where: { $0.teamName == teamName }) {
+                                self.festivalTeams[index].showTimes = showTimes
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
+    
     
     // MARK: - Performer Management
     /// Adds a performer to a specific team's performances and to the known performers list.
     func addPerformer(named performerName: String, toTeam teamName: String) {
-        knownPerformers.insert(performerName)
+        let db = Firestore.firestore()
         
-        for i in performances.indices {
-            if performances[i].teamName == teamName {
-                if !performances[i].performers.contains(performerName) {
-                    performances[i].performers.append(performerName)
+        let teamsRef = db.collection("festivalTeams")
+        
+        teamsRef.whereField("name", isEqualTo: teamName).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error finding team \(teamName): \(error)")
+                return
+            }
+            
+            guard let document = snapshot?.documents.first else {
+                print("No team found with name: \(teamName)")
+                return
+            }
+            
+            let docRef = teamsRef.document(document.documentID)
+            var performers = document.data()["performers"] as? [String] ?? []
+            
+//            Check if performer is in the list
+            if !performers.contains(performerName) {
+                performers.append(performerName)
+                
+                docRef.updateData(["performers": performers]) { error in
+                    if let error = error {
+                        print("Error updating performers for team \(teamName): \(error)")
+                    } else {
+                        print("Successfully added performer \(performerName)")
+                    }
                 }
+            } else {
+                print("performer \(performerName) is already on the team \(teamName)")
             }
         }
+        loadData()
     }
-    
-    /// Deletes a performer and removes them from all teams and performances.
-    func deletePerformer(named performer: String,  fromTeam teamName: String?) {
-        // Iterate through all performances and remove the performer
-        if let teamName = teamName {
-            for i in performances.indices {
-                if performances[i].teamName == teamName {
-                    performances[i].performers.removeAll(where: { $0 == performer })
+
+
+    func saveImage(for performer: String, imageData: Data) async {
+        let fileName = sanitizeFilename(performer) + ".jpg"
+        let storageRef = Storage.storage().reference().child("performerImages/\(fileName)")
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        let db = Firestore.firestore()
+        let teamsRef = db.collection("festivalTeams")
+        
+        do {
+            // 1️⃣ Check if performer exists in festivalTeams
+            let snapshot = try await teamsRef.getDocuments()
+            var performerExists = false
+            
+            for document in snapshot.documents {
+                if let performers = document.data()["performers"] as? [String],
+                   performers.contains(performer) {
+                    performerExists = true
+                    break
                 }
             }
-        } else {
-//            If the user supplies a team name, this means they are removing the performer from a team and not
-//            from the list of all performers
-            // Remove the performer from the main list of known performers
-            knownPerformers.remove(performer)
             
-            for i in performances.indices {
-                performances[i].performers.removeAll(where: { $0 == performer })
+            guard performerExists else {
+                print("⚠️ Performer '\(performer)' not found in festivalTeams")
+                return
             }
             
-            // Delete the associated image from the file system
-            deleteImage(for: performer)
+            // 2️⃣ Upload image data to Firebase Storage
+            _ = try await storageRef.putDataAsync(imageData, metadata: metadata)
+            let url = try await storageRef.downloadURL()
+            
+            // 3️⃣ Save (or overwrite) performer document with the URL
+            try await db.collection("performers").document(performer).setData([
+                "url": url.absoluteString,
+                "updated": Timestamp(date: Date())
+            ])
+            
+            print("✅ Uploaded and linked image for \(performer)")
+            
+        } catch {
+            print("❌ Error saving image for \(performer): \(error.localizedDescription)")
         }
     }
 
-    func saveImage(for performer: String, imageData: Data) {
-        let fileName = sanitizeFilename(performer) + ".jpg"
-        let url = getDocumentsDirectory().appendingPathComponent(fileName)
-        
-        do {
-            try imageData.write(to: url)
-            print("Saved image for \(performer) at \(url.path)")
-        } catch {
-            print("Failed to save image: \(error)")
-        }
-    }
     
     func hasImage(for performer: String) -> Bool {
         let fileName = sanitizeFilename(performer) + ".jpg"
@@ -119,6 +210,7 @@ class FestivalViewModel: ObservableObject {
         }
     }
     
+    
     private func sanitizeFilename(_ name: String) -> String {
         return name.replacingOccurrences(of: " ", with: "_")
             .replacingOccurrences(of: "/", with: "_")
@@ -126,55 +218,52 @@ class FestivalViewModel: ObservableObject {
             .replacingOccurrences(of: ":", with: "_")
     }
     
+    
     private func getDocumentsDirectory() -> URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
     
     private func saveData() {
         let dataToSave = FestivalData(performances: performances, knownPerformers: Array(knownPerformers))
-        do {
-            let data = try JSONEncoder().encode(dataToSave)
-            try data.write(to: fileURL)
-            print("Data saved successfully")
-        } catch {
-            print("Failed to save data:", error)
-        }
     }
     
-    private func loadData() {
+    
+    func loadData() {
+        // Clear existing data before loading new data
+        self.festivalTeams = []
+        self.performances = []
+        self.knownPerformers = []
+        
         do {
-            let data = try Data(contentsOf: fileURL)
-            let decoded = try JSONDecoder().decode(FestivalData.self, from: data)
-//            TODO: replace json data with firebase data.
-//            Start with the knownPerformers, as it's simple
             FirebaseManager.shared.loadFestivalTeams { teams in
-                // Use the teams array here
+                print("teams: \(teams)")
                 self.festivalTeams = teams
-            }
-
-            for team in festivalTeams {
-                print("team: \(team)")
-                for showInstance in team.showTimes {
-                    print("showInstance: \(showInstance)")
-                    let show = Performance(teamName: team.teamName, showTime: showInstance, performers: team.performers)
-                    self.performances.append(show)
+                
+                for team in self.festivalTeams {
+                    print("team: \(team)")
+                    for showInstance in team.showTimes {
+                        print("showInstance: \(showInstance)")
+                        let show = Performance(teamName: team.teamName, showTime: showInstance, performers: team.performers)
+                        self.performances.append(show)
+                        print("performances: \(self.performances)")
+                    }
                 }
+                
+                self.knownPerformers = self.loadKnownPerformers(performances: self.performances)
+                print("Data loaded successfully")
             }
-            print("performances: \(performances)")
-//            FIXME:
-            self.knownPerformers = loadKnownPerformers(performances: self.performances)
-            
-//            self.performances = decoded.performances
-            self.knownPerformers = Set(decoded.knownPerformers)
-            print("Data loaded successfully")
         } catch {
             print("No previous data found or failed to load:", error)
         }
     }
     
+    
     func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date]) {
         FirebaseManager.shared.createPerformance(id: id, teamName: teamName, performerIds: performerIds, dates: dates)
+        //        FIXME: This loads the teams, but creates duplicates
+        loadData()
     }
+    
     
     func loadKnownPerformers(performances: [Performance]) -> Set<String> {
         var knownPerformers = Set<String>()
@@ -184,6 +273,50 @@ class FestivalViewModel: ObservableObject {
             }
         }
         return knownPerformers
+    }
+    
+    
+    func removePerformerFromFirebase(teamName: String?, performer: String) {
+        let db = Firestore.firestore()
+        let teamsRef = db.collection("festivalTeams")
+        
+        let query: Query
+        if let teamName = teamName {
+            query = teamsRef.whereField("name", isEqualTo: teamName)
+        } else {
+            query = teamsRef // all teams
+        }
+        
+        query.getDocuments { snapshot, error in
+            if let error = error {
+                print("❌ Error fetching teams: \(error)")
+                return
+            }
+            
+            guard let documents = snapshot?.documents, !documents.isEmpty else {
+                print("⚠️ No teams found for query")
+                return
+            }
+            
+            for document in documents {
+                var performers = document.data()["performers"] as? [String] ?? []
+                let originalCount = performers.count
+                
+                performers.removeAll { $0 == performer }
+                
+                if performers.count != originalCount {
+                    teamsRef.document(document.documentID).updateData(["performers": performers]) { error in
+                        if let error = error {
+                            print("❌ Error updating team \(document.documentID): \(error)")
+                        } else {
+                            print("✅ Removed '\(performer)' from team \(document.data()["name"] ?? "Unknown")")
+                        }
+                    }
+                }
+            }
+        }
+        //        Have UI reflect changes
+        loadData()
     }
 }
 

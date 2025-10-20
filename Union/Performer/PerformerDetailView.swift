@@ -29,11 +29,11 @@ struct PerformerDetailView: View {
                 performancesForPerformer: performancesForPerformer
             )
             
-            if festivalViewModel.isAdminLoggedIn {
-                NavigationLink("Manage Teams") {
-                    TeamsListView(performerName: performer)
-                }
-            }
+//            if festivalViewModel.isAdminLoggedIn {
+//                NavigationLink("Manage Teams") {
+//                    TeamsListView(performerName: performer)
+//                }
+//            }
         }
     }
 }

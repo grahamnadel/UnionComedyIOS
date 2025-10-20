@@ -16,8 +16,8 @@ struct Performance: Identifiable, Codable, Hashable {
     var performers: [String]
 }
 
+// TODO: Get rid of this
 struct FestivalData: Codable {
-//    Replaced
     var performances: [Performance]
     var knownPerformers: [String]
 }
