@@ -3,7 +3,8 @@ import Foundation
 import FirebaseFirestore
 import FirebaseAuth
 
-class FestivalViewModel: ObservableObject {    
+class FestivalViewModel: ObservableObject {
+    @Published var festivalTeams = [TeamData]()
     @Published var performances: [Performance] = [] {
         didSet { saveData() }
     }
@@ -144,7 +145,26 @@ class FestivalViewModel: ObservableObject {
         do {
             let data = try Data(contentsOf: fileURL)
             let decoded = try JSONDecoder().decode(FestivalData.self, from: data)
-            self.performances = decoded.performances
+//            TODO: replace json data with firebase data.
+//            Start with the knownPerformers, as it's simple
+            FirebaseManager.shared.loadFestivalTeams { teams in
+                // Use the teams array here
+                self.festivalTeams = teams
+            }
+
+            for team in festivalTeams {
+                print("team: \(team)")
+                for showInstance in team.showTimes {
+                    print("showInstance: \(showInstance)")
+                    let show = Performance(teamName: team.teamName, showTime: showInstance, performers: team.performers)
+                    self.performances.append(show)
+                }
+            }
+            print("performances: \(performances)")
+//            FIXME:
+            self.knownPerformers = loadKnownPerformers(performances: self.performances)
+            
+//            self.performances = decoded.performances
             self.knownPerformers = Set(decoded.knownPerformers)
             print("Data loaded successfully")
         } catch {
@@ -152,8 +172,18 @@ class FestivalViewModel: ObservableObject {
         }
     }
     
-    func createPerformance(id: String, teamName: String, performerIds: [String], date: Date) {
-        FirebaseManager.shared.createPerformance(id: id, teamName: teamName, performerIds: performerIds, date: date)
+    func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date]) {
+        FirebaseManager.shared.createPerformance(id: id, teamName: teamName, performerIds: performerIds, dates: dates)
+    }
+    
+    func loadKnownPerformers(performances: [Performance]) -> Set<String> {
+        var knownPerformers = Set<String>()
+        for team in performances {
+            for performer in team.performers {
+                knownPerformers.insert(performer)
+            }
+        }
+        return knownPerformers
     }
 }
 

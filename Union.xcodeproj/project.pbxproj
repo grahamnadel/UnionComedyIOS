@@ -72,6 +72,7 @@
 		53847C8D2E02FC9800EE649A /* TeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C8C2E02FC9800EE649A /* TeamView.swift */; };
 		53847C8F2E02FEBA00EE649A /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C8E2E02FEBA00EE649A /* Model.swift */; };
 		53847C912E02FEBF00EE649A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C902E02FEBF00EE649A /* ViewModel.swift */; };
+		53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EAA6F12EA14F4E00BA49C6 /* Team.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +133,7 @@
 		53847C8C2E02FC9800EE649A /* TeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamView.swift; sourceTree = "<group>"; };
 		53847C8E2E02FEBA00EE649A /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		53847C902E02FEBF00EE649A /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		53EAA6F12EA14F4E00BA49C6 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +280,7 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				53EAA6F12EA14F4E00BA49C6 /* Team.swift */,
 				531DDD862E5775E000E210EE /* IssuesList.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,
@@ -573,6 +576,7 @@
 				533468782E426E9D00E069DB /* FestivalView.swift in Sources */,
 				530C184D2E1D74D8000A80E0 /* SettingsView.swift in Sources */,
 				531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */,
+				53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */,
 				533468802E42740300E069DB /* Performance.swift in Sources */,
 				533468842E42759700E069DB /* AddPerformanceView.swift in Sources */,
 			);

@@ -188,16 +188,8 @@ struct AddPerformanceView: View {
         // Create the performance object and add it via the view model.
         let teamToSave = teamName.isEmpty ? newTeamNameInput : teamName
         
-        for date in selectedDates {
-            let newPerformance = Performance(
-                teamName: teamToSave,
-                showTime: date,
-                performers: performerInputs.map { $0.name }
-            )
-            festivalViewModel.addPerformance(newPerformance)
-//            New Feature:
-            festivalViewModel.createPerformance(id: UUID().uuidString, teamName: teamToSave, performerIds: performerInputs.map { $0.name }, date: date)
-        }
+        let selectedDatesArray = Array(selectedDates)
+        festivalViewModel.createPerformance(id: UUID().uuidString, teamName: teamToSave, performerIds: performerInputs.map { $0.name }, dates: selectedDatesArray)
 
         // Save any images that were associated with performers.
         for performer in performerInputs {

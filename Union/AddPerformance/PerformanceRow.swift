@@ -16,6 +16,7 @@ struct PerformanceRow: View {
         VStack(alignment: .leading) {
             Text(performance.teamName)
                 .font(.headline)
+//            FIXME: Performance
             Text(performance.showTime, style: .date)
                 .font(.subheadline)
             Text(performance.showTime, style: .time)

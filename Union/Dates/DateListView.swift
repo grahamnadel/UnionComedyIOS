@@ -5,6 +5,7 @@ struct DateListView: View {
     @State private var editingPerformance: Performance?
     @State private var newShowTime = Date()
     
+//    FIXME: Performance
     // Group performances by date (ignoring time)
     private var groupedPerformances: [(key: Date, value: [Performance])] {
         let calendar = Calendar.current
@@ -16,6 +17,7 @@ struct DateListView: View {
     
     var body: some View {
         List {
+//            FIXME: Performance
             ForEach(groupedPerformances, id: \.key) { date, performances in
                 Section(header: Text(date, style: .date)) {
                     ForEach(performances, id: \.id) { performance in
@@ -88,6 +90,7 @@ struct DateListView: View {
     
     private func updatePerformanceTime(_ performance: Performance) {
         if let index = festivalViewModel.performances.firstIndex(where: { $0.id == performance.id }) {
+//            FIXME: Performance
             festivalViewModel.performances[index].showTime = newShowTime
         }
     }

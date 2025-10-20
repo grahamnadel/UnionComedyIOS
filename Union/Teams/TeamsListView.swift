@@ -5,41 +5,42 @@ struct TeamsListView: View {
     let performerName: String
     
     // Get all unique teams in the festival
-    var allTeams: [String] {
-        let teams = Set(festivalViewModel.performances.map { $0.teamName })
-        return Array(teams).sorted()
-    }
+//    var allTeams: [String] {
+//        let teams = Set(festivalViewModel.performances.map { $0.teamName })
+//        return Array(teams).sorted()
+//    }
     
     var body: some View {
         List {
-            ForEach(allTeams, id: \.self) { teamName in
+//            Replaced allTeams
+            ForEach(festivalViewModel.performances) { performance in
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(teamName)
-                            .font(.headline)
-                        
-                        // Show all performances for this team
-                        let teamPerformances = festivalViewModel.performances
-                            .filter { $0.teamName == teamName }
-                            .sorted { $0.showTime < $1.showTime }
-                        
-                        ForEach(teamPerformances, id: \.id) { performance in
-                            HStack {
-                                Text(performance.showTime, style: .date)
-                                    .font(.caption)
-                                Spacer()
-                                Text(performance.showTime, style: .time)
-                                    .font(.caption)
-                            }
-                            .foregroundColor(.secondary)
-                        }
+//                        Text(performance.teamName)
+//                            .font(.headline)
+//                        
+//                        // Show all performances for this team
+//                        let teamPerformances = festivalViewModel.performances
+//                            .filter { $0.performance.teamName == performance.teamName }
+//                            .sorted { $0.showTime < $1.showTime }
+//                        
+//                        ForEach(teamPerformances, id: \.id) { performance in
+//                            HStack {
+//                                Text(performance.showTime, style: .date)
+//                                    .font(.caption)
+//                                Spacer()
+//                                Text(performance.showTime, style: .time)
+//                                    .font(.caption)
+//                            }
+//                            .foregroundColor(.secondary)
+//                        }
                     }
                     .padding(.vertical, 2)
-                    
-                    Spacer()
-                    
-                    Toggle("", isOn: binding(for: teamName))
-                        .labelsHidden()
+//                    
+//                    Spacer()
+//                    
+//                    Toggle("", isOn: binding(for: performance.teamName))
+//                        .labelsHidden()
                 }
             }
         }
