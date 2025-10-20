@@ -11,6 +11,7 @@ class FestivalViewModel: ObservableObject {
     @Published var knownPerformers: Set<String> = []
     // TODO: Set this to false in the final product
     @Published var isAdminLoggedIn = true
+    @Published var isOwnerAdmin = false
 
     // USER FAVORITES
     @Published var favoriteTeams: [String] = []
@@ -21,7 +22,8 @@ class FestivalViewModel: ObservableObject {
     let favoriteTeamColor = Color.yellow
     let favoritePerformerColor = Color.purple
     
-    let adminPassword = "Union Comedy"
+    let adminPassword = "Union Comedy Performer"
+    let ownerAdminPassword = "Union Comedy Owner"
     
     init() {
         loadData()

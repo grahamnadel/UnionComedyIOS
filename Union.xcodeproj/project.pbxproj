@@ -74,6 +74,9 @@
 		53847C912E02FEBF00EE649A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C902E02FEBF00EE649A /* ViewModel.swift */; };
 		53B815B32EA6A1F100854645 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815B22EA6A1F100854645 /* SearchBar.swift */; };
 		53B815B52EA6A61500854645 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815B42EA6A61500854645 /* User.swift */; };
+		53B815B72EA6BA3E00854645 /* ShowtimeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815B62EA6BA3E00854645 /* ShowtimeDetailView.swift */; };
+		53B815B92EA6BDB100854645 /* ShowDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815B82EA6BDB100854645 /* ShowDate.swift */; };
+		53B815BB2EA6BE3E00854645 /* EditShowDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815BA2EA6BE3E00854645 /* EditShowDateView.swift */; };
 		53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EAA6F12EA14F4E00BA49C6 /* Team.swift */; };
 /* End PBXBuildFile section */
 
@@ -137,6 +140,9 @@
 		53847C902E02FEBF00EE649A /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		53B815B22EA6A1F100854645 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		53B815B42EA6A61500854645 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		53B815B62EA6BA3E00854645 /* ShowtimeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowtimeDetailView.swift; sourceTree = "<group>"; };
+		53B815B82EA6BDB100854645 /* ShowDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDate.swift; sourceTree = "<group>"; };
+		53B815BA2EA6BE3E00854645 /* EditShowDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditShowDateView.swift; sourceTree = "<group>"; };
 		53EAA6F12EA14F4E00BA49C6 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -218,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				5334687D2E42731A00E069DB /* DateListView.swift */,
+				53B815B62EA6BA3E00854645 /* ShowtimeDetailView.swift */,
 			);
 			path = Dates;
 			sourceTree = "<group>";
@@ -248,7 +255,6 @@
 			isa = PBXGroup;
 			children = (
 				533468832E42759700E069DB /* AddPerformanceView.swift */,
-				531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */,
 				53343A152E4E59E500224553 /* PerformanceRow.swift */,
 			);
 			path = AddPerformance;
@@ -284,10 +290,13 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				53B815BA2EA6BE3E00854645 /* EditShowDateView.swift */,
+				53B815B82EA6BDB100854645 /* ShowDate.swift */,
 				53B815B42EA6A61500854645 /* User.swift */,
 				53B815B22EA6A1F100854645 /* SearchBar.swift */,
 				53EAA6F12EA14F4E00BA49C6 /* Team.swift */,
 				531DDD862E5775E000E210EE /* IssuesList.swift */,
+				531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,
 			);
@@ -558,6 +567,7 @@
 				531DDD872E5775E000E210EE /* IssuesList.swift in Sources */,
 				531DDDB52E70A56500E210EE /* EditTeamPerformersView.swift in Sources */,
 				531DDD8F2E59018600E210EE /* PerformerImageView.swift in Sources */,
+				53B815B92EA6BDB100854645 /* ShowDate.swift in Sources */,
 				533468822E42752D00E069DB /* FestivalViewModel.swift in Sources */,
 				5334687A2E4272CD00E069DB /* PerformerListView.swift in Sources */,
 				53847C7D2E02F10E00EE649A /* VoteView.swift in Sources */,
@@ -585,8 +595,10 @@
 				530C184D2E1D74D8000A80E0 /* SettingsView.swift in Sources */,
 				531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */,
 				53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */,
+				53B815B72EA6BA3E00854645 /* ShowtimeDetailView.swift in Sources */,
 				533468802E42740300E069DB /* Performance.swift in Sources */,
 				533468842E42759700E069DB /* AddPerformanceView.swift in Sources */,
+				53B815BB2EA6BE3E00854645 /* EditShowDateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

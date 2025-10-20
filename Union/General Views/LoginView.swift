@@ -13,9 +13,13 @@ struct LoginView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
     @State private var password: String = ""
     @State private var showAlert = false
+    @State private var userName: String = ""
     
     var body: some View {
         VStack {
+            TextField("Enter your name", text: $userName)
+                .padding()
+                .textFieldStyle(RoundedBorderTextFieldStyle())
             TextField("Enter password", text: $password)
                 .padding()
                 .textFieldStyle(RoundedBorderTextFieldStyle())
