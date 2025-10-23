@@ -7,4 +7,5 @@ struct AppUser: Identifiable, Codable {
     var email: String
     var role: UserRole
     var approved: Bool
+    var profileImageURL: String?
 }

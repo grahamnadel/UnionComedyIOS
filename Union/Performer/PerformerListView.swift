@@ -1,14 +1,15 @@
 import SwiftUI
 import PhotosUI
+import FirebaseFirestore
 
 struct PerformerListView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var isShowingPhotoPicker = false
-    @State private var searchText = ""   // <-- NEW: search text
+    @State private var searchText = ""
+    @State private var performerImageURLs: [String: URL] = [:]  // Cache URLs by performer name
 
-    // Filtered & sorted performers
     var filteredPerformers: [String] {
         let performers = festivalViewModel.knownPerformers
         if searchText.isEmpty {
@@ -23,21 +24,18 @@ struct PerformerListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                // 🔍 Add the Search Bar
                 SearchBar(searchCategory: "performer", searchText: $searchText)
                     .padding(.horizontal)
 
                 List {
                     ForEach(filteredPerformers, id: \.self) { performer in
-                        let performerURL = festivalViewModel.getImageURL(for: performer)
-                        
-                        // Make the whole row tappable
+                        let performerURL = performerImageURLs[performer]
+
                         NavigationLink(destination: PerformerDetailView(
                             performer: performer,
-                            performerURL: performerURL ?? nil
+                            performerURL: performerURL
                         )) {
                             HStack {
-                                // Profile image
                                 AsyncImage(url: performerURL) { image in
                                     image
                                         .resizable()
@@ -52,22 +50,15 @@ struct PerformerListView: View {
                                 }
                                 .frame(width: 50, height: 50)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
-                                
-                                // Name + favorite star
-                                HStack {
-                                    Text(performer)
-                                        .font(.body)
-                                    
-                                    if festivalViewModel.favoritePerformers.contains(performer) {
-                                        Image(systemName: "star.fill")
-                                            .foregroundColor(.purple)
-                                    }
-                                }
-                                
+
+                                Text(performer)
+                                    .font(.body)
+                                    .padding(.leading, 4)
+
                                 Spacer()
-                                
-                                // Add photo button for admins
-                                if festivalViewModel.isAdminLoggedIn && !festivalViewModel.hasImage(for: performer) {
+
+                                if festivalViewModel.isAdminLoggedIn &&
+                                    performerURL == nil {
                                     Button(action: {
                                         selectedPerformer = performer
                                         isShowingPhotoPicker = true
@@ -75,27 +66,27 @@ struct PerformerListView: View {
                                         Image(systemName: "camera.fill")
                                             .foregroundColor(.blue)
                                     }
-                                    .buttonStyle(PlainButtonStyle())
                                 }
                             }
                             .padding(.vertical, 4)
                         }
                     }
-
                     .onDelete { indexSet in
                         for index in indexSet {
                             let performerToDelete = filteredPerformers[index]
-                            // TODO: delete from Firebase
                             festivalViewModel.removePerformerFromFirebase(teamName: nil, performer: performerToDelete)
                         }
                     }
                 }
                 .listStyle(.insetGrouped)
                 .refreshable {
-                    festivalViewModel.loadData()
+                    await loadPerformerImageURLs()
                 }
             }
             .navigationTitle("Performers")
+            .task {
+                await loadPerformerImageURLs()
+            }
             .photosPicker(
                 isPresented: $isShowingPhotoPicker,
                 selection: $selectedPhoto,
@@ -111,13 +102,29 @@ struct PerformerListView: View {
         }
     }
 
+    // 🔹 Load image URLs for all performers
+    private func loadPerformerImageURLs() async {
+        for performer in filteredPerformers {
+            if performerImageURLs[performer] == nil {
+                if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+                    performerImageURLs[performer] = url
+                }
+            }
+        }
+    }
+
+    // 🔹 Upload a new photo
     private func loadImage(from item: PhotosPickerItem, for performer: String) {
         item.loadTransferable(type: Data.self) { result in
             switch result {
             case .success(let data):
                 if let imageData = data {
                     Task { @MainActor in
-                        await festivalViewModel.saveImage(for: performer, imageData: imageData)
+                        await festivalViewModel.savePerformerImage(for: performer, imageData: imageData)
+                        // Refresh that performer’s image
+                        if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+                            performerImageURLs[performer] = url
+                        }
                     }
                 }
             case .failure(let error):

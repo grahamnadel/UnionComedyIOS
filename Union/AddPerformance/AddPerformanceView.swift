@@ -195,7 +195,7 @@ struct AddPerformanceView: View {
         for performer in performerInputs {
             if let imageData = performer.imageData {
                 Task { @MainActor in
-                    await festivalViewModel.saveImage(for: performer.name, imageData: imageData)
+                    await festivalViewModel.savePerformerImage(for: performer.name, imageData: imageData)
                 }
             }
         }

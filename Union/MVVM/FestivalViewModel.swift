@@ -11,7 +11,7 @@ class FestivalViewModel: ObservableObject {
     @Published var knownPerformers: Set<String> = []
     @Published var isOwnerAdmin = false
     
-    
+//    TODO: remove this for direct role checks
     @Published var isAdminLoggedIn = false
     @Published var pendingUsers: [AppUser] = []
     
@@ -237,73 +237,79 @@ class FestivalViewModel: ObservableObject {
         loadData()
     }
     
-    
-    func saveImage(for performer: String, imageData: Data) async {
+
+    // Upload a performer's image to Firebase Storage and save URL in Firestore
+    func savePerformerImage(for performer: String, imageData: Data) async {
         let fileName = sanitizeFilename(performer) + ".jpg"
         let storageRef = Storage.storage().reference().child("performerImages/\(fileName)")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
         
         let db = Firestore.firestore()
-        let teamsRef = db.collection("festivalTeams")
         
         do {
-            // 1️⃣ Check if performer exists in festivalTeams
-            let snapshot = try await teamsRef.getDocuments()
-            var performerExists = false
-            
-            for document in snapshot.documents {
-                if let performers = document.data()["performers"] as? [String],
-                   performers.contains(performer) {
-                    performerExists = true
-                    break
-                }
-            }
-            
-            guard performerExists else {
-                print("⚠️ Performer '\(performer)' not found in festivalTeams")
-                return
-            }
-            
-            // 2️⃣ Upload image data to Firebase Storage
+            // Upload image data
             _ = try await storageRef.putDataAsync(imageData, metadata: metadata)
+            
+            // Get download URL
             let url = try await storageRef.downloadURL()
             
-            // 3️⃣ Save (or overwrite) performer document with the URL
+            // Save/update Firestore document with URL
             try await db.collection("performers").document(performer).setData([
                 "url": url.absoluteString,
                 "updated": Timestamp(date: Date())
-            ])
+            ], merge: true)
             
             print("✅ Uploaded and linked image for \(performer)")
-            
         } catch {
             print("❌ Error saving image for \(performer): \(error.localizedDescription)")
         }
     }
-    
-    
-    func hasImage(for performer: String) -> Bool {
-        let fileName = sanitizeFilename(performer) + ".jpg"
-        let url = getDocumentsDirectory().appendingPathComponent(fileName)
-        return FileManager.default.fileExists(atPath: url.path)
+
+    // Check if a performer has an image in Firestore
+    func hasPerformerImage(for performer: String) async -> Bool {
+        let db = Firestore.firestore()
+        do {
+            let doc = try await db.collection("performers").document(performer).getDocument()
+            return doc.exists && doc.data()?["url"] != nil
+        } catch {
+            print("Error checking image for \(performer): \(error)")
+            return false
+        }
     }
-    
-    func getImageURL(for performer: String) -> URL? {
-        let fileName = sanitizeFilename(performer) + ".jpg"
-        let url = getDocumentsDirectory().appendingPathComponent(fileName)
-        return FileManager.default.fileExists(atPath: url.path) ? url : nil
+
+    // Get the download URL for a performer's image
+    func getPerformerImageURL(for performer: String) async -> URL? {
+        let db = Firestore.firestore()
+        do {
+            let doc = try await db.collection("performers").document(performer).getDocument()
+            if let urlString = doc.data()?["url"] as? String {
+                return URL(string: urlString)
+            }
+        } catch {
+            print("Error getting image URL for \(performer): \(error)")
+        }
+        return nil
     }
-    
-    func deleteImage(for performer: String) {
+
+    // Delete a performer's image from Firebase Storage and Firestore
+    func deletePerformerImage(for performer: String) async {
         let fileName = sanitizeFilename(performer) + ".jpg"
-        let url = getDocumentsDirectory().appendingPathComponent(fileName)
+        let storageRef = Storage.storage().reference().child("performerImages/\(fileName)")
+        let db = Firestore.firestore()
         
         do {
-            try FileManager.default.removeItem(at: url)
-            print("Deleted image for \(performer)")
+            // Delete from Storage
+            try await storageRef.delete()
+            
+            // Remove URL from Firestore
+            try await db.collection("performers").document(performer).updateData([
+                "url": FieldValue.delete()
+            ])
+            
+            print("✅ Deleted image for \(performer)")
         } catch {
-            print("Failed to delete image: \(error)")
+            print("❌ Error deleting image for \(performer): \(error)")
         }
     }
     
