@@ -15,6 +15,9 @@ struct RootView: View {
                             .padding()
                     } else {
                         FestivalView()
+                            .task {
+                                await festivalViewModel.fetchPendingUsers()
+                            }
                     }
                 } else {
                     ProgressView("Loading user data…")

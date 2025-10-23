@@ -65,36 +65,9 @@ class FestivalViewModel: ObservableObject {
         }
     }
     
-//    TODO: This will go away after successfully calling once
-    func addNameFieldToUsers() {
-        let db = Firestore.firestore()
-        
-        db.collection("users").getDocuments { snapshot, error in
-            if let error = error {
-                print("Error fetching users: \(error)")
-                return
-            }
-            
-            guard let documents = snapshot?.documents else { return }
-            
-            for doc in documents {
-                let email = doc.data()["email"] as? String ?? ""
-                
-                // Only add the field if it doesn't exist yet
-                if doc.data()["name"] == nil {
-                    doc.reference.updateData(["name": email]) { error in
-                        if let error = error {
-                            print("Failed to add name for \(email): \(error)")
-                        } else {
-                            print("Added name for \(email)")
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+    
     func fetchPendingUsers() async {
+        print("fetchPendingUsers")
         do {
             let snapshot = try await Firestore.firestore()
                 .collection("users")
@@ -104,12 +77,12 @@ class FestivalViewModel: ObservableObject {
             let users = snapshot.documents.compactMap { doc -> AppUser? in
                 try? doc.data(as: AppUser.self)
             }
-            
-            pendingUsers = users
+            DispatchQueue.main.async {
+                self.pendingUsers = users
+            }
         } catch {
             print("Error fetching pending users: \(error)")
         }
-        addNameFieldToUsers()
     }
     
     

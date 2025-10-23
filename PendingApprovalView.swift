@@ -14,12 +14,12 @@ struct PendingApprovalView: View {
     
     var body: some View {
         VStack {
+            Text(festivalViewModel.pendingUsers.isEmpty ? "No pending Approvals" : "Pending Approvals")
             ForEach($festivalViewModel.pendingUsers, id: \.id) { $pendingUser in
                 HStack {
-                    Text(pendingUser.email)
                     Spacer()
                     Toggle(isOn: $pendingUser.approved) {
-                        Text("Approved")
+                        Text("Approval of \(pendingUser.name) as a \(pendingUser.role)")
                     }
                     .onChange(of: pendingUser.approved) { newValue in
                         Task {
@@ -29,6 +29,9 @@ struct PendingApprovalView: View {
                 }
                 .padding(.horizontal)
             }
+        }
+        .refreshable {
+            await festivalViewModel.fetchPendingUsers()
         }
     }
 }
