@@ -15,13 +15,19 @@ struct FestivalView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
     @State private var selected: sortSelection = .date
     @State private var showAddPerformance = false
-//    @State private var showSettings = false
+    var availableOptions: [sortSelection] {
+        if authViewModel.role == .owner {
+            return sortSelection.allCases
+        } else {
+            return sortSelection.allCases.filter { $0 != .pendingApproval }
+        }
+    }
     
     var body: some View {
         NavigationStack {
             VStack {
                 Picker("Select View", selection: $selected) {
-                    ForEach(sortSelection.allCases, id: \.self) { option in
+                    ForEach(availableOptions, id: \.self) { option in
                         Text(option.rawValue).tag(option)
                     }
                 }
@@ -36,9 +42,7 @@ struct FestivalView: View {
                 case .teams:
                     TeamListView()
                 case .pendingApproval:
-                    if authViewModel.role == .owner {
-                        PendingApprovalView()
-                    }
+                    PendingApprovalView()
                 }
                 
                 Spacer()
@@ -46,7 +50,7 @@ struct FestivalView: View {
             .navigationTitle("Union Comedy Festival")
             .toolbar {
                 // Trailing plus button (only if admin logged in)
-                if festivalViewModel.isAdminLoggedIn {
+                if authViewModel.role == .owner {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
                             showAddPerformance = true

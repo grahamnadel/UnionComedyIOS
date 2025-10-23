@@ -7,7 +7,7 @@ struct RootView: View {
 
     var body: some View {
         Group {
-            if let user = authViewModel.user {
+            if let _ = authViewModel.user {
                 if let role = authViewModel.role {
                     if !authViewModel.approved && role != .audience {
                         Text("Your \(role.rawValue.capitalized) account is pending approval.")
@@ -25,9 +25,6 @@ struct RootView: View {
             } else {
                 InitialLoginView()
             }
-        }
-        .onChange(of: authViewModel.role) { _, _ in
-            festivalViewModel.updateLoginState(from: authViewModel)
         }
     }
 }

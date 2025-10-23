@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DateListView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State private var editingPerformance: Performance?
     @State private var newShowTime = Date()
     @State private var searchText = ""   // Search field text
@@ -41,13 +42,13 @@ struct DateListView: View {
                                     selectedPerformance = performance
                                 }
                                 .onLongPressGesture {
-                                    if festivalViewModel.isAdminLoggedIn {
+                                    if authViewModel.role == .owner {
                                         editingPerformance = performance
                                         newShowTime = performance.showTime
                                     }
                                 }
                         }
-                        .onDelete(perform: festivalViewModel.isAdminLoggedIn ? { indexSet in
+                        .onDelete(perform: authViewModel.role == .owner ? { indexSet in
                             for index in indexSet {
                                 festivalViewModel.deletePerformance(performances[index])
                             }

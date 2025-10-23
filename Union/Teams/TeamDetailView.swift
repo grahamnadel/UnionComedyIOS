@@ -12,6 +12,7 @@ import SwiftUI
 // Detail view showing all performances for a given team
 struct TeamDetailView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     let teamName: String
     
     var performancesForTeam: [Performance] {
@@ -23,7 +24,7 @@ struct TeamDetailView: View {
     var body: some View {
         VStack {
             List {
-                if festivalViewModel.isAdminLoggedIn {
+                if authViewModel.role == .owner {
                     ForEach(performancesForTeam, id: \.id) { performance in
                         PerformanceRow(performance: performance)
                     }
@@ -48,7 +49,7 @@ struct TeamDetailView: View {
         }
         .navigationTitle(teamName)
         .toolbar {
-            if festivalViewModel.isAdminLoggedIn {
+            if authViewModel.role == .owner {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: EditTeamPerformersView(teamName: teamName)) {
                         Image(systemName: "pencil")

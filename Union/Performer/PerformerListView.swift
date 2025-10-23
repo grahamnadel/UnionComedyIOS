@@ -4,6 +4,7 @@ import FirebaseFirestore
 
 struct PerformerListView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var isShowingPhotoPicker = false
@@ -57,7 +58,7 @@ struct PerformerListView: View {
 
                                 Spacer()
 
-                                if festivalViewModel.isAdminLoggedIn &&
+                                if authViewModel.role == .owner &&
                                     performerURL == nil {
                                     Button(action: {
                                         selectedPerformer = performer

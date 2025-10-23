@@ -11,8 +11,6 @@ class FestivalViewModel: ObservableObject {
     @Published var knownPerformers: Set<String> = []
     @Published var isOwnerAdmin = false
     
-//    TODO: remove this for direct role checks
-    @Published var isAdminLoggedIn = false
     @Published var pendingUsers: [AppUser] = []
     
     // USER FAVORITES
@@ -24,24 +22,12 @@ class FestivalViewModel: ObservableObject {
     let favoriteTeamColor = Color.yellow
     let favoritePerformerColor = Color.purple
     
-    let adminPassword = "Union Comedy Performer"
-    let ownerAdminPassword = "Union Comedy Owner"
     
     init() {
         loadData()
         loadFavorites()
-        //        await fetchPendingUsers()
     }
-    
-    //    TODO: replace this
-    func updateLoginState(from auth: AuthViewModel) {
-        if let role = auth.role {
-            isAdminLoggedIn = (role == .owner)
-        } else {
-            isAdminLoggedIn = false
-        }
-    }
-    
+
     
     func updateApproval(for user: AppUser) async {
         do {
@@ -324,10 +310,6 @@ class FestivalViewModel: ObservableObject {
     
     private func getDocumentsDirectory() -> URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
-    
-    private func saveData() {
-        let dataToSave = FestivalData(performances: performances, knownPerformers: Array(knownPerformers))
     }
     
     

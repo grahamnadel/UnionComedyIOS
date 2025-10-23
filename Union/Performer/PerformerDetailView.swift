@@ -28,6 +28,8 @@ struct PerformerDetailView: View {
                 teamsForPerformer: teamsForPerformer,
                 performancesForPerformer: performancesForPerformer
             )
+            .padding()
+//            TODO: Add Textfield here for bios
             Button {
                 festivalViewModel.toggleFavoritePerformer(performer)
             } label: {
