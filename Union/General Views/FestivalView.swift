@@ -8,12 +8,14 @@ struct FestivalView: View {
         case date = "Date"
         case performers = "Performers"
         case teams = "Teams"
+        case pendingApproval = "Pending"
     }
     
+    @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var festivalViewModel: FestivalViewModel
     @State private var selected: sortSelection = .date
     @State private var showAddPerformance = false
-    @State private var showSettings = false
+//    @State private var showSettings = false
     
     var body: some View {
         NavigationStack {
@@ -33,21 +35,16 @@ struct FestivalView: View {
                     PerformerListView()
                 case .teams:
                     TeamListView()
+                case .pendingApproval:
+                    if authViewModel.role == .owner {
+                        PendingApprovalView()
+                    }
                 }
                 
                 Spacer()
             }
             .navigationTitle("Union Comedy Festival")
             .toolbar {
-                // Leading gear button (always visible)
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        showSettings = true
-                    } label: {
-                        Image(systemName: "gear")
-                    }
-                }
-                
                 // Trailing plus button (only if admin logged in)
                 if festivalViewModel.isAdminLoggedIn {
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -62,15 +59,6 @@ struct FestivalView: View {
             .sheet(isPresented: $showAddPerformance) {
                 AddPerformanceView()
             }
-            .sheet(isPresented: $showSettings) {
-                LoginView()
-            }
-            .onChange(of: festivalViewModel.isAdminLoggedIn) {
-                if festivalViewModel.isAdminLoggedIn {
-                    showSettings = false
-                }
-            }
-
         }
     }
 }

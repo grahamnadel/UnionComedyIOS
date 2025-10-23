@@ -9,10 +9,12 @@ class FestivalViewModel: ObservableObject {
     @Published var festivalTeams = [TeamData]()
     @Published var performances: [Performance] = []
     @Published var knownPerformers: Set<String> = []
-    // TODO: Set this to false in the final product
-    @Published var isAdminLoggedIn = true
     @Published var isOwnerAdmin = false
-
+    
+    
+    @Published var isAdminLoggedIn = false
+    @Published var pendingUsers: [AppUser] = []
+    
     // USER FAVORITES
     @Published var favoriteTeams: [String] = []
     @Published var favoritePerformers: [String] = []
@@ -28,6 +30,86 @@ class FestivalViewModel: ObservableObject {
     init() {
         loadData()
         loadFavorites()
+        //        await fetchPendingUsers()
+    }
+    
+    //    TODO: replace this
+    func updateLoginState(from auth: AuthViewModel) {
+        if let role = auth.role {
+            isAdminLoggedIn = (role == .owner)
+        } else {
+            isAdminLoggedIn = false
+        }
+    }
+    
+    
+    func updateApproval(for user: AppUser) async {
+        do {
+            let snapshot = try await Firestore.firestore()
+                .collection("users")
+                .whereField("email", isEqualTo: user.email)
+                .getDocuments()
+            
+            guard let document = snapshot.documents.first else {
+                print("No matching user found for \(user.email)")
+                return
+            }
+            
+            try await document.reference.updateData([
+                "approved": user.approved
+            ])
+            
+            print("Successfully updated approval for \(user.email) to \(user.approved)")
+        } catch {
+            print("Error updating approval: \(error)")
+        }
+    }
+    
+//    TODO: This will go away after successfully calling once
+    func addNameFieldToUsers() {
+        let db = Firestore.firestore()
+        
+        db.collection("users").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching users: \(error)")
+                return
+            }
+            
+            guard let documents = snapshot?.documents else { return }
+            
+            for doc in documents {
+                let email = doc.data()["email"] as? String ?? ""
+                
+                // Only add the field if it doesn't exist yet
+                if doc.data()["name"] == nil {
+                    doc.reference.updateData(["name": email]) { error in
+                        if let error = error {
+                            print("Failed to add name for \(email): \(error)")
+                        } else {
+                            print("Added name for \(email)")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    func fetchPendingUsers() async {
+        do {
+            let snapshot = try await Firestore.firestore()
+                .collection("users")
+                .whereField("approved", isEqualTo: false)
+                .getDocuments()
+            
+            let users = snapshot.documents.compactMap { doc -> AppUser? in
+                try? doc.data(as: AppUser.self)
+            }
+            
+            pendingUsers = users
+        } catch {
+            print("Error fetching pending users: \(error)")
+        }
+        addNameFieldToUsers()
     }
     
     
@@ -40,7 +122,7 @@ class FestivalViewModel: ObservableObject {
         saveFavorites()
     }
     
-
+    
     func toggleFavoritePerformer(_ name: String) {
         if favoritePerformers.contains(name) {
             favoritePerformers.removeAll { $0 == name }
@@ -50,33 +132,23 @@ class FestivalViewModel: ObservableObject {
         saveFavorites()
     }
     
-
-    // MARK: - Local Persistence
-        private func saveFavorites() {
-            if let teamData = try? JSONEncoder().encode(favoriteTeams) {
-                favoriteTeamsData = teamData
-            }
-            if let performerData = try? JSONEncoder().encode(favoritePerformers) {
-                favoritePerformersData = performerData
-            }
-        }
-
-        private func loadFavorites() {
-            if let loadedTeams = try? JSONDecoder().decode([String].self, from: favoriteTeamsData) {
-                favoriteTeams = loadedTeams
-            }
-            if let loadedPerformers = try? JSONDecoder().decode([String].self, from: favoritePerformersData) {
-                favoritePerformers = loadedPerformers
-            }
-        }
-
     
-    func attemptLogin(with password: String) -> Bool {
-        if password == adminPassword {
-            isAdminLoggedIn = true
-            return true
-        } else {
-            return false
+    // MARK: - Local Persistence
+    private func saveFavorites() {
+        if let teamData = try? JSONEncoder().encode(favoriteTeams) {
+            favoriteTeamsData = teamData
+        }
+        if let performerData = try? JSONEncoder().encode(favoritePerformers) {
+            favoritePerformersData = performerData
+        }
+    }
+    
+    private func loadFavorites() {
+        if let loadedTeams = try? JSONDecoder().decode([String].self, from: favoriteTeamsData) {
+            favoriteTeams = loadedTeams
+        }
+        if let loadedPerformers = try? JSONDecoder().decode([String].self, from: favoritePerformersData) {
+            favoritePerformers = loadedPerformers
         }
     }
     
@@ -174,7 +246,7 @@ class FestivalViewModel: ObservableObject {
             let docRef = teamsRef.document(document.documentID)
             var performers = document.data()["performers"] as? [String] ?? []
             
-//            Check if performer is in the list
+            //            Check if performer is in the list
             if !performers.contains(performerName) {
                 performers.append(performerName)
                 
@@ -191,8 +263,8 @@ class FestivalViewModel: ObservableObject {
         }
         loadData()
     }
-
-
+    
+    
     func saveImage(for performer: String, imageData: Data) async {
         let fileName = sanitizeFilename(performer) + ".jpg"
         let storageRef = Storage.storage().reference().child("performerImages/\(fileName)")
@@ -236,7 +308,7 @@ class FestivalViewModel: ObservableObject {
             print("❌ Error saving image for \(performer): \(error.localizedDescription)")
         }
     }
-
+    
     
     func hasImage(for performer: String) -> Bool {
         let fileName = sanitizeFilename(performer) + ".jpg"
