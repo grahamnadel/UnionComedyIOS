@@ -61,22 +61,22 @@ struct InitialLoginView: View {
                     .font(.caption)
             }
 
-            if let role = authViewModel.role {
-                if !authViewModel.approved && role != .audience {
-                    Text("Your \(role.rawValue.capitalized) account is pending approval.")
-                        .foregroundColor(.orange)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                }
-            }
+//            if let role = authViewModel.role {
+//                if !authViewModel.approved && role != .audience {
+//                    Text("Your \(role.rawValue.capitalized) account is pending approval.")
+//                        .foregroundColor(.orange)
+//                        .multilineTextAlignment(.center)
+//                        .padding(.horizontal)
+//                }
+//            }
         }
         .padding()
-        .onAppear {
-            print("Going to initialLoginView")
-            if FirebaseApp.app() == nil {
-                FirebaseApp.configure()
-            }
-        }
+//        .onAppear {
+//            print("Going to initialLoginView")
+//            if FirebaseApp.app() == nil {
+//                FirebaseApp.configure()
+//            }
+//        }
     }
 
     private func handleAuthAction() async {

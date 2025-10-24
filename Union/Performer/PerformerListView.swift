@@ -57,17 +57,6 @@ struct PerformerListView: View {
                                     .padding(.leading, 4)
 
                                 Spacer()
-
-                                if authViewModel.role == .owner &&
-                                    performerURL == nil {
-                                    Button(action: {
-                                        selectedPerformer = performer
-                                        isShowingPhotoPicker = true
-                                    }) {
-                                        Image(systemName: "camera.fill")
-                                            .foregroundColor(.blue)
-                                    }
-                                }
                             }
                             .padding(.vertical, 4)
                         }

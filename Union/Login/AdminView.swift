@@ -10,12 +10,12 @@ import SwiftUI
 import Firebase
 
 struct AdminView: View {
-    @StateObject private var viewModel = AdminViewModel()
+    @EnvironmentObject var adminViewModel: AdminViewModel
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(viewModel.users) { user in
+                ForEach(adminViewModel.users) { user in
                     HStack {
                         VStack(alignment: .leading) {
                             Text(user.email)
@@ -32,7 +32,7 @@ struct AdminView: View {
                                 .foregroundColor(.green)
                         } else {
                             Button("Approve") {
-                                Task { await viewModel.approveUser(user) }
+                                Task { await adminViewModel.approveUser(user) }
                             }
                             .buttonStyle(.borderedProminent)
                         }
@@ -41,10 +41,10 @@ struct AdminView: View {
             }
             .navigationTitle("User Management")
             .toolbar {
-                Button("Refresh") { Task { await viewModel.fetchUsers() } }
+                Button("Refresh") { Task { await adminViewModel.fetchUsers() } }
             }
             .task {
-                await viewModel.fetchUsers()
+                await adminViewModel.fetchUsers()
             }
         }
     }

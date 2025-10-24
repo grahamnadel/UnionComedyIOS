@@ -13,6 +13,7 @@ import FirebaseAuth
 class AuthViewModel: ObservableObject {
     @Published var user: FirebaseAuth.User?
     @Published var role: UserRole?
+    @Published var name: String?
     @Published var approved = false
     @Published var isLoading = false
     @Published var error: String?
@@ -53,6 +54,7 @@ class AuthViewModel: ObservableObject {
             if let data = snapshot?.data() {
                 self.role = UserRole(rawValue: data["role"] as? String ?? "audience")
                 self.approved = data["approved"] as? Bool ?? false
+                self.name = data["name"] as? String ?? "Unknown"
             } else {
                 // Check if the user was just created (e.g., in the last 5 seconds)
                 // This avoids logging out a new user while their Firestore doc is being created.

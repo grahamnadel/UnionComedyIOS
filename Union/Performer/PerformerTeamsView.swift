@@ -3,6 +3,7 @@ import SwiftUI
 struct PerformerTeamsView: View {
     let teamsForPerformer: [String]
     let performancesForPerformer: [Performance]
+    let name: String
     var body: some View {
         List {
             Section("Teams") {
@@ -29,6 +30,6 @@ struct PerformerTeamsView: View {
                 }
             }
         }
-        .navigationTitle("Team Selection")
+        .navigationTitle("\(name)'s Teams")
     }
 }

@@ -29,6 +29,7 @@ struct UnionApp: App {
     //    @StateObject var viewModel = ViewModel()
     @StateObject var festivalViewModel = FestivalViewModel()
     @StateObject var authViewModel = AuthViewModel()
+    @StateObject var adminViewModel = AdminViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -39,6 +40,7 @@ struct UnionApp: App {
             RootView()
                 .environmentObject(authViewModel)
                 .environmentObject(festivalViewModel)
+                .environmentObject(adminViewModel)
             //            FestivalView()
             //                .environmentObject(festivalViewModel)
         }
