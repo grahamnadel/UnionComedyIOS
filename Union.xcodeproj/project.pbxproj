@@ -83,6 +83,7 @@
 		53B815CC2EA93A0C00854645 /* AdminViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815CB2EA93A0C00854645 /* AdminViewModel.swift */; };
 		53B815CE2EA93AD500854645 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815CD2EA93AD500854645 /* RootView.swift */; };
 		53B815D02EAA86BC00854645 /* PendingApprovalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815CF2EAA86BC00854645 /* PendingApprovalView.swift */; };
+		53B815D22EAAD56F00854645 /* KeyChainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815D12EAAD56F00854645 /* KeyChainHelper.swift */; };
 		53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EAA6F12EA14F4E00BA49C6 /* Team.swift */; };
 /* End PBXBuildFile section */
 
@@ -155,6 +156,7 @@
 		53B815CB2EA93A0C00854645 /* AdminViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminViewModel.swift; sourceTree = "<group>"; };
 		53B815CD2EA93AD500854645 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		53B815CF2EAA86BC00854645 /* PendingApprovalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingApprovalView.swift; sourceTree = "<group>"; };
+		53B815D12EAAD56F00854645 /* KeyChainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainHelper.swift; sourceTree = "<group>"; };
 		53EAA6F12EA14F4E00BA49C6 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -303,6 +305,7 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				53B815D12EAAD56F00854645 /* KeyChainHelper.swift */,
 				53B815CF2EAA86BC00854645 /* PendingApprovalView.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,
@@ -623,6 +626,7 @@
 				53847C912E02FEBF00EE649A /* ViewModel.swift in Sources */,
 				5334687E2E42731A00E069DB /* DateListView.swift in Sources */,
 				533468782E426E9D00E069DB /* FestivalView.swift in Sources */,
+				53B815D22EAAD56F00854645 /* KeyChainHelper.swift in Sources */,
 				530C184D2E1D74D8000A80E0 /* SettingsView.swift in Sources */,
 				531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */,
 				53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */,

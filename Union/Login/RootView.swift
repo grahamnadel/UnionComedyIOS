@@ -1,10 +1,11 @@
 import SwiftUI
 import Foundation
+import FirebaseAuth
 
 struct RootView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var festivalViewModel: FestivalViewModel
-
+    
     var body: some View {
         Group {
             if let _ = authViewModel.user {
@@ -24,6 +25,18 @@ struct RootView: View {
                 }
             } else {
                 InitialLoginView()
+            }
+        }
+        .onAppear {
+            Task {
+                if let loginInfo = KeychainHelper.load() {
+                    do {
+                        try await authViewModel.signIn(email: loginInfo.email, password: loginInfo.password)
+                    } catch {
+                        print("Auto-login failed: \(error.localizedDescription)")
+                    }
+                    
+                }
             }
         }
     }

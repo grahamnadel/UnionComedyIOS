@@ -27,10 +27,14 @@ class AuthViewModel: ObservableObject {
         }
     }
 
+
     func signIn(email: String, password: String) async throws {
         try await Auth.auth().signIn(withEmail: email, password: password)
+        KeychainHelper.save(email: email, password: password)
+        print("SignIn called. email:\(email), password: \(password)")
     }
 
+    
     func signUp(name: String, email: String, password: String, role: UserRole) async throws {
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
         let approved = (role == .audience)
@@ -50,11 +54,22 @@ class AuthViewModel: ObservableObject {
                 self.role = UserRole(rawValue: data["role"] as? String ?? "audience")
                 self.approved = data["approved"] as? Bool ?? false
             } else {
-                // No user document yet — log out or show error
-                self.user = nil
-                self.role = nil
-                self.approved = false
-                self.error = "User account not found. Please sign up."
+                // Check if the user was just created (e.g., in the last 5 seconds)
+                // This avoids logging out a new user while their Firestore doc is being created.
+                if let creationDate = self.user?.metadata.creationDate,
+                   creationDate.timeIntervalSinceNow > -5.0 {
+                    
+                    print("New user detected, waiting for Firestore document...")
+                    // Do nothing and wait for the listener to fire again when the doc is created
+                    
+                } else {
+                    // This is a real error (e.g., user deleted from DB but not Auth)
+                    print("Error: User exists in Auth but has no Firestore data.")
+                    self.user = nil
+                    self.role = nil
+                    self.approved = false
+                    self.error = "User account not found. Please sign up."
+                }
             }
         }
     }
@@ -62,7 +77,9 @@ class AuthViewModel: ObservableObject {
 
     func signOut() {
         try? Auth.auth().signOut()
+        KeychainHelper.clear() // <-- Add this line
         self.user = nil
         self.role = nil
+        self.approved = false // <-- Also good to reset this
     }
 }

@@ -26,6 +26,9 @@ struct FestivalView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                Button("Sign Out") {
+                    authViewModel.signOut()
+                }
                 Picker("Select View", selection: $selected) {
                     ForEach(availableOptions, id: \.self) { option in
                         Text(option.rawValue).tag(option)

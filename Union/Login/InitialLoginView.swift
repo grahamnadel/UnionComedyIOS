@@ -1,16 +1,9 @@
-//
-//  LoginView.swift
-//  Union
-//
-//  Created by Graham Nadel on 10/22/25.
-//
-
-import Foundation
 import SwiftUI
 import Firebase
 
+
 struct InitialLoginView: View {
-    @StateObject private var authViewModel = AuthViewModel()
+    @EnvironmentObject var authViewModel: AuthViewModel  // Use shared environment object
     @State private var name = ""
     @State private var email = ""
     @State private var password = ""
@@ -79,6 +72,7 @@ struct InitialLoginView: View {
         }
         .padding()
         .onAppear {
+            print("Going to initialLoginView")
             if FirebaseApp.app() == nil {
                 FirebaseApp.configure()
             }
@@ -86,7 +80,7 @@ struct InitialLoginView: View {
     }
 
     private func handleAuthAction() async {
-        do {
+        do {            
             if isSignUp {
                 try await authViewModel.signUp(name: name, email: email, password: password, role: selectedRole)
             } else {
@@ -94,6 +88,7 @@ struct InitialLoginView: View {
             }
         } catch {
             authViewModel.error = error.localizedDescription
+            print("Error: handleAuthAction(): \(error)")
         }
     }
 }
