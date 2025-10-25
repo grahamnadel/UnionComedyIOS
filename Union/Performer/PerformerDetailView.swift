@@ -24,38 +24,40 @@ struct PerformerDetailView: View {
     }
     
     var body: some View {
-        VStack {
-            PerformerImageView(performerURL: performerURL ?? nil)
-            .frame(width: 250, height: 250)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .navigationTitle(performer)
-            
-            PerformerTeamsView(
-                teamsForPerformer: teamsForPerformer,
-                performancesForPerformer: performancesForPerformer,
-                name: performer
-            )
-            .padding()
-
-            BiographyView(performer: performer)
+        ScrollView {
+            VStack {
+                PerformerImageView(performerURL: performerURL ?? nil)
+                    .frame(width: 250, height: 250)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .navigationTitle(performer)
+                
+                PerformerTeamsView(
+                    teamsForPerformer: teamsForPerformer,
+                    performancesForPerformer: performancesForPerformer,
+                    name: performer
+                )
                 .padding()
-            
-            Button {
-                festivalViewModel.toggleFavoritePerformer(performer)
-            } label: {
-                Image(systemName: festivalViewModel.favoritePerformers.contains(performer) ? "star.fill" : "star")
-                    .foregroundColor(festivalViewModel.favoritePerformerColor)
+                
+                BiographyView(performer: performer)
+                    .padding()
+                
+                Button {
+                    festivalViewModel.toggleFavoritePerformer(performer)
+                } label: {
+                    Image(systemName: festivalViewModel.favoritePerformers.contains(performer) ? "star.fill" : "star")
+                        .foregroundColor(festivalViewModel.favoritePerformerColor)
+                }
             }
-        }
-        .toolbar {
-            if authViewModel.role != .audience &&
-                performerURL == nil && authViewModel.name == performer {
-                Button(action: {
-                    selectedPerformer = performer
-                    isShowingPhotoPicker = true
-                }) {
-                    Image(systemName: "camera.fill")
-                        .foregroundColor(.blue)
+            .toolbar {
+                if authViewModel.role != .audience &&
+                    performerURL == nil && authViewModel.name == performer {
+                    Button(action: {
+                        selectedPerformer = performer
+                        isShowingPhotoPicker = true
+                    }) {
+                        Image(systemName: "camera.fill")
+                            .foregroundColor(.blue)
+                    }
                 }
             }
         }

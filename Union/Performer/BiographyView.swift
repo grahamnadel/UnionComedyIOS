@@ -15,55 +15,60 @@ struct BiographyView: View {
     @State private var biographyText = ""
     @State private var isSavingBio = false
     
+    //    TODO: Set $biographytext = "bio" from performers collection
     var body: some View {
-        if !biographyText.isEmpty || authViewModel.name == performer {
-            Group {
-                if authViewModel.name == performer {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Your Biography")
-                            .font(.headline)
-                        
-                        TextEditor(text: $biographyText)
-                            .frame(height: 120)
-                            .padding(6)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(8)
-                        
-                        HStack {
-                            Spacer()
-                            if isSavingBio {
-                                ProgressView()
-                            } else {
-                                Button("Save Bio") {
-                                    Task {
-                                        await saveBiography()
-                                    }
-                                }
-                                .buttonStyle(.borderedProminent)
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-                } else {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Biography")
-                            .font(.headline)
-                        if biographyText.isEmpty {
-                            Text("No biography available.")
-                                .foregroundColor(.secondary)
+        Group {
+            if authViewModel.name == performer {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Your Biography")
+                        .font(.headline)
+                    
+                    TextEditor(text: $biographyText)
+                        .frame(height: 120)
+                        .frame(maxWidth: .infinity)
+                        .padding(6)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                        .multilineTextAlignment(.leading)
+                    
+                    HStack {
+                        Spacer()
+                        if isSavingBio {
+                            ProgressView()
                         } else {
-                            Text(biographyText)
-                                .padding(6)
-                                .background(Color(.systemGray6))
-                                .cornerRadius(8)
+                            Button("Save Bio") {
+                                Task {
+                                    await saveBiography()
+                                }
+                            }
+                            .buttonStyle(.borderedProminent)
                         }
                     }
-                    .padding(.horizontal)
                 }
+                .padding(.horizontal)
+            } else {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Biography")
+                        .font(.headline)
+                    Text(biographyText)
+                        .frame(maxWidth: .infinity)
+                        .padding(6)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                        .multilineTextAlignment(.leading)
+                }
+                
+                .padding(.horizontal)
             }
-            .padding(.top)
+        }
+        .padding(.top)
+        .onAppear {
+            Task {
+                await loadBiography()
+            }
         }
     }
+    
     
     // MARK: - Biography loading/saving
     
@@ -71,6 +76,7 @@ struct BiographyView: View {
         if let bio = await festivalViewModel.fetchBiography(for: performer) {
             await MainActor.run {
                 biographyText = bio
+                print("loaded bio: \(biographyText)")
             }
         }
     }
