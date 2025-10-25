@@ -10,13 +10,13 @@ class FirebaseManager {
     var votes: [String: Int] = [:]
     
     private init() {
-        Auth.auth().signInAnonymously { result, error in
-            if let e = error {
-                print("Auth error: \(e)")
-            } else {
-                print("Signed in anonymously as UID: \(result?.user.uid ?? "")")
-            }
-        }
+//        Auth.auth().signInAnonymously { result, error in
+//            if let e = error {
+//                print("Auth error: \(e)")
+//            } else {
+//                print("Signed in anonymously as UID: \(result?.user.uid ?? "")")
+//            }
+//        }
     }
     
     func voteForTeam(_ teamName: String) {
@@ -78,23 +78,6 @@ class FirebaseManager {
     }
     
     
-    func checkForExistingPerformers(performerName: String, completion: @escaping (Bool) -> Void) {
-        db.collection("performers")
-            .whereField("name", isEqualTo: performerName)
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    print("Error checking performer name: \(error.localizedDescription)")
-                    completion(false)
-                    return
-                }
-                
-                let exists = !(snapshot?.documents.isEmpty ?? true)
-                completion(exists)
-            }
-        
-    }
-    
-    
     func checkForExistingTeam(teamName: String, completion: @escaping (Bool) -> Void) {
         db.collection("festivalTeams")
             .whereField("name", isEqualTo: teamName)
@@ -108,6 +91,56 @@ class FirebaseManager {
                 let exists = !(snapshot?.documents.isEmpty ?? true)
                 completion(exists)
             }
+    }
+    
+    
+    //    func checkForExistingPerformers(performerName: String, completion: @escaping (Bool) -> Void) {
+    //        db.collection("performers")
+    //            .whereField("name", isEqualTo: performerName)
+    //            .getDocuments { snapshot, error in
+    //                if let error = error {
+    //                    print("Error checking performer name: \(error.localizedDescription)")
+    //                    completion(false)
+    //                    return
+    //                }
+    //
+    //                let exists = !(snapshot?.documents.isEmpty ?? true)
+    //                completion(exists)
+    //            }
+    //    }
+    
+    
+    //    Check to see if there are any performers not in the Performers collection. If not, add them
+    func checkForExistingPerformers(for performerNames: [String]) {
+        let db = Firestore.firestore()
+        let performersRef = db.collection("performers")
+        for name in performerNames {
+            performersRef.whereField("name", isEqualTo: name).getDocuments { snapshot, error in
+                if let error = error {
+                    print("Error checking for performer: \(name) in performers collection")
+                    return
+                }
+                
+                if let documents = snapshot?.documents, documents.isEmpty == false {
+                    print("Performer \(name) exists")
+                } else {
+//                    Performer not found
+                    let newPerformerData: [String: Any] = [
+                        "name": name,
+                        "bio": "",
+                        "url": ""
+                    ]
+                    
+                    performersRef.addDocument(data: newPerformerData) { error in
+                        if let error = error {
+                            print("Error adding performer \(name)")
+                        } else {
+                            print("Successfully added \(name) to performers collection")
+                        }
+                    }
+                }
+            }
+        }
     }
     
     
@@ -155,12 +188,40 @@ class FirebaseManager {
                         print("Team successfully written!")
                     }
                 }
+//                Add any mising performers to performers collection
+                self.checkForExistingPerformers(for: performerIds)
             }
         }
     }
     
+    func loadFestivalPerformers(completion: @escaping (Set<String>) -> Void ) {
+        db.collection("performers").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error loading performers: \(error.localizedDescription)")
+                completion([])
+                return
+            }
+            
+            guard let documents = snapshot?.documents else {
+                print("No documents found for performers")
+                completion([])
+                return
+            }
+            var performers: Set<String> = []
+            for doc in documents {
+                let data = doc.data()
+                let id = doc.documentID
+                let name = data["name"] as? String ?? "Unknown"
+                performers.insert(name)
+//                TODO: above, do I want to make a struct to handle performers?
+//                Later task
+            }
+            completion(performers)
+        }
+    }
     
     func loadFestivalTeams(completion: @escaping ([TeamData]) -> Void) {
+//        TODO: Issue for loading performers is that it gets teh performers from those festivalTeams, without checking performers
         db.collection("festivalTeams").getDocuments { (snapshot, error) in
             if let error = error {
                 print("❌ Error loading teams: \(error.localizedDescription)")

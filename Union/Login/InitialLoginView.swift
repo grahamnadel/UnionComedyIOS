@@ -4,6 +4,7 @@ import Firebase
 
 struct InitialLoginView: View {
     @EnvironmentObject var authViewModel: AuthViewModel  // Use shared environment object
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     @State private var name = ""
     @State private var email = ""
     @State private var password = ""
@@ -60,29 +61,17 @@ struct InitialLoginView: View {
                     .foregroundColor(.red)
                     .font(.caption)
             }
-
-//            if let role = authViewModel.role {
-//                if !authViewModel.approved && role != .audience {
-//                    Text("Your \(role.rawValue.capitalized) account is pending approval.")
-//                        .foregroundColor(.orange)
-//                        .multilineTextAlignment(.center)
-//                        .padding(.horizontal)
-//                }
-//            }
         }
         .padding()
-//        .onAppear {
-//            print("Going to initialLoginView")
-//            if FirebaseApp.app() == nil {
-//                FirebaseApp.configure()
-//            }
-//        }
     }
 
     private func handleAuthAction() async {
         do {            
             if isSignUp {
                 try await authViewModel.signUp(name: name, email: email, password: password, role: selectedRole)
+                if selectedRole != .audience {
+                    FirebaseManager.shared.checkForExistingPerformers(for: [name])
+                }
             } else {
                 try await authViewModel.signIn(email: email, password: password)
             }

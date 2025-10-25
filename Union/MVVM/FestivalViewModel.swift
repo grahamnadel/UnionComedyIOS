@@ -27,7 +27,48 @@ class FestivalViewModel: ObservableObject {
         loadData()
         loadFavorites()
     }
-
+    
+    func fetchBiography(for performerName: String) async -> String? {
+        do {
+            let snapshot = try await Firestore.firestore()
+                .collection("performers")
+                .whereField("name", isEqualTo: performerName)
+                .getDocuments()
+            
+            guard let document = snapshot.documents.first else {
+                print("No bio found for \(performerName)")
+                return nil
+            }
+            var bio = document.data()["bio"] as? String ?? ""
+            return bio
+            
+        } catch {
+            print("Error loading bio: \(error)")
+            return nil
+        }
+    }
+    
+    func saveBiography(for performerName: String, bio: String) async {
+        do {
+            let snapshot = try await Firestore.firestore()
+                .collection("performers")
+                .whereField("name", isEqualTo: performerName)
+                .getDocuments()
+            
+            guard let document = snapshot.documents.first else {
+                print("No matching user found for \(performerName)")
+                return
+            }
+            
+            try await document.reference.updateData([
+                "bio": bio
+            ])
+            
+            print("Successfully updated bio for \(performerName)")
+        } catch {
+            print("Error updating bio: \(error)")
+        }
+    }
     
     func updateApproval(for user: AppUser) async {
         do {
@@ -185,7 +226,7 @@ class FestivalViewModel: ObservableObject {
     
     
     // MARK: - Performer Management
-    /// Adds a performer to a specific team's performances and to the known performers list.
+    /// Adds a performer to a specific team's performances and to the known performers list.    
     func addPerformer(named performerName: String, toTeam teamName: String) {
         let db = Firestore.firestore()
         
@@ -223,35 +264,48 @@ class FestivalViewModel: ObservableObject {
         loadData()
     }
     
-
+    
     // Upload a performer's image to Firebase Storage and save URL in Firestore
+//    TODO: leaving off here 10/24
     func savePerformerImage(for performer: String, imageData: Data) async {
         let fileName = sanitizeFilename(performer) + ".jpg"
         let storageRef = Storage.storage().reference().child("performerImages/\(fileName)")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
-        
+
         let db = Firestore.firestore()
-        
+
         do {
-            // Upload image data
+            // Upload image data to Firebase Storage
             _ = try await storageRef.putDataAsync(imageData, metadata: metadata)
             
-            // Get download URL
+            // Get the image's download URL
             let url = try await storageRef.downloadURL()
             
-            // Save/update Firestore document with URL
-            try await db.collection("performers").document(performer).setData([
-                "url": url.absoluteString,
-                "updated": Timestamp(date: Date())
-            ], merge: true)
+            // Find the performer document by name
+            let snapshot = try await db.collection("performers")
+                .whereField("name", isEqualTo: performer)
+                .getDocuments()
             
-            print("✅ Uploaded and linked image for \(performer)")
+            guard let document = snapshot.documents.first else {
+                print("⚠️ No performer found with name \(performer).")
+                return
+            }
+            
+            // Update the existing performer document with the new URL
+            let performerRef = db.collection("performers").document(document.documentID)
+            try await performerRef.updateData([
+                "url": url.absoluteString,
+            ])
+            
+            print("✅ Performer image successfully saved and linked for \(performer).")
+            
         } catch {
             print("❌ Error saving image for \(performer): \(error.localizedDescription)")
         }
     }
 
+    
     // Check if a performer has an image in Firestore
     func hasPerformerImage(for performer: String) async -> Bool {
         let db = Firestore.firestore()
@@ -263,14 +317,27 @@ class FestivalViewModel: ObservableObject {
             return false
         }
     }
-
+    
     // Get the download URL for a performer's image
     func getPerformerImageURL(for performer: String) async -> URL? {
         let db = Firestore.firestore()
+        guard !performer.isEmpty else { return nil }
+
         do {
-            let doc = try await db.collection("performers").document(performer).getDocument()
-            if let urlString = doc.data()?["url"] as? String {
+            let querySnapshot = try await db.collection("performers")
+                .whereField("name", isEqualTo: performer)
+                .getDocuments()
+
+            guard let doc = querySnapshot.documents.first else {
+                print("No performer document found for: \(performer)")
+                return nil
+            }
+
+            if let urlString = doc.data()["url"] as? String {
+                print("Returning URL for \(performer): \(urlString)")
                 return URL(string: urlString)
+            } else {
+                print("No URL field found for performer: \(performer)")
             }
         } catch {
             print("Error getting image URL for \(performer): \(error)")
@@ -278,6 +345,7 @@ class FestivalViewModel: ObservableObject {
         return nil
     }
 
+    
     // Delete a performer's image from Firebase Storage and Firestore
     func deletePerformerImage(for performer: String) async {
         let fileName = sanitizeFilename(performer) + ".jpg"
@@ -334,8 +402,10 @@ class FestivalViewModel: ObservableObject {
                     }
                 }
                 
-                self.knownPerformers = self.loadKnownPerformers(performances: self.performances)
-                print("Data loaded successfully")
+                self.loadKnownPerformers { performers in
+                    self.knownPerformers = performers
+                    print("known performers: \(self.knownPerformers)")
+                }
             }
         } catch {
             print("No previous data found or failed to load:", error)
@@ -350,29 +420,74 @@ class FestivalViewModel: ObservableObject {
     }
     
     
-    func loadKnownPerformers(performances: [Performance]) -> Set<String> {
-        var knownPerformers = Set<String>()
-        for team in performances {
-            for performer in team.performers {
-                knownPerformers.insert(performer)
+    func loadKnownPerformers(completion: @escaping (Set<String>) -> Void) {
+        let db = Firestore.firestore()
+        var performerNames = Set<String>()
+
+        db.collection("performers").getDocuments { snapshot, error in
+            if let error = error {
+                print("❌ Error loading known performers: \(error.localizedDescription)")
+                completion([])
+                return
             }
+
+            guard let documents = snapshot?.documents else {
+                print("⚠️ No performer documents found")
+                completion([])
+                return
+            }
+
+            for doc in documents {
+                if let performerName = doc.data()["name"] as? String {
+                    performerNames.insert(performerName)
+                }
+            }
+
+            completion(performerNames)
         }
-        return knownPerformers
     }
+
     
-    
-    func removePerformerFromFirebase(teamName: String?, performer: String) {
+//    TODO: Fixing the deleting performer issue. THe problem is, I'm deleting from the festival Teams collection, and the list of performers is a separate collection. DO I want to delete performers like that? I think that I should have a confirmation warning kind of message
+    func removePerformerFromFirebase(teamName: String?, performerName: String) {
         let db = Firestore.firestore()
         let teamsRef = db.collection("festivalTeams")
-        
-        let query: Query
-        if let teamName = teamName {
-            query = teamsRef.whereField("name", isEqualTo: teamName)
-        } else {
-            query = teamsRef // all teams
+        let performersRef = db.collection("performers")
+//        Clear from performers
+        let performersQuery = performersRef.whereField("name", isEqualTo: performerName)
+        performersQuery.getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching performers: \(error)")
+                return
+            }
+            
+            guard let documents = snapshot?.documents, !documents.isEmpty else {
+                print("Performer: \(performerName) not found in query")
+                return
+            }
+            
+            // Loop through and delete each matching document (should usually be 1)
+            for document in documents {
+                let docID = document.documentID
+                performersRef.document(docID).delete { error in
+                    if let error = error {
+                        print("Error deleting performer \(performerName): \(error.localizedDescription)")
+                    } else {
+                        print("✅ Successfully deleted performer \(performerName) (ID: \(docID))")
+                    }
+                }
+            }
         }
         
-        query.getDocuments { snapshot, error in
+//        Clear from teams
+        let teamsQuery: Query
+        if let teamName = teamName {
+            teamsQuery = teamsRef.whereField("name", isEqualTo: teamName)
+        } else {
+            teamsQuery = teamsRef // all teams
+        }
+        
+        teamsQuery.getDocuments { snapshot, error in
             if let error = error {
                 print("❌ Error fetching teams: \(error)")
                 return
@@ -387,14 +502,14 @@ class FestivalViewModel: ObservableObject {
                 var performers = document.data()["performers"] as? [String] ?? []
                 let originalCount = performers.count
                 
-                performers.removeAll { $0 == performer }
+                performers.removeAll { $0 == performerName }
                 
                 if performers.count != originalCount {
                     teamsRef.document(document.documentID).updateData(["performers": performers]) { error in
                         if let error = error {
                             print("❌ Error updating team \(document.documentID): \(error)")
                         } else {
-                            print("✅ Removed '\(performer)' from team \(document.data()["name"] ?? "Unknown")")
+                            print("✅ Removed '\(performerName)' from team \(document.data()["name"] ?? "Unknown")")
                         }
                     }
                 }

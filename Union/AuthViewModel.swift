@@ -45,6 +45,7 @@ class AuthViewModel: ObservableObject {
             "role": role.rawValue,
             "approved": approved
         ])
+        KeychainHelper.save(email: email, password: password)
     }
 
     

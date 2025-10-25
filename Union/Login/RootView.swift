@@ -14,6 +14,10 @@ struct RootView: View {
                         Text("Your \(role.rawValue.capitalized) account is pending approval.")
                             .font(.headline)
                             .padding()
+                        
+                        Button("Log Out") {
+                            authViewModel.signOut()
+                        }
                     } else {
                         FestivalView()
                             .task {

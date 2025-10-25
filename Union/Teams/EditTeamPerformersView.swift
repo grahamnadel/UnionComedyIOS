@@ -58,7 +58,7 @@ struct EditTeamPerformersView: View {
                 } else {
                     // Remove the performer from the team
 //                    festivalViewModel.deletePerformer(named: performer, fromTeam: teamName)
-                    festivalViewModel.removePerformerFromFirebase(teamName: teamName, performer: performer)
+                    festivalViewModel.removePerformerFromFirebase(teamName: teamName, performerName: performer)
                 }
             }
         )

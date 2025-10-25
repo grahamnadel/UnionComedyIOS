@@ -61,15 +61,17 @@ struct PerformerListView: View {
                             .padding(.vertical, 4)
                         }
                     }
-                    .onDelete { indexSet in
+                    .onDelete(perform: authViewModel.role == .owner ? { indexSet in
                         for index in indexSet {
                             let performerToDelete = filteredPerformers[index]
-                            festivalViewModel.removePerformerFromFirebase(teamName: nil, performer: performerToDelete)
+                            festivalViewModel.removePerformerFromFirebase(teamName: nil, performerName: performerToDelete)
                         }
-                    }
+                    } : nil)
                 }
                 .listStyle(.insetGrouped)
                 .refreshable {
+//                    TODO: add refresh for performers
+                    festivalViewModel.loadData()
                     await loadPerformerImageURLs()
                 }
             }
@@ -96,6 +98,7 @@ struct PerformerListView: View {
     private func loadPerformerImageURLs() async {
         for performer in filteredPerformers {
             if performerImageURLs[performer] == nil {
+                print("getting performer image url")
                 if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
                     performerImageURLs[performer] = url
                 }

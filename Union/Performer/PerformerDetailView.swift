@@ -10,11 +10,7 @@ struct PerformerDetailView: View {
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var isShowingPhotoPicker = false
-    @State private var performerImageURLs: [String: URL] = [:]  // Cache URLs by performer name
-    @State private var biographyText = ""
-    @State private var isSavingBio = false
-
-    
+    @State private var performerImageURLs: [String: URL] = [:]  // Cache URLs by performer name  
     
     var performancesForPerformer: [Performance] {
         festivalViewModel.performances.filter { $0.performers.contains(performer) }
@@ -40,7 +36,10 @@ struct PerformerDetailView: View {
                 name: performer
             )
             .padding()
-//            TODO: Add Textfield here for bios
+
+            BiographyView(performer: performer)
+                .padding()
+            
             Button {
                 festivalViewModel.toggleFavoritePerformer(performer)
             } label: {
