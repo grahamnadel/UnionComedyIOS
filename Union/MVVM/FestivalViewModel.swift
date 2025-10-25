@@ -76,15 +76,27 @@ class FestivalViewModel: ObservableObject {
                 .collection("users")
                 .whereField("email", isEqualTo: user.email)
                 .getDocuments()
-            
+                
             guard let document = snapshot.documents.first else {
                 print("No matching user found for \(user.email)")
                 return
             }
             
+            // 1. Update the 'approved' status in the 'users' collection
             try await document.reference.updateData([
                 "approved": user.approved
             ])
+            
+            // 2. CHECK AND ADD TO PERFORMERS COLLECTION IF APPROVED
+            if user.approved && (user.role == .performer || user.role == .coach) {
+                // This function checks if the performer exists and creates them if they don't.
+                // By placing it here, it only runs when the approval status is being set to true.
+                FirebaseManager.shared.checkForExistingPerformers(for: [user.name])
+                print("Action: Performer \(user.name) added to performers collection upon approval.")
+            } else if !user.approved {
+                // Optional: You could add logic here to remove them from the 'performers'
+                // collection if you ever un-approved a user.
+            }
             
             print("Successfully updated approval for \(user.email) to \(user.approved)")
         } catch {

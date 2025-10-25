@@ -69,9 +69,6 @@ struct InitialLoginView: View {
         do {            
             if isSignUp {
                 try await authViewModel.signUp(name: name, email: email, password: password, role: selectedRole)
-                if selectedRole != .audience {
-                    FirebaseManager.shared.checkForExistingPerformers(for: [name])
-                }
             } else {
                 try await authViewModel.signIn(email: email, password: password)
             }
