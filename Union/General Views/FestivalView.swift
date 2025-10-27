@@ -26,9 +26,6 @@ struct FestivalView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Button("Sign Out") {
-                    authViewModel.signOut()
-                }
                 Picker("Select View", selection: $selected) {
                     ForEach(availableOptions, id: \.self) { option in
                         Text(option.rawValue).tag(option)
@@ -59,6 +56,16 @@ struct FestivalView: View {
                             showAddPerformance = true
                         } label: {
                             Image(systemName: "plus")
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Menu {
+                            Button("Sign Out") {
+                                authViewModel.signOut()
+                            }
+                        } label: {
+                            Image(systemName: "gear")
                         }
                     }
                 }

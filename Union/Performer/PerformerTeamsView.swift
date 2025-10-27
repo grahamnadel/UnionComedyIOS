@@ -9,7 +9,6 @@ struct PerformerTeamsView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text("Team Name")
-//                    TODO: Make this format a view and make it consistent for all views
                 Spacer()
                 Text("Date")
                     .font(.caption)
@@ -28,7 +27,6 @@ struct PerformerTeamsView: View {
                     Text(performance.showTime, style: .time)
                         .font(.caption)
                 }
-//                .foregroundColor(.secondary)
             }
         }
         .padding(.vertical, 2)

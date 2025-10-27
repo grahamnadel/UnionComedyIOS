@@ -8,4 +8,5 @@
 import Foundation
 
 // Managing the user approval and roles in app
-// Performers list: Clicking a performer does not show their teams
+// Make the sign out button into a tab button
+// Add a forgot my password feature
