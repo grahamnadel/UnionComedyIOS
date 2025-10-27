@@ -3,6 +3,7 @@ import SwiftUI
 struct ShowtimeDetailView: View {
     let performance: Performance
     @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @State var performerURLs: [String:URL] = [:]
     
     var body: some View {
         NavigationView {
@@ -38,12 +39,27 @@ struct ShowtimeDetailView: View {
                     .font(.headline)
                 
                 List(performance.performers, id: \.self) { performer in
-//                    TODO: Add url once I have the images for performers
                     NavigationLink(destination: PerformerDetailView(performer: performer)) {
-                        Text(performer)
-                            .font(.body)
-                            .foregroundColor(.primary)
-                            .padding(.vertical, 4)
+                        HStack {
+                            AsyncImage(url: performerURLs[performer]) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.gray.opacity(0.3))
+                                    .overlay(
+                                        Image(systemName: "person.fill")
+                                            .foregroundColor(.gray)
+                                    )
+                            }
+                            .frame(width: 50, height: 50)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            Text(performer)
+                                .font(.body)
+                                .foregroundColor(.primary)
+                                .padding(.vertical, 4)
+                        }
                     }
                 }
                 .listStyle(.insetGrouped)
@@ -53,6 +69,21 @@ struct ShowtimeDetailView: View {
             .padding()
             .navigationTitle("Performance Details")
             .navigationBarTitleDisplayMode(.inline)
+        }
+        .task {
+            await loadPerformerURLs()
+        }
+    }
+    
+    private func loadPerformerURLs() async {
+        let performers = performance.performers
+        for performer in performers {
+            if performerURLs[performer] == nil {
+                print("getting performer image url")
+                if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+                    performerURLs[performer] = url
+                }
+            }
         }
     }
 }

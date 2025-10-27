@@ -15,7 +15,6 @@ struct BiographyView: View {
     @State private var biographyText = ""
     @State private var isSavingBio = false
     
-    //    TODO: Set $biographytext = "bio" from performers collection
     var body: some View {
         Group {
             if authViewModel.name == performer {

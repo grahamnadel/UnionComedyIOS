@@ -67,7 +67,6 @@ struct PerformerListView: View {
                 }
                 .listStyle(.insetGrouped)
                 .refreshable {
-//                    TODO: add refresh for performers
                     festivalViewModel.loadData()
                     await loadPerformerImageURLs()
                 }

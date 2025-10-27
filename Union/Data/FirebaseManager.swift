@@ -213,15 +213,12 @@ class FirebaseManager {
                 let id = doc.documentID
                 let name = data["name"] as? String ?? "Unknown"
                 performers.insert(name)
-//                TODO: above, do I want to make a struct to handle performers?
-//                Later task
             }
             completion(performers)
         }
     }
     
     func loadFestivalTeams(completion: @escaping ([TeamData]) -> Void) {
-//        TODO: Issue for loading performers is that it gets teh performers from those festivalTeams, without checking performers
         db.collection("festivalTeams").getDocuments { (snapshot, error) in
             if let error = error {
                 print("❌ Error loading teams: \(error.localizedDescription)")

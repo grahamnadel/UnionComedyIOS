@@ -459,7 +459,6 @@ class FestivalViewModel: ObservableObject {
     }
 
     
-//    TODO: Fixing the deleting performer issue. THe problem is, I'm deleting from the festival Teams collection, and the list of performers is a separate collection. DO I want to delete performers like that? I think that I should have a confirmation warning kind of message
     func removePerformerFromFirebase(teamName: String?, performerName: String) {
         let db = Firestore.firestore()
         let teamsRef = db.collection("festivalTeams")

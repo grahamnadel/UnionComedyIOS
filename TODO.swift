@@ -7,6 +7,4 @@
 
 import Foundation
 
-// Deleting a performer does not delete them right now
-// Performer image not showing
-// Performer bio not showing
+

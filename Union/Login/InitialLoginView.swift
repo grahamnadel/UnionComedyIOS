@@ -19,11 +19,12 @@ struct InitialLoginView: View {
             
             VStack(spacing: 12) {
                 if isSignUp {
-//                    TODO: Remove spell check
                     TextField("First Name", text: $firstName)
                         .textFieldStyle(.roundedBorder)
+                        .autocorrectionDisabled(true)
                     TextField("Last Name", text: $lastName)
                         .textFieldStyle(.roundedBorder)
+                        .autocorrectionDisabled(true)
                 }
                 TextField("Email", text: $email)
                     .textFieldStyle(.roundedBorder)
@@ -34,7 +35,6 @@ struct InitialLoginView: View {
             }
             .padding(.horizontal)
             
-//            TODO: make role initially nil, only allow sign up if they select a role
             if isSignUp {
                 Picker("Role", selection: $selectedRole) {
                     Text("Audience").tag(UserRole.audience)
@@ -59,8 +59,6 @@ struct InitialLoginView: View {
             .opacity(isSignUp && (email.isEmpty || password.isEmpty || firstName.isEmpty || lastName.isEmpty || selectedRole == nil) ? 0.5 : 1)
             .padding(.horizontal)
             
-            
-//            TODO: Only make clickable once all parameters have values
             Button(action: { isSignUp.toggle() }) {
                 Text(isSignUp ? "Already have an account? Login" : "Create a new account")
                     .font(.footnote)
