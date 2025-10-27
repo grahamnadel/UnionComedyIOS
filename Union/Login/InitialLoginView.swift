@@ -1,9 +1,9 @@
 import SwiftUI
 import Firebase
-
+import FirebaseAuth
 
 struct InitialLoginView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel  // Use shared environment object
+    @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var festivalViewModel: FestivalViewModel
     @State private var firstName = ""
     @State private var lastName = ""
@@ -11,6 +11,9 @@ struct InitialLoginView: View {
     @State private var password = ""
     @State private var selectedRole: UserRole? = nil
     @State private var isSignUp = false
+    
+    // New state for showing the confirmation message
+    @State private var resetPasswordMessage: String? = nil
 
     var body: some View {
         VStack(spacing: 24) {
@@ -37,13 +40,26 @@ struct InitialLoginView: View {
             
             if isSignUp {
                 Picker("Role", selection: $selectedRole) {
-                    Text("Audience").tag(UserRole.audience)
-                    Text("Performer").tag(UserRole.performer)
-                    Text("Coach").tag(UserRole.coach)
+                    Text("Audience").tag(UserRole.audience as UserRole?)
+                    Text("Performer").tag(UserRole.performer as UserRole?)
+                    Text("Coach").tag(UserRole.coach as UserRole?)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
             }
+            
+            // --- FORGOT PASSWORD BUTTON ---
+            HStack {
+                Spacer()
+                if !isSignUp {
+                    Button("Forgot Password?") {
+                        Task { await sendPasswordResetEmail() }
+                    }
+                    .font(.caption)
+                    .foregroundColor(.blue)
+                }
+            }
+            .padding(.horizontal)
             
             Spacer()
             
@@ -67,7 +83,12 @@ struct InitialLoginView: View {
             
             Spacer()
             
-            if let error = authViewModel.error {
+            // Display Password Reset Message or Auth Error
+            if let message = resetPasswordMessage {
+                Text(message)
+                    .foregroundColor(.green)
+                    .font(.caption)
+            } else if let error = authViewModel.error {
                 Text(error)
                     .foregroundColor(.red)
                     .font(.caption)
@@ -76,13 +97,42 @@ struct InitialLoginView: View {
         .padding()
     }
 
+    // --- NEW ACTION FUNCTION ---
+    private func sendPasswordResetEmail() async {
+        // Clear previous messages
+        resetPasswordMessage = nil
+        authViewModel.error = nil
+
+        guard !email.isEmpty else {
+            authViewModel.error = "Please enter your email to reset your password."
+            return
+        }
+
+        do {
+            try await Auth.auth().sendPasswordReset(withEmail: email)
+            resetPasswordMessage = "Password reset email sent to \(email)!"
+            // Clear the error state if a message is successfully sent
+            authViewModel.error = nil
+        } catch {
+            authViewModel.error = error.localizedDescription
+            print("Password reset error: \(error)")
+        }
+    }
+    
+    // --- EXISTING AUTH ACTION ---
     private func handleAuthAction() async {
-        do {            
+        // Clear the password reset message before attempting login/signup
+        resetPasswordMessage = nil
+        
+        do {
             if isSignUp {
+                // ... signup logic ...
                 firstName = firstName.replacingOccurrences(of: " ", with: "")
                 lastName = lastName.replacingOccurrences(of: " ", with: "")
                 let name = "\(firstName) \(lastName)"
                 if let selectedRole = selectedRole {
+                    // Note: Your UserRole tag needs casting (UserRole.audience as UserRole?)
+                    // since selectedRole is optional
                     try await authViewModel.signUp(name: name, email: email, password: password, role: selectedRole)
                 }
             } else {
