@@ -47,14 +47,16 @@ struct BiographyView: View {
                 .padding(.horizontal)
             } else {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Biography")
-                        .font(.headline)
-                    Text(biographyText)
-                        .frame(maxWidth: .infinity)
-                        .padding(6)
-                        .background(Color(.systemGray6))
-                        .cornerRadius(8)
-                        .multilineTextAlignment(.leading)
+                    if !biographyText.isEmpty {
+                        Text("Biography")
+                            .font(.headline)
+                        Text(biographyText)
+                            .frame(maxWidth: .infinity)
+                            .padding(6)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(8)
+                            .multilineTextAlignment(.leading)
+                    }
                 }
                 
                 .padding(.horizontal)

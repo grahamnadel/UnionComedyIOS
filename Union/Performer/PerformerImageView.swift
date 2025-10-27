@@ -25,8 +25,6 @@ struct PerformerImageView: View {
                             .foregroundColor(.gray)
                     )
             }
-        } else {
-            Text("No Performer URL")
         }
     }
 }

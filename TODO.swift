@@ -7,4 +7,5 @@
 
 import Foundation
 
-
+// Managing the user approval and roles in app
+// Teams view should have a VStack of the performers images and bios

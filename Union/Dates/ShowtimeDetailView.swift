@@ -41,6 +41,7 @@ struct ShowtimeDetailView: View {
                 List(performance.performers, id: \.self) { performer in
                     NavigationLink(destination: PerformerDetailView(performer: performer)) {
                         HStack {
+//                            TODO: This is reused. Make a separate file
                             AsyncImage(url: performerURLs[performer]) { image in
                                 image
                                     .resizable()

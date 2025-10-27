@@ -13,7 +13,6 @@
 		531DDD8B2E57828200E210EE /* PerformanceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */; };
 		531DDD8D2E58FF6800E210EE /* PerformerTeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8C2E58FF6800E210EE /* PerformerTeamsView.swift */; };
 		531DDD8F2E59018600E210EE /* PerformerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8E2E59018600E210EE /* PerformerImageView.swift */; };
-		531DDD912E5902F700E210EE /* TeamsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD902E5902F700E210EE /* TeamsListView.swift */; };
 		531DDDB52E70A56500E210EE /* EditTeamPerformersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDDB42E70A56500E210EE /* EditTeamPerformersView.swift */; };
 		531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDDB62E70AB1400E210EE /* CreatePerformerView.swift */; };
 		53343A122E4E4F1700224553 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A112E4E4F1700224553 /* LoginView.swift */; };
@@ -114,7 +113,6 @@
 		531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceDetailView.swift; sourceTree = "<group>"; };
 		531DDD8C2E58FF6800E210EE /* PerformerTeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerTeamsView.swift; sourceTree = "<group>"; };
 		531DDD8E2E59018600E210EE /* PerformerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerImageView.swift; sourceTree = "<group>"; };
-		531DDD902E5902F700E210EE /* TeamsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsListView.swift; sourceTree = "<group>"; };
 		531DDDB42E70A56500E210EE /* EditTeamPerformersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTeamPerformersView.swift; sourceTree = "<group>"; };
 		531DDDB62E70AB1400E210EE /* CreatePerformerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePerformerView.swift; sourceTree = "<group>"; };
 		53343A112E4E4F1700224553 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -229,7 +227,6 @@
 		531DDDB82E70B07400E210EE /* Teams */ = {
 			isa = PBXGroup;
 			children = (
-				531DDD902E5902F700E210EE /* TeamsListView.swift */,
 				5334687B2E4272FF00E069DB /* TeamListView.swift */,
 				53343A132E4E587300224553 /* TeamDetailView.swift */,
 				53847C8C2E02FC9800EE649A /* TeamView.swift */,
@@ -623,7 +620,6 @@
 				53343A142E4E587300224553 /* TeamDetailView.swift in Sources */,
 				533468882E44F5E500E069DB /* SelectedPerformerList.swift in Sources */,
 				531DDD8D2E58FF6800E210EE /* PerformerTeamsView.swift in Sources */,
-				531DDD912E5902F700E210EE /* TeamsListView.swift in Sources */,
 				531DDD8B2E57828200E210EE /* PerformanceDetailView.swift in Sources */,
 				53847C7F2E02F10E00EE649A /* Item.swift in Sources */,
 				53B815CC2EA93A0C00854645 /* AdminViewModel.swift in Sources */,

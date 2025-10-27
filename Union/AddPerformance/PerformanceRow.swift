@@ -1,30 +1,55 @@
-//
-//  PerformanceRow.swift
-//  Union
-//
-//  Created by Graham Nadel on 8/14/25.
-//
-
-import Foundation
 import SwiftUI
 
-
 struct PerformanceRow: View {
+    @EnvironmentObject var festivalViewModel: FestivalViewModel
     let performance: Performance
+    @State private var performerURLs: [String: URL] = [:]
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 8) {
             Text(performance.teamName)
                 .font(.headline)
-//            FIXME: Performance
             Text(performance.showTime, style: .date)
                 .font(.subheadline)
             Text(performance.showTime, style: .time)
                 .font(.subheadline)
-            Text("Performers: \(performance.performers.joined(separator: ", "))")
-                .font(.footnote)
-                .foregroundColor(.secondary)
         }
-        .padding(.vertical, 2)
+        
+        ForEach(performance.performers, id: \.self) { performer in
+            NavigationLink(destination: PerformerDetailView(performer: performer)) {
+                HStack {
+                    AsyncImage(url: performerURLs[performer]) { image in
+                        image.resizable().aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.gray.opacity(0.3))
+                            .overlay(
+                                Image(systemName: "person.fill")
+                                    .foregroundColor(.gray)
+                            )
+                    }
+                    .frame(width: 50, height: 50)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    
+                    Text(performer)
+                        .font(.body)
+                        .foregroundColor(.primary)
+                }
+                .padding(.vertical, 4)
+            }
+        }
+        .task {
+            await loadPerformerURLs()
+        }
+    }
+    
+    private func loadPerformerURLs() async {
+        for performer in performance.performers {
+            if performerURLs[performer] == nil {
+                if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+                    performerURLs[performer] = url
+                }
+            }
+        }
     }
 }
