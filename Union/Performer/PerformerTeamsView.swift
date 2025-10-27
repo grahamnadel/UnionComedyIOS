@@ -1,34 +1,39 @@
 import SwiftUI
 
+// FIXME: Not showing Teams
 struct PerformerTeamsView: View {
     let teamsForPerformer: [String]
     let performancesForPerformer: [Performance]
     let name: String
     var body: some View {
-        List {
-            Section("Teams") {
-                ForEach(teamsForPerformer, id: \.self) { teamName in
-                    VStack(alignment: .leading) {
-                        Text(teamName)
-                            .font(.headline)
-//                        
-//                        // Show all performances for this team with this performer
-                        ForEach(performancesForPerformer.filter { $0.teamName == teamName }, id: \.id) { performance in
-                            HStack {
-//                FIXME: Performance
-                                Text(performance.showTime, style: .date)
-                                    .font(.caption)
-                                Spacer()
-//                FIXME: Performance
-                                Text(performance.showTime, style: .time)
-                                    .font(.caption)
-                            }
-                            .foregroundColor(.secondary)
-                        }
-                    }
-                    .padding(.vertical, 2)
-                }
+        VStack(alignment: .leading) {
+            HStack {
+                Text("Team Name")
+//                    TODO: Make this format a view and make it consistent for all views
+                Spacer()
+                Text("Date")
+                    .font(.caption)
+                Spacer()
+                Text("Time")
+                    .font(.caption)
             }
+            ForEach(performancesForPerformer, id: \.id) { performance in
+                HStack {
+                    Text("\(performance.teamName)")
+//                    TODO: Make this format a view and make it consistent for all views
+                    Spacer()
+                    Text(performance.showTime, style: .date)
+                        .font(.caption)
+                    Spacer()
+                    Text(performance.showTime, style: .time)
+                        .font(.caption)
+                }
+//                .foregroundColor(.secondary)
+            }
+        }
+        .padding(.vertical, 2)
+        .onAppear {
+            print("PerformerTeamsView performances: \(performancesForPerformer)")
         }
         .navigationTitle("\(name)'s Teams")
     }
