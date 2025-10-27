@@ -8,7 +8,7 @@ struct PerformanceDetailView: View {
     var body: some View {
         VStack {
             ForEach(performance.performers, id: \.self) { performer in
-                PerformerDetailView(performer: performer, performerURL: nil)
+                PerformerDetailView(performer: performer)
             }
             .navigationTitle("Performance")
         }

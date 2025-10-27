@@ -32,10 +32,7 @@ struct PerformerListView: View {
                     ForEach(filteredPerformers, id: \.self) { performer in
                         let performerURL = performerImageURLs[performer]
 
-                        NavigationLink(destination: PerformerDetailView(
-                            performer: performer,
-                            performerURL: performerURL
-                        )) {
+                        NavigationLink(destination: PerformerDetailView(performer: performer)) {
                             HStack {
                                 AsyncImage(url: performerURL) { image in
                                     image

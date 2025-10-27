@@ -4,13 +4,14 @@ import PhotosUI
 // Detail view showing all teams for a given performer
 struct PerformerDetailView: View {
     let performer: String
-    let performerURL: URL?
+//    let performerURL: URL?
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @State private var loadedPerformerURL: URL?
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var isShowingPhotoPicker = false
-    @State private var performerImageURLs: [String: URL] = [:]  // Cache URLs by performer name  
+//    @State private var performerImageURLs: [String: URL] = [:]  // Cache URLs by performer name  
     
     var performancesForPerformer: [Performance] {
         festivalViewModel.performances.filter { $0.performers.contains(performer) }
@@ -26,7 +27,7 @@ struct PerformerDetailView: View {
     var body: some View {
         ScrollView {
             VStack {
-                PerformerImageView(performerURL: performerURL ?? nil)
+                PerformerImageView(performerURL: loadedPerformerURL ?? nil)
                     .frame(width: 250, height: 250)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .navigationTitle(performer)
@@ -50,7 +51,7 @@ struct PerformerDetailView: View {
             }
             .toolbar {
                 if authViewModel.role != .audience &&
-                    performerURL == nil && authViewModel.name == performer {
+                    loadedPerformerURL == nil && authViewModel.name == performer {
                     Button(action: {
                         selectedPerformer = performer
                         isShowingPhotoPicker = true
@@ -106,30 +107,32 @@ struct PerformerDetailView: View {
     }
     
     private func loadPerformerImageURLs() async {
-            if performerImageURLs[performer] == nil {
+        print("Loading performer url")
+        if loadedPerformerURL == nil {
                 if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
-                    performerImageURLs[performer] = url
+                    loadedPerformerURL = url
                 }
             }
     }
 
     // 🔹 Upload a new photo
-    private func loadImage(from item: PhotosPickerItem, for performer: String) {
-        item.loadTransferable(type: Data.self) { result in
-            switch result {
-            case .success(let data):
-                if let imageData = data {
-                    Task { @MainActor in
-                        await festivalViewModel.savePerformerImage(for: performer, imageData: imageData)
-                        // Refresh that performer’s image
-                        if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
-                            performerImageURLs[performer] = url
-                        }
-                    }
-                }
-            case .failure(let error):
-                print("Failed to load image: \(error)")
-            }
-        }
-    }
+//    private func loadImage(from item: PhotosPickerItem, for performer: String) {
+//        print("Loading performer image")
+//        item.loadTransferable(type: Data.self) { result in
+//            switch result {
+//            case .success(let data):
+//                if let imageData = data {
+//                    Task { @MainActor in
+//                        await festivalViewModel.savePerformerImage(for: performer, imageData: imageData)
+//                        // Refresh that performer’s image
+//                        if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+//                            performerImageURLs[performer] = url
+//                        }
+//                    }
+//                }
+//            case .failure(let error):
+//                print("Failed to load image: \(error)")
+//            }
+//        }
+//    }
 }

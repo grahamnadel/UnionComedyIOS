@@ -278,7 +278,6 @@ class FestivalViewModel: ObservableObject {
     
     
     // Upload a performer's image to Firebase Storage and save URL in Firestore
-//    TODO: leaving off here 10/24
     func savePerformerImage(for performer: String, imageData: Data) async {
         let fileName = sanitizeFilename(performer) + ".jpg"
         let storageRef = Storage.storage().reference().child("performerImages/\(fileName)")

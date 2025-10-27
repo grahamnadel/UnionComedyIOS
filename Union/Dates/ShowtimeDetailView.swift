@@ -39,7 +39,7 @@ struct ShowtimeDetailView: View {
                 
                 List(performance.performers, id: \.self) { performer in
 //                    TODO: Add url once I have the images for performers
-                    NavigationLink(destination: PerformerDetailView(performer: performer, performerURL: nil)) {
+                    NavigationLink(destination: PerformerDetailView(performer: performer)) {
                         Text(performer)
                             .font(.body)
                             .foregroundColor(.primary)
