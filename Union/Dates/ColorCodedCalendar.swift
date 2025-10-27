@@ -1,5 +1,5 @@
 //
-//  RegularTimes.swift
+//  ColorCodedCalendar.swift
 //  Union
 //
 //  Created by Graham Nadel on 10/27/25.
