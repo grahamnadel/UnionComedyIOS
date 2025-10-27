@@ -12,6 +12,7 @@ class FestivalViewModel: ObservableObject {
     @Published var isOwnerAdmin = false
     
     @Published var pendingUsers: [AppUser] = []
+    @Published var users: [AppUser] = []
     
     // USER FAVORITES
     @Published var favoriteTeams: [String] = []
@@ -70,6 +71,26 @@ class FestivalViewModel: ObservableObject {
         }
     }
     
+    func updateRole(for user: AppUser) async {
+        do {
+            let snapshot = try await Firestore.firestore()
+                .collection("users")
+                .whereField("email",isEqualTo: user.email)
+                .getDocuments()
+            
+            guard let document = snapshot.documents.first else {
+                print("no matching user found for \(user.email) when updating role")
+                return
+            }
+            
+            try await document.reference.updateData([
+                "role": user.role
+            ])
+        } catch {
+            print("Error updating role for \(user.name)")
+        }
+    }
+    
     func updateApproval(for user: AppUser) async {
         do {
             let snapshot = try await Firestore.firestore()
@@ -105,8 +126,24 @@ class FestivalViewModel: ObservableObject {
     }
     
     
+    func fetchUsers() async {
+        do {
+            let snapshot = try await Firestore.firestore()
+                .collection("users")
+                .getDocuments()
+            
+            let users = snapshot.documents.compactMap { doc -> AppUser? in
+                try? doc.data(as: AppUser.self)
+            }
+            DispatchQueue.main.async {
+                self.users = users
+            }
+        } catch {
+            print("Error fetching users: \(error)")
+        }
+    }
+    
     func fetchPendingUsers() async {
-        print("fetchPendingUsers")
         do {
             let snapshot = try await Firestore.firestore()
                 .collection("users")

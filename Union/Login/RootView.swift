@@ -23,6 +23,7 @@ struct RootView: View {
                             .task {
                                 if authViewModel.role == .owner {
                                     await festivalViewModel.fetchPendingUsers()
+                                    await festivalViewModel.fetchUsers()
                                 }
                             }
                     }

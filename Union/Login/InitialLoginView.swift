@@ -97,6 +97,7 @@ struct InitialLoginView: View {
         .padding()
     }
 
+//    TODO: Move to the authViewModel
     // --- NEW ACTION FUNCTION ---
     private func sendPasswordResetEmail() async {
         // Clear previous messages
