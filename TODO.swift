@@ -6,5 +6,4 @@
 //
 
 import Foundation
-
-// Managing the user approval and roles in app
+// Add descriptions for each show type

@@ -42,6 +42,25 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .custom: return nil
         }
     }
+    
+    static func dateToShow(date: Date) -> String? {
+        print("Date: \(date)")
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.weekday, .hour, .minute], from: date)
+        
+        let weekdayName = calendar.weekdaySymbols[(components.weekday ?? 1) - 1]
+        let hour = components.hour ?? 0
+        print("hour: \(hour)")
+        let minute = components.minute ?? 0
+        for showType in ShowType.allCases {
+            if let showTypeTime = showType.defaultTime {
+                if showTypeTime == (hour, minute) && showType.weekday == weekdayName {
+                    return showType.displayName
+                }
+            }
+        }
+        return "Special Show"
+    }
 }
 
 // MARK: - Struct for a specific show occurrence

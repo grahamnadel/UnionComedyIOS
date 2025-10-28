@@ -565,5 +565,39 @@ class FestivalViewModel: ObservableObject {
         //        Have UI reflect changes
         loadData()
     }
+    
+    func overBookingProtection() -> Bool {
+        // 1. Group all performances by their exact start time (Date).
+        let groupedByTime = Dictionary(grouping: performances, by: { $0.showTime })
+        
+        // 2. Filter the dictionary to find times that have more than one performance.
+        let conflicts = groupedByTime.filter { _, performancesAtTime in
+            return performancesAtTime.count > 1
+        }
+        
+        // 3. Process the results.
+        if conflicts.isEmpty {
+            print("✅ No overbooking conflicts found.")
+            return false
+        } else {
+            print("❌ WARNING: Overbooking detected at the following times:")
+            
+            for (time, conflictingPerformances) in conflicts {
+                // Convert the conflicting time to a readable format
+                let timeString = conflictingPerformances.first?.showTime.formatted(date: .abbreviated, time: .shortened) ?? "Unknown Time"
+                
+                // Get a list of the names of the shows that conflict
+                let showNames = conflictingPerformances.map { "  - \($0.id)" }.joined(separator: "\n")
+                
+                print("Time Slot: \(timeString)")
+                print("Conflicting Performances (IDs):")
+                print(showNames)
+            }
+            
+            // Add your specific logic here (e.g., alert the user, throw an error, delete the last added item)
+            // fatalError("Schedule conflict must be resolved.")
+            return true
+        }
+    }
 }
 
