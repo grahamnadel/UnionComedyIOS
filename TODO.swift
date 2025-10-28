@@ -7,3 +7,4 @@
 
 import Foundation
 // Add descriptions for each show type
+// Be able to add two teams to a show

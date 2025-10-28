@@ -11,5 +11,6 @@ import Foundation
 struct Show: Identifiable {
     let id = UUID()
     let showType: ShowType
+    let date: Date
     var performances: [Performance] // Max 2
 }

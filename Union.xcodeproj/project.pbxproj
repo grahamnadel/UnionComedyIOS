@@ -90,6 +90,10 @@
 		53DCF7E32EB019E200D67BEB /* Capacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7E22EB019E200D67BEB /* Capacity.swift */; };
 		53DCF7E92EB01AA500D67BEB /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7E82EB01AA500D67BEB /* Show.swift */; };
 		53DCF7F12EB01F0D00D67BEB /* ColorCodedCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7F02EB01F0D00D67BEB /* ColorCodedCalendar.swift */; };
+		53DCF7F32EB130ED00D67BEB /* AddDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7F22EB130ED00D67BEB /* AddDateView.swift */; };
+		53DCF7F52EB1351700D67BEB /* TeamDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7F42EB1351700D67BEB /* TeamDetailSection.swift */; };
+		53DCF7F72EB1352D00D67BEB /* DateSelectionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7F62EB1352D00D67BEB /* DateSelectionSection.swift */; };
+		53DCF7F92EB135D000D67BEB /* DateInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7F82EB135D000D67BEB /* DateInputView.swift */; };
 		53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EAA6F12EA14F4E00BA49C6 /* Team.swift */; };
 /* End PBXBuildFile section */
 
@@ -169,6 +173,10 @@
 		53DCF7E22EB019E200D67BEB /* Capacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capacity.swift; sourceTree = "<group>"; };
 		53DCF7E82EB01AA500D67BEB /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		53DCF7F02EB01F0D00D67BEB /* ColorCodedCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCodedCalendar.swift; sourceTree = "<group>"; };
+		53DCF7F22EB130ED00D67BEB /* AddDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDateView.swift; sourceTree = "<group>"; };
+		53DCF7F42EB1351700D67BEB /* TeamDetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailSection.swift; sourceTree = "<group>"; };
+		53DCF7F62EB1352D00D67BEB /* DateSelectionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectionSection.swift; sourceTree = "<group>"; };
+		53DCF7F82EB135D000D67BEB /* DateInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateInputView.swift; sourceTree = "<group>"; };
 		53EAA6F12EA14F4E00BA49C6 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -282,6 +290,10 @@
 			isa = PBXGroup;
 			children = (
 				533468832E42759700E069DB /* AddPerformanceView.swift */,
+				53DCF7F42EB1351700D67BEB /* TeamDetailSection.swift */,
+				53DCF7F62EB1352D00D67BEB /* DateSelectionSection.swift */,
+				53DCF7F82EB135D000D67BEB /* DateInputView.swift */,
+				53DCF7F22EB130ED00D67BEB /* AddDateView.swift */,
 				53DCF7DE2EB015D200D67BEB /* RestrictedCalendar.swift */,
 				53343A152E4E59E500224553 /* PerformanceRow.swift */,
 			);
@@ -629,15 +641,18 @@
 				53829C302E0DC6AF00F284B7 /* VoteStore.swift in Sources */,
 				53B815B52EA6A61500854645 /* AppUser.swift in Sources */,
 				53B815D62EAD16B400854645 /* TODO.swift in Sources */,
+				53DCF7F52EB1351700D67BEB /* TeamDetailSection.swift in Sources */,
 				53847C8D2E02FC9800EE649A /* TeamView.swift in Sources */,
 				5334688C2E44FACD00E069DB /* PerformerPhotoPicker.swift in Sources */,
 				53DCF7E92EB01AA500D67BEB /* Show.swift in Sources */,
+				53DCF7F92EB135D000D67BEB /* DateInputView.swift in Sources */,
 				53B815B32EA6A1F100854645 /* SearchBar.swift in Sources */,
 				53847C8F2E02FEBA00EE649A /* Model.swift in Sources */,
 				53B815CE2EA93AD500854645 /* RootView.swift in Sources */,
 				53B815C62EA9392F00854645 /* AuthViewModel.swift in Sources */,
 				53343A142E4E587300224553 /* TeamDetailView.swift in Sources */,
 				533468882E44F5E500E069DB /* SelectedPerformerList.swift in Sources */,
+				53DCF7F32EB130ED00D67BEB /* AddDateView.swift in Sources */,
 				531DDD8D2E58FF6800E210EE /* PerformerTeamsView.swift in Sources */,
 				531DDD8B2E57828200E210EE /* PerformanceDetailView.swift in Sources */,
 				53847C7F2E02F10E00EE649A /* Item.swift in Sources */,
@@ -652,6 +667,7 @@
 				53B815D22EAAD56F00854645 /* KeyChainHelper.swift in Sources */,
 				530C184D2E1D74D8000A80E0 /* SettingsView.swift in Sources */,
 				53DCF7DF2EB015D200D67BEB /* RestrictedCalendar.swift in Sources */,
+				53DCF7F72EB1352D00D67BEB /* DateSelectionSection.swift in Sources */,
 				531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */,
 				53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */,
 				53B815B72EA6BA3E00854645 /* ShowtimeDetailView.swift in Sources */,

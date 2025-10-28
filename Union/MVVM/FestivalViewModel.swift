@@ -97,7 +97,7 @@ class FestivalViewModel: ObservableObject {
                 .collection("users")
                 .whereField("email", isEqualTo: user.email)
                 .getDocuments()
-                
+            
             guard let document = snapshot.documents.first else {
                 print("No matching user found for \(user.email)")
                 return
@@ -275,7 +275,7 @@ class FestivalViewModel: ObservableObject {
     
     
     // MARK: - Performer Management
-    /// Adds a performer to a specific team's performances and to the known performers list.    
+    /// Adds a performer to a specific team's performances and to the known performers list.
     func addPerformer(named performerName: String, toTeam teamName: String) {
         let db = Firestore.firestore()
         
@@ -320,9 +320,9 @@ class FestivalViewModel: ObservableObject {
         let storageRef = Storage.storage().reference().child("performerImages/\(fileName)")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
-
+        
         let db = Firestore.firestore()
-
+        
         do {
             // Upload image data to Firebase Storage
             _ = try await storageRef.putDataAsync(imageData, metadata: metadata)
@@ -352,7 +352,7 @@ class FestivalViewModel: ObservableObject {
             print("❌ Error saving image for \(performer): \(error.localizedDescription)")
         }
     }
-
+    
     
     // Check if a performer has an image in Firestore
     func hasPerformerImage(for performer: String) async -> Bool {
@@ -370,17 +370,17 @@ class FestivalViewModel: ObservableObject {
     func getPerformerImageURL(for performer: String) async -> URL? {
         let db = Firestore.firestore()
         guard !performer.isEmpty else { return nil }
-
+        
         do {
             let querySnapshot = try await db.collection("performers")
                 .whereField("name", isEqualTo: performer)
                 .getDocuments()
-
+            
             guard let doc = querySnapshot.documents.first else {
                 print("No performer document found for: \(performer)")
                 return nil
             }
-
+            
             if let urlString = doc.data()["url"] as? String {
                 print("Returning URL for \(performer): \(urlString)")
                 return URL(string: urlString)
@@ -392,7 +392,7 @@ class FestivalViewModel: ObservableObject {
         }
         return nil
     }
-
+    
     
     // Delete a performer's image from Firebase Storage and Firestore
     func deletePerformerImage(for performer: String) async {
@@ -471,36 +471,36 @@ class FestivalViewModel: ObservableObject {
     func loadKnownPerformers(completion: @escaping (Set<String>) -> Void) {
         let db = Firestore.firestore()
         var performerNames = Set<String>()
-
+        
         db.collection("performers").getDocuments { snapshot, error in
             if let error = error {
                 print("❌ Error loading known performers: \(error.localizedDescription)")
                 completion([])
                 return
             }
-
+            
             guard let documents = snapshot?.documents else {
                 print("⚠️ No performer documents found")
                 completion([])
                 return
             }
-
+            
             for doc in documents {
                 if let performerName = doc.data()["name"] as? String {
                     performerNames.insert(performerName)
                 }
             }
-
+            
             completion(performerNames)
         }
     }
-
+    
     
     func removePerformerFromFirebase(teamName: String?, performerName: String) {
         let db = Firestore.firestore()
         let teamsRef = db.collection("festivalTeams")
         let performersRef = db.collection("performers")
-//        Clear from performers
+        //        Clear from performers
         let performersQuery = performersRef.whereField("name", isEqualTo: performerName)
         performersQuery.getDocuments { snapshot, error in
             if let error = error {
@@ -526,7 +526,7 @@ class FestivalViewModel: ObservableObject {
             }
         }
         
-//        Clear from teams
+        //        Clear from teams
         let teamsQuery: Query
         if let teamName = teamName {
             teamsQuery = teamsRef.whereField("name", isEqualTo: teamName)
@@ -566,38 +566,15 @@ class FestivalViewModel: ObservableObject {
         loadData()
     }
     
-    func overBookingProtection() -> Bool {
-        // 1. Group all performances by their exact start time (Date).
+    func overBookingProtection(performance: Performance) -> Int {
+        // 1. Group all performances by their start time
         let groupedByTime = Dictionary(grouping: performances, by: { $0.showTime })
         
-        // 2. Filter the dictionary to find times that have more than one performance.
-        let conflicts = groupedByTime.filter { _, performancesAtTime in
-            return performancesAtTime.count > 1
-        }
+        // 2. Find how many performances share the same showTime as the one passed in
+        let sameTimePerformances = groupedByTime[performance.showTime] ?? []
         
-        // 3. Process the results.
-        if conflicts.isEmpty {
-            print("✅ No overbooking conflicts found.")
-            return false
-        } else {
-            print("❌ WARNING: Overbooking detected at the following times:")
-            
-            for (time, conflictingPerformances) in conflicts {
-                // Convert the conflicting time to a readable format
-                let timeString = conflictingPerformances.first?.showTime.formatted(date: .abbreviated, time: .shortened) ?? "Unknown Time"
-                
-                // Get a list of the names of the shows that conflict
-                let showNames = conflictingPerformances.map { "  - \($0.id)" }.joined(separator: "\n")
-                
-                print("Time Slot: \(timeString)")
-                print("Conflicting Performances (IDs):")
-                print(showNames)
-            }
-            
-            // Add your specific logic here (e.g., alert the user, throw an error, delete the last added item)
-            // fatalError("Schedule conflict must be resolved.")
-            return true
-        }
+        // 3. Return how many there are (including this one)
+        return sameTimePerformances.count
     }
 }
 
