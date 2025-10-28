@@ -576,5 +576,12 @@ class FestivalViewModel: ObservableObject {
         // 3. Return how many there are (including this one)
         return sameTimePerformances.count
     }
+    
+    func checkPerformancesForDate(date: Set<Date>) -> [Performance]? {
+        for performance in performances {
+            
+        }
+        return nil
+    }
 }
 

@@ -38,6 +38,32 @@ struct DateListView: View {
         // Step 3: Sort by date
         return grouped.sorted { $0.key < $1.key }
     }
+    
+    private var groupedPerformancesByTime: [(key: Date, value: [Performance])] {
+        let filtered = festivalViewModel.performances.filter { performance in
+            let matchesSearch =
+                searchText.isEmpty ||
+                performance.teamName.localizedCaseInsensitiveContains(searchText) ||
+                performance.performers.contains(where: { $0.localizedCaseInsensitiveContains(searchText) })
+
+            let matchesShowType: Bool
+            if let selectedType = showType {
+                matchesShowType = ShowType.dateToShow(date: performance.showTime) == selectedType.displayName
+            } else {
+                matchesShowType = true
+            }
+
+            return matchesSearch && matchesShowType
+        }
+
+        // Group by exact showTime
+        let grouped = Dictionary(grouping: filtered) { performance in
+            performance.showTime
+        }
+
+        return grouped.sorted { $0.key < $1.key }
+    }
+
 
     
     var body: some View {
@@ -63,13 +89,16 @@ struct DateListView: View {
             }
             
             List {
-                ForEach(groupedPerformances, id: \.key) { date, performances in
-                    Section(header: Text(date, style: .date)) {
-                        ForEach(performances, id: \.id) { performance in
-                            let showType = ShowType.dateToShow(date: performance.showTime)
-                            if let showType = showType {
-                                Text(showType)
+                ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
+                    Section(header: Text(showTime, style: .date)) {
+                        if let showType = ShowType.dateToShow(date: showTime) {
+                            HStack {
+                                Text(showType).bold()
+                                Spacer()
+                                Text(showTime.formatted(.dateTime.hour().minute()))
                             }
+                        }
+                        ForEach(performances, id: \.id) { performance in
                             ShowDate(performance: performance)
                                 .onTapGesture {
                                     selectedPerformance = performance

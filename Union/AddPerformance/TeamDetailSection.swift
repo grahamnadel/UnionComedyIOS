@@ -12,7 +12,7 @@ import SwiftUI
 struct TeamDetailSection: View {
     let allTeams: [String]
     @Binding var selectedTeamName: String?
-    @Binding var teamName: String // The unified, final name
+    @Binding var teamName: String
     
     @State private var newTeamNameInput: String = "" // Local state for new input
     

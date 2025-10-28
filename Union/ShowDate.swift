@@ -17,8 +17,8 @@ struct ShowDate: View {
             VStack(alignment: .leading) {
                 Text(performance.teamName)
                     .font(.headline)
-                Text(performance.showTime, style: .time)
-                    .font(.subheadline)
+//                Text(performance.showTime, style: .time)
+//                    .font(.subheadline)
                 Text("Performers: \(performance.performers.joined(separator: ", "))")
                     .font(.footnote)
                     .foregroundColor(.secondary)

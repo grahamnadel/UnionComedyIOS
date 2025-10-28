@@ -34,10 +34,10 @@ enum ShowType: String, CaseIterable, Identifiable {
 
     var defaultTime: (hour: Int, minute: Int)? {
         switch self {
-        case .fridayNightFusion: return (21, 30)
+        case .fridayNightFusion: return (21, 00)
         case .fridayWeekendShow: return (19, 30)
         case .saturdayWeekendShow: return (19, 30)
-        case .pickle: return (20, 0)
+        case .pickle: return (21, 0)
         case .cageMatch: return (19, 0)
         case .custom: return nil
         }

@@ -12,14 +12,14 @@ struct AddPerformanceView: View {
     @State private var newTeamNameInput = ""
     @State private var performerInput = ""
     @State private var performerInputs: Set<PerformerInput> = Set()
-    @State private var selectedPhoto: PhotosPickerItem?
-    @State private var selectedImageData: Data?
-    @State private var selectedPerformerForPhoto: UUID? = nil
     
     @State private var performanceTeamCount: Int? = nil
+    @State private var secondSelectedTeamName: String? = nil
+    
     
     @State private var selectedShowType: ShowType? = nil
     @State private var customDate = Date()
+    
     var isShowTypeSelected: Bool {
         selectedShowType != nil && selectedShowType != .custom
     }
@@ -47,20 +47,20 @@ struct AddPerformanceView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // MARK: - Team Details
-                TeamDetailSection(
-                                    allTeams: allTeams,
-                                    selectedTeamName: $selectedTeamName,
-                                    teamName: $teamName // Bind the final teamName here
-                                )
+// MARK: - Add Dates
                 DateSelectionSection(
                                     selectedShowType: $selectedShowType,
                                     customDate: $customDate,
                                     selectedDates: $selectedDates,
                                     date: $date
                                 )
-                // MARK: - Add Dates
-                DateInput(selectedShowType: selectedShowType, customDate: $customDate)
+                
+// MARK: - Team Details
+                TeamDetailSection(
+                                    allTeams: allTeams,
+                                    selectedTeamName: $selectedTeamName,
+                                    teamName: $teamName
+                                )
                 
                 // MARK: - List of Selected Dates
                 if !selectedDates.isEmpty {
@@ -122,20 +122,6 @@ struct AddPerformanceView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { savePerformance() }
                         .disabled(teamName.isEmpty || performerInputs.isEmpty || selectedDates.isEmpty)
-                }
-            }
-            .onChange(of: selectedPhoto) {
-                Task {
-                    if let item = selectedPhoto,
-                       let data = try? await item.loadTransferable(type: Data.self) {
-                        // Logic to associate the selected photo data with the correct performer
-                        if let performerId = selectedPerformerForPhoto,
-                           let index = performerInputs.firstIndex(where: { $0.id == performerId }) {
-                            var performerToUpdate = performerInputs[index]
-                            performerToUpdate.imageData = data
-                            performerInputs.update(with: performerToUpdate)
-                        }
-                    }
                 }
             }
             .onAppear {
