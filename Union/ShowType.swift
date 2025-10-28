@@ -34,7 +34,7 @@ enum ShowType: String, CaseIterable, Identifiable {
 
     var defaultTime: (hour: Int, minute: Int)? {
         switch self {
-        case .fridayNightFusion: return (21, 00)
+        case .fridayNightFusion: return (21, 0)
         case .fridayWeekendShow: return (19, 30)
         case .saturdayWeekendShow: return (19, 30)
         case .pickle: return (21, 0)
@@ -57,8 +57,11 @@ enum ShowType: String, CaseIterable, Identifiable {
                 if showTypeTime == (hour, minute) && showType.weekday == weekdayName {
                     return showType.displayName
                 }
+            } else {
+                print("Could not unwrap showTypeTime")
             }
         }
+        print("returning special show for hour: \(hour), minute: \(minute), \(weekdayName)")
         return "Special Show"
     }
 }
