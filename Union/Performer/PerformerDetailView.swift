@@ -6,7 +6,7 @@ struct PerformerDetailView: View {
     let performer: String
 //    let performerURL: URL?
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @State private var loadedPerformerURL: URL?
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
@@ -14,7 +14,7 @@ struct PerformerDetailView: View {
 //    @State private var performerImageURLs: [String: URL] = [:]  // Cache URLs by performer name  
     
     var performancesForPerformer: [Performance] {
-        festivalViewModel.performances.filter { $0.performers.contains(performer) }
+        scheduleViewModel.performances.filter { $0.performers.contains(performer) }
             .sorted { $0.showTime < $1.showTime }
     }
     
@@ -24,7 +24,7 @@ struct PerformerDetailView: View {
 //        return Array(teams).sorted()
 //    }
     var teamsForPerformer: [String] {
-        festivalViewModel.teams
+        scheduleViewModel.teams
             .filter { $0.performers.contains(performer) }
             .map { $0.name }
             .sorted()
@@ -50,10 +50,10 @@ struct PerformerDetailView: View {
                     .padding()
                 
                 Button {
-                    festivalViewModel.toggleFavoritePerformer(performer)
+                    scheduleViewModel.toggleFavoritePerformer(performer)
                 } label: {
-                    Image(systemName: festivalViewModel.favoritePerformers.contains(performer) ? "star.fill" : "star")
-                        .foregroundColor(festivalViewModel.favoritePerformerColor)
+                    Image(systemName: scheduleViewModel.favoritePerformers.contains(performer) ? "star.fill" : "star")
+                        .foregroundColor(scheduleViewModel.favoritePerformerColor)
                 }
             }
             .toolbar {
@@ -86,7 +86,7 @@ struct PerformerDetailView: View {
                 case .success(let data):
                     if let imageData = data {
                         Task { @MainActor in
-                            await festivalViewModel.savePerformerImage(for: performer, imageData: imageData)
+                            await scheduleViewModel.savePerformerImage(for: performer, imageData: imageData)
                         }
                     } else {
                         // Fallback: load the image as a file representation
@@ -96,7 +96,7 @@ struct PerformerDetailView: View {
                                    let imageData = try? Data(contentsOf: url) {
                                     await MainActor.run {
                                         Task {
-                                            await festivalViewModel.savePerformerImage(for: performer, imageData: imageData)
+                                            await scheduleViewModel.savePerformerImage(for: performer, imageData: imageData)
                                         }
                                     }
                                 }
@@ -116,7 +116,7 @@ struct PerformerDetailView: View {
     private func loadPerformerImageURLs() async {
         print("Loading performer url")
         if loadedPerformerURL == nil {
-                if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+                if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
                     loadedPerformerURL = url
                 }
             }
@@ -130,9 +130,9 @@ struct PerformerDetailView: View {
 //            case .success(let data):
 //                if let imageData = data {
 //                    Task { @MainActor in
-//                        await festivalViewModel.savePerformerImage(for: performer, imageData: imageData)
+//                        await scheduleViewModel.savePerformerImage(for: performer, imageData: imageData)
 //                        // Refresh that performer’s image
-//                        if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+//                        if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
 //                            performerImageURLs[performer] = url
 //                        }
 //                    }

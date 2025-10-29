@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ShowDate: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     let performance: Performance
     
     var body: some View {
@@ -28,13 +28,13 @@ struct ShowDate: View {
 
             // Favorite indicators
             VStack(spacing: 4) {
-                if festivalViewModel.favoriteTeams.contains(performance.teamName) {
+                if scheduleViewModel.favoriteTeams.contains(performance.teamName) {
                     Image(systemName: "star.fill")
-                        .foregroundColor(festivalViewModel.favoriteTeamColor)
+                        .foregroundColor(scheduleViewModel.favoriteTeamColor)
                 }
-                if performance.performers.contains(where: { festivalViewModel.favoritePerformers.contains($0) }) {
+                if performance.performers.contains(where: { scheduleViewModel.favoritePerformers.contains($0) }) {
                     Image(systemName: "star.fill")
-                        .foregroundColor(festivalViewModel.favoritePerformerColor)
+                        .foregroundColor(scheduleViewModel.favoritePerformerColor)
                 }
             }
         }

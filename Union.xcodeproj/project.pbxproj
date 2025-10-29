@@ -24,7 +24,7 @@
 		5334687C2E4272FF00E069DB /* TeamListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5334687B2E4272FF00E069DB /* TeamListView.swift */; };
 		5334687E2E42731A00E069DB /* DateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5334687D2E42731A00E069DB /* DateListView.swift */; };
 		533468802E42740300E069DB /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5334687F2E42740300E069DB /* Performance.swift */; };
-		533468822E42752D00E069DB /* FestivalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468812E42752D00E069DB /* FestivalViewModel.swift */; };
+		533468822E42752D00E069DB /* SchedualViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468812E42752D00E069DB /* SchedualViewModel.swift */; };
 		533468842E42759700E069DB /* AddPerformanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468832E42759700E069DB /* AddPerformanceView.swift */; };
 		533468882E44F5E500E069DB /* SelectedPerformerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468872E44F5E500E069DB /* SelectedPerformerList.swift */; };
 		5334688A2E44F8E700E069DB /* Performer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533468892E44F8E700E069DB /* Performer.swift */; };
@@ -134,7 +134,7 @@
 		5334687B2E4272FF00E069DB /* TeamListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListView.swift; sourceTree = "<group>"; };
 		5334687D2E42731A00E069DB /* DateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateListView.swift; sourceTree = "<group>"; };
 		5334687F2E42740300E069DB /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
-		533468812E42752D00E069DB /* FestivalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalViewModel.swift; sourceTree = "<group>"; };
+		533468812E42752D00E069DB /* SchedualViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedualViewModel.swift; sourceTree = "<group>"; };
 		533468832E42759700E069DB /* AddPerformanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPerformanceView.swift; sourceTree = "<group>"; };
 		533468872E44F5E500E069DB /* SelectedPerformerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPerformerList.swift; sourceTree = "<group>"; };
 		533468892E44F8E700E069DB /* Performer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performer.swift; sourceTree = "<group>"; };
@@ -282,7 +282,7 @@
 			children = (
 				53B815CB2EA93A0C00854645 /* AdminViewModel.swift */,
 				53847C902E02FEBF00EE649A /* ViewModel.swift */,
-				533468812E42752D00E069DB /* FestivalViewModel.swift */,
+				533468812E42752D00E069DB /* SchedualViewModel.swift */,
 				53847C8E2E02FEBA00EE649A /* Model.swift */,
 			);
 			path = MVVM;
@@ -633,7 +633,7 @@
 				531DDD8F2E59018600E210EE /* PerformerImageView.swift in Sources */,
 				53B815B92EA6BDB100854645 /* ShowDate.swift in Sources */,
 				53B815CA2EA939F900854645 /* AdminView.swift in Sources */,
-				533468822E42752D00E069DB /* FestivalViewModel.swift in Sources */,
+				533468822E42752D00E069DB /* SchedualViewModel.swift in Sources */,
 				53B815D82EAFE09000854645 /* ShowType.swift in Sources */,
 				5334687A2E4272CD00E069DB /* PerformerListView.swift in Sources */,
 				53847C7D2E02F10E00EE649A /* VoteView.swift in Sources */,

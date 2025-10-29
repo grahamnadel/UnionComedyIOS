@@ -10,7 +10,7 @@
 //
 //
 //struct LoginView: View {
-//    @EnvironmentObject var festivalViewModel: FestivalViewModel
+//    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
 //    @State private var password: String = ""
 //    @State private var showAlert = false
 //    @State private var userName: String = ""
@@ -26,7 +26,7 @@
 //            
 //            Button("Sign In") {
 //                // Call the login function on the viewModel
-//                if festivalViewModel.attemptLogin(with: password) {
+//                if scheduleViewModel.attemptLogin(with: password) {
 //                    showAlert = true
 //                }
 //            }
@@ -40,7 +40,7 @@
 //        .alert("Login", isPresented: $showAlert) {
 //                    Button("Close", role: .cancel) { }
 //                } message: {
-//                    if festivalViewModel.isAdminLoggedIn {
+//                    if scheduleViewModel.isAdminLoggedIn {
 //                        Text("Login successful")
 //                    } else {
 //                        Text("Login failed: incorrect password")

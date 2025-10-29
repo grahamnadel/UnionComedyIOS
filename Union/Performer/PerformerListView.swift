@@ -3,7 +3,7 @@ import PhotosUI
 import FirebaseFirestore
 
 struct PerformerListView: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
@@ -15,7 +15,7 @@ struct PerformerListView: View {
 
 
     var filteredPerformers: [String] {
-        let performers = festivalViewModel.knownPerformers
+        let performers = scheduleViewModel.knownPerformers
         if searchText.isEmpty {
             return performers.sorted()
         } else {
@@ -70,7 +70,7 @@ struct PerformerListView: View {
                 }
                 .listStyle(.insetGrouped)
                 .refreshable {
-                    festivalViewModel.loadData()
+                    scheduleViewModel.loadData()
                     await loadPerformerImageURLs()
                 }
             }
@@ -97,7 +97,7 @@ struct PerformerListView: View {
                 message: "This will remove the performer from all teams and delete their profile.",
                 confirmAction: {
                     if let performer = performerToDelete {
-                        festivalViewModel.removePerformerFromFirebase(teamName: nil, performerName: performer)
+                        scheduleViewModel.removePerformerFromFirebase(teamName: nil, performerName: performer)
                     }
                 }
             )
@@ -110,7 +110,7 @@ struct PerformerListView: View {
         for performer in filteredPerformers {
             if performerImageURLs[performer] == nil {
                 print("getting performer image url")
-                if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+                if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
                     performerImageURLs[performer] = url
                 }
             }
@@ -124,9 +124,9 @@ struct PerformerListView: View {
             case .success(let data):
                 if let imageData = data {
                     Task { @MainActor in
-                        await festivalViewModel.savePerformerImage(for: performer, imageData: imageData)
+                        await scheduleViewModel.savePerformerImage(for: performer, imageData: imageData)
                         // Refresh that performer’s image
-                        if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+                        if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
                             performerImageURLs[performer] = url
                         }
                     }

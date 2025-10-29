@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct PerformerSelectionList: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @Binding var performerInputs: Set<PerformerInput>
     
     var body: some View {
         List {
-            ForEach(Array(festivalViewModel.knownPerformers), id: \.self) { performerName in
+            ForEach(Array(scheduleViewModel.knownPerformers), id: \.self) { performerName in
                 Toggle(isOn: binding(for: performerName)) {
                     Text(performerName)
                 }

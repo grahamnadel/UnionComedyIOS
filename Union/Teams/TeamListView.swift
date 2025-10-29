@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct TeamListView: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var searchText = ""   // Search field text
     @State private var showDeleteAlert = false
     @State private var teamToDelete: String?
 
     var filteredTeams: [String] {
-        let teams = festivalViewModel.teams.map { $0.name }
+        let teams = scheduleViewModel.teams.map { $0.name }
         if searchText.isEmpty {
             return teams.sorted()
         } else {
@@ -32,9 +32,9 @@ struct TeamListView: View {
                             
                             Spacer()
                             
-                            if festivalViewModel.favoriteTeams.contains(team) {
+                            if scheduleViewModel.favoriteTeams.contains(team) {
                                 Image(systemName: "star.fill")
-                                    .foregroundColor(festivalViewModel.favoriteTeamColor)
+                                    .foregroundColor(scheduleViewModel.favoriteTeamColor)
                             }
                         }
                         .contentShape(Rectangle())
@@ -55,8 +55,8 @@ struct TeamListView: View {
                 }
                 .listStyle(.insetGrouped)
                 .refreshable {
-                    festivalViewModel.loadData()
-                    festivalViewModel.loadTeams()
+                    scheduleViewModel.loadData()
+                    scheduleViewModel.loadTeams()
                 }
             }
             .navigationTitle("Teams")
@@ -67,7 +67,7 @@ struct TeamListView: View {
                 message: "This will remove the team and all its performances.",
                 confirmAction: {
                     if let team = teamToDelete {
-                        festivalViewModel.deleteTeam(named: team)
+                        scheduleViewModel.deleteTeam(named: team)
                     }
                 }
             )

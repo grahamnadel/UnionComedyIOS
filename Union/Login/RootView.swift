@@ -4,7 +4,7 @@ import FirebaseAuth
 
 struct RootView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     
     var body: some View {
         Group {
@@ -22,8 +22,8 @@ struct RootView: View {
                         FestivalView()
                             .task {
                                 if authViewModel.role == .owner {
-                                    await festivalViewModel.fetchPendingUsers()
-                                    await festivalViewModel.fetchUsers()
+                                    await scheduleViewModel.fetchPendingUsers()
+                                    await scheduleViewModel.fetchUsers()
                                 }
                             }
                     }

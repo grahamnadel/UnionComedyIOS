@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct ColorCodedCalendar: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @Binding var selectedDate: Date
     @State var selectedDates: [Date] = []
     let calendar = Calendar.current
@@ -104,7 +104,7 @@ struct ColorCodedCalendar: View {
     }
     
     private func findDays() {
-        for performance in festivalViewModel.performances {
+        for performance in scheduleViewModel.performances {
             selectedDates.append(performance.showTime)
         
         }

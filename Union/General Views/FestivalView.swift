@@ -12,7 +12,7 @@ struct FestivalView: View {
     }
     
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @State private var selected: sortSelection = .date
     @State private var showAddPerformance = false
     var availableOptions: [sortSelection] {

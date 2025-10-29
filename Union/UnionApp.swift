@@ -27,7 +27,7 @@ struct UnionApp: App {
         
     }
     //    @StateObject var viewModel = ViewModel()
-    @StateObject var festivalViewModel = FestivalViewModel()
+    @StateObject var scheduleViewModel = ScheduleViewModel()
     @StateObject var authViewModel = AuthViewModel()
     @StateObject var adminViewModel = AdminViewModel()
     
@@ -36,13 +36,13 @@ struct UnionApp: App {
             //            MainView()
             //                .environmentObject(voteStore)
             ////                .environmentObject(viewModel)
-            //                .environmentObject(festivalViewModel)
+            //                .environmentObject(scheduleViewModel)
             RootView()
                 .environmentObject(authViewModel)
-                .environmentObject(festivalViewModel)
+                .environmentObject(scheduleViewModel)
                 .environmentObject(adminViewModel)
             //            FestivalView()
-            //                .environmentObject(festivalViewModel)
+            //                .environmentObject(scheduleViewModel)
         }
     }
 }

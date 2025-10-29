@@ -10,7 +10,7 @@ import SwiftUI
 
 struct BiographyView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     var performer: String
     @State private var biographyText = ""
     @State private var isSavingBio = false
@@ -74,7 +74,7 @@ struct BiographyView: View {
     // MARK: - Biography loading/saving
     
     private func loadBiography() async {
-        if let bio = await festivalViewModel.fetchBiography(for: performer) {
+        if let bio = await scheduleViewModel.fetchBiography(for: performer) {
             await MainActor.run {
                 biographyText = bio
                 print("loaded bio: \(biographyText)")
@@ -85,7 +85,7 @@ struct BiographyView: View {
     private func saveBiography() async {
         guard !biographyText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         isSavingBio = true
-        await festivalViewModel.saveBiography(for: performer, bio: biographyText)
+        await scheduleViewModel.saveBiography(for: performer, bio: biographyText)
         isSavingBio = false
     }
     

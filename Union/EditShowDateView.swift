@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct EditShowDateView: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     let performance: Performance
     @State private var editingPerformance: Performance?
     @State var newShowTime: Date
@@ -54,8 +54,8 @@ struct EditShowDateView: View {
     }
     
     private func updatePerformanceTime(_ performance: Performance) {
-        if let index = festivalViewModel.performances.firstIndex(where: { $0.id == performance.id }) {
-            festivalViewModel.performances[index].showTime = newShowTime
+        if let index = scheduleViewModel.performances.firstIndex(where: { $0.id == performance.id }) {
+            scheduleViewModel.performances[index].showTime = newShowTime
         }
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DateListView: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var editingPerformance: Performance?
     @State private var newShowTime = Date()
@@ -17,7 +17,7 @@ struct DateListView: View {
         let calendar = Calendar.current
 
         // Step 1: Filter by search text and show type
-        let filtered = festivalViewModel.performances.filter { performance in
+        let filtered = scheduleViewModel.performances.filter { performance in
             let matchesSearch =
                 searchText.isEmpty ||
                 performance.teamName.localizedCaseInsensitiveContains(searchText) ||
@@ -43,7 +43,7 @@ struct DateListView: View {
     }
     
     private var groupedPerformancesByTime: [(key: Date, value: [Performance])] {
-        let filtered = festivalViewModel.performances.filter { performance in
+        let filtered = scheduleViewModel.performances.filter { performance in
             let matchesSearch =
                 searchText.isEmpty ||
                 performance.teamName.localizedCaseInsensitiveContains(searchText) ||
@@ -125,7 +125,7 @@ struct DateListView: View {
             .listStyle(.insetGrouped)
             .navigationTitle("Performances")
             .refreshable {
-                festivalViewModel.loadData()
+                scheduleViewModel.loadData()
             }
         }
         .sheet(item: $editingPerformance) { performance in
@@ -140,7 +140,7 @@ struct DateListView: View {
                 message: "This will delete the selected performance permanently.",
                 confirmAction: {
                     if let performance = performanceToDelete {
-                        festivalViewModel.deletePerformance(performance)
+                        scheduleViewModel.deletePerformance(performance)
                     }
                 }
             )

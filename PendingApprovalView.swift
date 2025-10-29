@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PendingApprovalView: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @State private var showPending = true
     @State private var searchText = ""
 
@@ -19,10 +19,10 @@ struct PendingApprovalView: View {
             ScrollView {
                 VStack(spacing: 8) {
                     if showPending {
-                        Text(festivalViewModel.pendingUsers.isEmpty ? "No pending Approvals" : "Pending Approvals")
+                        Text(scheduleViewModel.pendingUsers.isEmpty ? "No pending Approvals" : "Pending Approvals")
                             .font(.headline)
 
-                        ForEach($festivalViewModel.pendingUsers.filter { $0.name.wrappedValue.lowercased().contains(searchText.lowercased()) || searchText.isEmpty }, id: \.id) { $pendingUser in
+                        ForEach($scheduleViewModel.pendingUsers.filter { $0.name.wrappedValue.lowercased().contains(searchText.lowercased()) || searchText.isEmpty }, id: \.id) { $pendingUser in
                             HStack {
                                 Spacer()
                                 Toggle(isOn: $pendingUser.approved) {
@@ -30,14 +30,14 @@ struct PendingApprovalView: View {
                                 }
                                 .onChange(of: pendingUser.approved) { newValue in
                                     Task {
-                                        await festivalViewModel.updateApproval(for: pendingUser)
+                                        await scheduleViewModel.updateApproval(for: pendingUser)
                                     }
                                 }
                             }
                             .padding(.horizontal)
                         }
                     } else {
-                        ForEach($festivalViewModel.users.filter { $0.name.wrappedValue.lowercased().contains(searchText.lowercased()) || searchText.isEmpty }, id: \.id) { $appUser in
+                        ForEach($scheduleViewModel.users.filter { $0.name.wrappedValue.lowercased().contains(searchText.lowercased()) || searchText.isEmpty }, id: \.id) { $appUser in
                             HStack {
                                 Text("\(appUser.name)")
                                 Spacer()
@@ -50,7 +50,7 @@ struct PendingApprovalView: View {
                                 .pickerStyle(.menu)
                                 .onChange(of: appUser.role) { newValue in
                                     Task {
-                                        await festivalViewModel.updateApproval(for: appUser)
+                                        await scheduleViewModel.updateApproval(for: appUser)
                                     }
                                 }
                             }
@@ -61,8 +61,8 @@ struct PendingApprovalView: View {
             }
         }
         .refreshable {
-            await festivalViewModel.fetchPendingUsers()
-            await festivalViewModel.fetchUsers()
+            await scheduleViewModel.fetchPendingUsers()
+            await scheduleViewModel.fetchUsers()
         }
     }
 }

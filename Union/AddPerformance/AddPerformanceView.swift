@@ -3,7 +3,7 @@ import PhotosUI
 
 struct AddPerformanceView: View {
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     
     @State private var date = Date.nextFriday730PM
     @State private var selectedDates: Set<Date> = Set()
@@ -26,7 +26,7 @@ struct AddPerformanceView: View {
     
     // Computed property to get all unique team names from performances
     var allTeams: [String] {
-        let teams = Set(festivalViewModel.performances.map { $0.teamName })
+        let teams = Set(scheduleViewModel.performances.map { $0.teamName })
         return Array(teams).sorted()
     }
     
@@ -36,7 +36,7 @@ struct AddPerformanceView: View {
         // Ensure performerInput is not empty to avoid showing all suggestions initially.
         guard !performerInput.isEmpty else { return [] }
         
-        return festivalViewModel.knownPerformers
+        return scheduleViewModel.knownPerformers
             .filter { name in
                 name.lowercased().contains(performerInput.lowercased()) &&
                 !existingNames.contains(name)
@@ -160,7 +160,7 @@ struct AddPerformanceView: View {
                     teamName = newTeam
                     
                     // Find all performers for this team
-                    let existingPerformers = festivalViewModel.performances
+                    let existingPerformers = scheduleViewModel.performances
                         .filter { $0.teamName == newTeam }
                         .flatMap { $0.performers }
                     
@@ -196,7 +196,7 @@ struct AddPerformanceView: View {
             if let showType = ShowType.dateToShow(date: date),
                let requiredTeams = showType.requiredTeamCount {
                 
-                let existingCount = festivalViewModel.performances.filter { $0.showTime == date }.count
+                let existingCount = scheduleViewModel.performances.filter { $0.showTime == date }.count
                 if existingCount + 1 > requiredTeams {
                     overbooked.append(date)
                 }
@@ -211,7 +211,7 @@ struct AddPerformanceView: View {
         }
         
         // Save performance if no overbooking or user chooses to proceed
-        festivalViewModel.createPerformance(
+        scheduleViewModel.createPerformance(
             id: UUID().uuidString,
             teamName: teamToSave,
             performerIds: performerInputs.map { $0.name },

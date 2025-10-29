@@ -1,17 +1,17 @@
 import SwiftUI
 
 struct TeamDetailView: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
     let teamName: String
     @State private var performerURLs: [String: URL] = [:]
     
     var team: Team? {
-        festivalViewModel.teams.first { $0.name == teamName }
+        scheduleViewModel.teams.first { $0.name == teamName }
     }
     
     var performancesForTeam: [Performance] {
-        festivalViewModel.performances
+        scheduleViewModel.performances
             .filter { $0.teamName == teamName }
             .sorted { $0.showTime < $1.showTime }
     }
@@ -30,7 +30,7 @@ struct TeamDetailView: View {
                             if authViewModel.role == .owner {
                                 for index in indexSet {
                                     let perf = performancesForTeam[index]
-                                    festivalViewModel.deletePerformance(perf)
+                                    scheduleViewModel.deletePerformance(perf)
                                 }
                             }
                         }
@@ -73,10 +73,10 @@ struct TeamDetailView: View {
             
             // MARK: - Favorite Button
             Button {
-                festivalViewModel.toggleFavoriteTeam(teamName)
+                scheduleViewModel.toggleFavoriteTeam(teamName)
             } label: {
-                Image(systemName: festivalViewModel.favoriteTeams.contains(teamName) ? "star.fill" : "star")
-                    .foregroundColor(festivalViewModel.favoriteTeamColor)
+                Image(systemName: scheduleViewModel.favoriteTeams.contains(teamName) ? "star.fill" : "star")
+                    .foregroundColor(scheduleViewModel.favoriteTeamColor)
             }
         }
         .navigationTitle(teamName)
@@ -96,7 +96,7 @@ struct TeamDetailView: View {
         if let team = team {
             for performer in team.performers {
                 if performerURLs[performer] == nil {
-                    if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+                    if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
                         performerURLs[performer] = url
                     }
                 }

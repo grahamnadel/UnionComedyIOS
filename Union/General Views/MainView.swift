@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MainView: View {
     @EnvironmentObject var viewModel: ViewModel
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     
     @State private var showPasswordPrompt = false
     @State private var showSettings = false

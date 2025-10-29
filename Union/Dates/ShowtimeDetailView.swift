@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ShowtimeDetailView: View {
     let performance: Performance
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @State var performerURLs: [String:URL] = [:]
     
     var body: some View {
@@ -17,14 +17,14 @@ struct ShowtimeDetailView: View {
                     Spacer()
                     
                     Button(action: {
-                        if let index = festivalViewModel.favoriteTeams.firstIndex(of: performance.teamName) {
-                            festivalViewModel.favoriteTeams.remove(at: index)
+                        if let index = scheduleViewModel.favoriteTeams.firstIndex(of: performance.teamName) {
+                            scheduleViewModel.favoriteTeams.remove(at: index)
                         } else {
-                            festivalViewModel.favoriteTeams.append(performance.teamName)
+                            scheduleViewModel.favoriteTeams.append(performance.teamName)
                         }
                     }) {
-                        Image(systemName: festivalViewModel.favoriteTeams.contains(performance.teamName) ? "star.fill" : "star")
-                            .foregroundColor(festivalViewModel.favoriteTeamColor)
+                        Image(systemName: scheduleViewModel.favoriteTeams.contains(performance.teamName) ? "star.fill" : "star")
+                            .foregroundColor(scheduleViewModel.favoriteTeamColor)
                             .imageScale(.large)
                     }
                 }
@@ -81,7 +81,7 @@ struct ShowtimeDetailView: View {
         for performer in performers {
             if performerURLs[performer] == nil {
                 print("getting performer image url")
-                if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+                if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
                     performerURLs[performer] = url
                 }
             }

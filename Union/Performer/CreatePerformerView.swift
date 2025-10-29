@@ -3,7 +3,7 @@ import SwiftUI
 struct CreatePerformerView: View {
     @Environment(\.dismiss) var dismiss
     
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     let teamName: String
     
     @State private var newPerformerName: String = ""
@@ -24,7 +24,7 @@ struct CreatePerformerView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add Performer") {
-                        festivalViewModel.addPerformer(named: newPerformerName, toTeam: teamName)
+                        scheduleViewModel.addPerformer(named: newPerformerName, toTeam: teamName)
                         dismiss()
                     }
                     .disabled(newPerformerName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)

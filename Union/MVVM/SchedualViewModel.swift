@@ -5,7 +5,7 @@ import FirebaseAuth
 import FirebaseStorage
 
 
-class FestivalViewModel: ObservableObject {
+class ScheduleViewModel: ObservableObject {
     @Published var festivalTeams = [TeamData]()
     @Published var performances: [Performance] = []
     @Published var teams: [Team] = []

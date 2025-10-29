@@ -4,7 +4,7 @@ import FirebaseAuth
 
 struct InitialLoginView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var email = ""

@@ -1,13 +1,13 @@
 import SwiftUI
 
 struct EditTeamPerformersView: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     
     let teamName: String
     @State private var showCreatePerformer = false
     
     var sortedKnownPerformers: [String] {
-        festivalViewModel.knownPerformers.sorted()
+        scheduleViewModel.knownPerformers.sorted()
     }
     
     var body: some View {
@@ -47,18 +47,18 @@ struct EditTeamPerformersView: View {
         return Binding<Bool>(
             get: {
                 // Check if the performer is in any performance for this team
-                festivalViewModel.performances
+                scheduleViewModel.performances
                     .filter { $0.teamName == teamName }
                     .contains { $0.performers.contains(performer) }
             },
             set: { isOn in
                 if isOn {
                     // Add the performer to the team
-                    festivalViewModel.addPerformer(named: performer, toTeam: teamName)
+                    scheduleViewModel.addPerformer(named: performer, toTeam: teamName)
                 } else {
                     // Remove the performer from the team
-//                    festivalViewModel.deletePerformer(named: performer, fromTeam: teamName)
-                    festivalViewModel.removePerformerFromFirebase(teamName: teamName, performerName: performer)
+//                    scheduleViewModel.deletePerformer(named: performer, fromTeam: teamName)
+                    scheduleViewModel.removePerformerFromFirebase(teamName: teamName, performerName: performer)
                 }
             }
         )

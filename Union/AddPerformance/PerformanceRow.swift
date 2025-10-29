@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PerformanceRow: View {
-    @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     let performance: Performance
     @State private var performerURLs: [String: URL] = [:]
     
@@ -46,7 +46,7 @@ struct PerformanceRow: View {
     private func loadPerformerURLs() async {
         for performer in performance.performers {
             if performerURLs[performer] == nil {
-                if let url = await festivalViewModel.getPerformerImageURL(for: performer) {
+                if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
                     performerURLs[performer] = url
                 }
             }
