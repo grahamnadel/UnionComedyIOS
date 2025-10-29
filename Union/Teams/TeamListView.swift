@@ -2,13 +2,11 @@ import SwiftUI
 
 struct TeamListView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State private var searchText = ""   // Search field text
-    
-    // Filtered & sorted teams
+
     var filteredTeams: [String] {
-//        FIXME: load teams from a separate teams collection
-//        let teams = Set(festivalViewModel.performances.map { $0.teamName })
-        let teams = festivalViewModel.teams.map {$0.name}
+        let teams = festivalViewModel.teams.map { $0.name }
         if searchText.isEmpty {
             return teams.sorted()
         } else {
@@ -17,33 +15,41 @@ struct TeamListView: View {
             }.sorted()
         }
     }
-    
+
     var body: some View {
         NavigationStack {
             VStack {
-                // 🔍 Add the Search Bar
                 SearchBar(searchCategory: "team", searchText: $searchText)
                     .padding(.horizontal)
-                
-                List(filteredTeams, id: \.self) { team in
-                    HStack {
-                        Text(team)
-                            .font(.body)
-                        
-                        Spacer()
-                        
-                        // Show star if team is a favorite
-                        if festivalViewModel.favoriteTeams.contains(team) {
-                            Image(systemName: "star.fill")
-                                .foregroundColor(festivalViewModel.favoriteTeamColor)
+
+                List {
+                    ForEach(filteredTeams, id: \.self) { team in
+                        HStack {
+                            Text(team)
+                                .font(.body)
+                            
+                            Spacer()
+                            
+                            if festivalViewModel.favoriteTeams.contains(team) {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(festivalViewModel.favoriteTeamColor)
+                            }
+                        }
+                        .contentShape(Rectangle())
+                        .background(
+                            NavigationLink("", destination: TeamDetailView(teamName: team))
+                                .opacity(0)
+                        )
+                        .padding(.vertical, 4)
+                    }
+                    // Enable deletion only for owners
+                    .onDelete { indexSet in
+                        guard authViewModel.role == .owner else { return }
+                        for index in indexSet {
+                            let teamToDelete = filteredTeams[index]
+                            festivalViewModel.deleteTeam(named: teamToDelete)
                         }
                     }
-                    .contentShape(Rectangle())  // Make entire row tappable
-                    .background(
-                        NavigationLink("", destination: TeamDetailView(teamName: team))
-                            .opacity(0) // Invisible link for full-row navigation
-                    )
-                    .padding(.vertical, 4)
                 }
                 .listStyle(.insetGrouped)
                 .refreshable {

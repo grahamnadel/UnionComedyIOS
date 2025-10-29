@@ -682,5 +682,38 @@ class FestivalViewModel: ObservableObject {
         print("unBooked: \(unBooked)\n underBooked: \(underBooked)\n fullyBooked: \(fullyBooked)\n overBooked: \(overBooked)\n")
         return (unBooked, underBooked, fullyBooked, overBooked)
     }
+    
+    
+    func deleteTeam(named teamName: String) {
+        // Find all performances in memory for this team
+        let teamPerformances = self.performances.filter { $0.teamName == teamName }
+        
+        // Call deletePerformance on each one
+        for performance in teamPerformances {
+            self.deletePerformance(performance)
+        }
+        
+        // Delete the team document itself
+        let db = Firestore.firestore()
+        db.collection("teams")
+            .whereField("name", isEqualTo: teamName)
+            .getDocuments { snapshot, error in
+                guard let document = snapshot?.documents.first, error == nil else {
+                    print("No team found or error: \(error?.localizedDescription ?? "unknown")")
+                    return
+                }
+                
+                db.collection("teams").document(document.documentID).delete { error in
+                    if let error = error {
+                        print("Error deleting team \(teamName): \(error)")
+                    } else {
+                        print("✅ Deleted team \(teamName) from teams collection")
+                        DispatchQueue.main.async {
+                            self.teams.removeAll { $0.name == teamName }
+                        }
+                    }
+                }
+            }
+    }
 }
 
