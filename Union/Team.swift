@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 //This is the Team structure for cage match
 
-struct Team: Identifiable {
+struct Team: Identifiable, Decodable {
     var name: String
-    let id: UUID
-    let color: Color
+    let id: String
+    var performers: [String]
 }

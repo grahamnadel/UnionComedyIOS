@@ -23,7 +23,8 @@ struct VoteView: View {
                         viewModel.voteFor(team)
                         teamVotedFor = team.name
                     }) {
-                        TeamView(teamColor: team.color, teamName: team.name)
+//                        FIXME: Temporary color replacement
+                        TeamView(teamColor: Color.blue, teamName: team.name)
                     }
                 }
             }

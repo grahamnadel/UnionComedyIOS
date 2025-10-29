@@ -6,7 +6,9 @@ struct TeamListView: View {
     
     // Filtered & sorted teams
     var filteredTeams: [String] {
-        let teams = Set(festivalViewModel.performances.map { $0.teamName })
+//        FIXME: load teams from a separate teams collection
+//        let teams = Set(festivalViewModel.performances.map { $0.teamName })
+        let teams = festivalViewModel.teams.map {$0.name}
         if searchText.isEmpty {
             return teams.sorted()
         } else {
@@ -46,6 +48,7 @@ struct TeamListView: View {
                 .listStyle(.insetGrouped)
                 .refreshable {
                     festivalViewModel.loadData()
+                    festivalViewModel.loadTeams()
                 }
             }
             .navigationTitle("Teams")

@@ -9,16 +9,6 @@ class FirebaseManager {
     
     var votes: [String: Int] = [:]
     
-    private init() {
-//        Auth.auth().signInAnonymously { result, error in
-//            if let e = error {
-//                print("Auth error: \(e)")
-//            } else {
-//                print("Signed in anonymously as UID: \(result?.user.uid ?? "")")
-//            }
-//        }
-    }
-    
     func voteForTeam(_ teamName: String) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         db.collection("votes").document(uid).setData([
@@ -91,23 +81,20 @@ class FirebaseManager {
                 let exists = !(snapshot?.documents.isEmpty ?? true)
                 completion(exists)
             }
+        
+        db.collection("teams")
+            .whereField("name", isEqualTo: teamName)
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("Error checking team name: \(error.localizedDescription)")
+                    completion(false)
+                    return
+                }
+                
+                let exists = !(snapshot?.documents.isEmpty ?? true)
+                completion(exists)
+            }
     }
-    
-    
-    //    func checkForExistingPerformers(performerName: String, completion: @escaping (Bool) -> Void) {
-    //        db.collection("performers")
-    //            .whereField("name", isEqualTo: performerName)
-    //            .getDocuments { snapshot, error in
-    //                if let error = error {
-    //                    print("Error checking performer name: \(error.localizedDescription)")
-    //                    completion(false)
-    //                    return
-    //                }
-    //
-    //                let exists = !(snapshot?.documents.isEmpty ?? true)
-    //                completion(exists)
-    //            }
-    //    }
     
     
     //    Check to see if there are any performers not in the Performers collection. If not, add them
@@ -192,7 +179,42 @@ class FirebaseManager {
                 self.checkForExistingPerformers(for: performerIds)
             }
         }
+        self.createTeam(teamName: teamName, performers: performerIds)
     }
+    
+    func createTeam(teamName: String, performers: [String]) {
+        print("Called createTeam")
+            // 1. Check if a team with this name already exists in the "teams" collection
+            db.collection("teams")
+                .whereField("name", isEqualTo: teamName)
+                .getDocuments { [weak self] snapshot, error in
+                    guard let self = self else { return }
+                    
+                    if let error = error {
+                        print("Error checking for existing team in 'teams' collection: \(error)")
+                        return
+                    }
+
+                    // 2. If documents are found, the team already exists. Do not create a duplicate.
+                    if !(snapshot?.documents.isEmpty ?? true) {
+                        print("⚠️ Team '\(teamName)' already exists in the 'teams' collection. Skipping creation.")
+                        return
+                    }
+                    
+                    // 3. If no documents are found, proceed with creating the new team
+                    let id = UUID().uuidString
+                    self.db.collection("teams").document(id).setData([
+                        "name": teamName,
+                        "performers": performers
+                    ]) { error in
+                        if let error = error {
+                            print("Error writing team to 'teams' collection: \(error)")
+                        } else {
+                            print("✅ Team '\(teamName)' successfully written to 'teams' collection!")
+                        }
+                    }
+                }
+        }
     
     func loadFestivalPerformers(completion: @escaping (Set<String>) -> Void ) {
         db.collection("performers").getDocuments { snapshot, error in
@@ -218,7 +240,7 @@ class FirebaseManager {
         }
     }
     
-    func loadFestivalTeams(completion: @escaping ([TeamData]) -> Void) {
+    func loadFestivalTeamsWithPerformances(completion: @escaping ([TeamData]) -> Void) {
         db.collection("festivalTeams").getDocuments { (snapshot, error) in
             if let error = error {
                 print("❌ Error loading teams: \(error.localizedDescription)")
