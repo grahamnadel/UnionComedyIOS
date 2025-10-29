@@ -22,7 +22,7 @@ struct DateListView: View {
 
             let matchesShowType: Bool
             if let selectedType = showType {
-                matchesShowType = ShowType.dateToShow(date: performance.showTime) == selectedType.displayName
+                matchesShowType = ShowType.dateToShow(date: performance.showTime)?.displayName == selectedType.displayName
             } else {
                 matchesShowType = true
             }
@@ -48,7 +48,7 @@ struct DateListView: View {
 
             let matchesShowType: Bool
             if let selectedType = showType {
-                matchesShowType = ShowType.dateToShow(date: performance.showTime) == selectedType.displayName
+                matchesShowType = ShowType.dateToShow(date: performance.showTime)?.displayName == selectedType.displayName
             } else {
                 matchesShowType = true
             }
@@ -91,7 +91,7 @@ struct DateListView: View {
             List {
                 ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
                     Section(header: Text(showTime, style: .date)) {
-                        if let showType = ShowType.dateToShow(date: showTime) {
+                        if let showType = ShowType.dateToShow(date: showTime)?.displayName {
                             HStack {
                                 Text(showType).bold()
                                 Spacer()

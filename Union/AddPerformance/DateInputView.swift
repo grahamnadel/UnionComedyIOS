@@ -10,18 +10,18 @@ import SwiftUI
 
 struct DateInput: View {
     let selectedShowType: ShowType?
-    @Binding var customDate: Date
+    @Binding var specialDate: Date
     
     var body: some View {
-        if selectedShowType == .custom || selectedShowType == nil {
-            // Use a full date/time picker for custom
-            DatePicker("Date & Time", selection: $customDate, displayedComponents: [.date, .hourAndMinute])
+        if selectedShowType == .special || selectedShowType == nil {
+            // Use a full date/time picker for special
+            DatePicker("Date & Time", selection: $specialDate, displayedComponents: [.date, .hourAndMinute])
         } else if let weekday = selectedShowType?.weekday {
             // Restrict picker to this weekday only
             DatePicker(
                 "\(weekday)s",
                 selection: Binding(
-                    get: { customDate },
+                    get: { specialDate },
                     set: { newValue in
                         let calendar = Calendar.current
                         
@@ -31,7 +31,7 @@ struct DateInput: View {
                             
                             if newWeekday == targetWeekday {
                                 // Allow if it matches the target weekday
-                                customDate = newValue
+                                specialDate = newValue
                             } else {
                                 // Snap to the *nearest* next valid weekday
                                 if let nextMatching = calendar.nextDate(
@@ -39,12 +39,12 @@ struct DateInput: View {
                                     matching: DateComponents(weekday: targetWeekday),
                                     matchingPolicy: .nextTime
                                 ) {
-                                    customDate = nextMatching
+                                    specialDate = nextMatching
                                 }
                             }
                         } else {
                             // Fallback if weekday string is invalid
-                            customDate = newValue
+                            specialDate = newValue
                         }
                     }
                 ),

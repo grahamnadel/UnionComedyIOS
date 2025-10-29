@@ -5,7 +5,7 @@ struct AddPerformanceView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var festivalViewModel: FestivalViewModel
     
-    @State private var date = Date()
+    @State private var date = Date.nextFriday730PM
     @State private var selectedDates: Set<Date> = Set()
     @State private var teamName = ""
     @State private var selectedTeamName: String? = nil
@@ -13,15 +13,15 @@ struct AddPerformanceView: View {
     @State private var performerInput = ""
     @State private var performerInputs: Set<PerformerInput> = Set()
     
-    @State private var performanceTeamCount: Int? = nil
-    @State private var secondSelectedTeamName: String? = nil
-    
+    @State private var showOverbookAlert = false
+    @State private var overbookedDates: [Date] = []
+    @State private var proceedAnyway = false
     
     @State private var selectedShowType: ShowType? = nil
-    @State private var customDate = Date()
+    @State private var specialDate = Date()
     
     var isShowTypeSelected: Bool {
-        selectedShowType != nil && selectedShowType != .custom
+        selectedShowType != nil && selectedShowType != .special
     }
     
     // Computed property to get all unique team names from performances
@@ -50,7 +50,7 @@ struct AddPerformanceView: View {
 // MARK: - Add Dates
                 DateSelectionSection(
                                     selectedShowType: $selectedShowType,
-                                    customDate: $customDate,
+                                    specialDate: $specialDate,
                                     selectedDates: $selectedDates,
                                     date: $date
                                 )
@@ -124,6 +124,29 @@ struct AddPerformanceView: View {
                         .disabled(teamName.isEmpty || performerInputs.isEmpty || selectedDates.isEmpty)
                 }
             }
+            .alert(isPresented: $showOverbookAlert) {
+                Alert(
+                    title: Text("Overbooking Warning"),
+                    message: Text(
+                        "The following shows would be overbooked:\n" +
+                        overbookedDates.map {
+                            if let showType = ShowType.dateToShow(date: $0) {
+                                return "\(showType.displayName) at \($0.formatted(.dateTime.hour().minute()))"
+                            } else {
+                                return $0.formatted(.dateTime.hour().minute())
+                            }
+                        }.joined(separator: "\n")
+                    ),
+                    primaryButton: .destructive(Text("Cancel")) {
+                        // Just dismiss the alert
+                    },
+                    secondaryButton: .default(Text("Proceed")) {
+                        // User wants to proceed anyway
+                        proceedAnyway = true
+                        savePerformance()
+                    }
+                )
+            }
             .onAppear {
                 if let firstTeam = allTeams.first {
                     selectedTeamName = firstTeam
@@ -164,21 +187,65 @@ struct AddPerformanceView: View {
     }
     
     private func savePerformance() {
-        // Create the performance object and add it via the view model.
         let teamToSave = teamName.isEmpty ? newTeamNameInput : teamName
-        
         let selectedDatesArray = Array(selectedDates)
-        festivalViewModel.createPerformance(id: UUID().uuidString, teamName: teamToSave, performerIds: performerInputs.map { $0.name }, dates: selectedDatesArray)
         
-        // Save any images that were associated with performers.
-        for performer in performerInputs {
-            if let imageData = performer.imageData {
-                Task { @MainActor in
-                    await festivalViewModel.savePerformerImage(for: performer.name, imageData: imageData)
+        // Check for overbooked dates
+        var overbooked: [Date] = []
+        for date in selectedDatesArray {
+            if let showType = ShowType.dateToShow(date: date),
+               let requiredTeams = showType.requiredTeamCount {
+                
+                let existingCount = festivalViewModel.performances.filter { $0.showTime == date }.count
+                if existingCount + 1 > requiredTeams {
+                    overbooked.append(date)
                 }
             }
         }
         
+        if !overbooked.isEmpty && !proceedAnyway {
+            // Trigger alert
+            overbookedDates = overbooked
+            showOverbookAlert = true
+            return
+        }
+        
+        // Save performance if no overbooking or user chooses to proceed
+        festivalViewModel.createPerformance(
+            id: UUID().uuidString,
+            teamName: teamToSave,
+            performerIds: performerInputs.map { $0.name },
+            dates: selectedDatesArray
+        )
+        
         dismiss()
+    }
+
+}
+
+extension Date {
+    static var nextFriday730PM: Date {
+        let calendar = Calendar.current
+        let now = Date()
+        
+        // 1. Find the date of the next Friday (weekday 6)
+        // This calculates the NEXT Friday, *regardless* of the time of day today.
+        let nextFriday = calendar.nextDate(
+            after: now,
+            matching: DateComponents(weekday: 6), // Friday is 6 in Gregorian
+            matchingPolicy: .nextTime,
+            direction: .forward
+        ) ?? now
+        
+        // 2. 🎯 CORRECTED LINE: Set the time to 7:30 PM (19:30:00)
+        // We use date(bySettingHour:...) to apply the specific time to the found date.
+        let targetDate = calendar.date(
+            bySettingHour: 19, // 7 PM
+            minute: 30,
+            second: 0,
+            of: nextFriday
+        ) ?? nextFriday
+        
+        return targetDate
     }
 }

@@ -10,29 +10,29 @@ import SwiftUI
 
 struct DateSelectionSection: View {
     @Binding var selectedShowType: ShowType?
-    @Binding var customDate: Date
+    @Binding var specialDate: Date
     @Binding var selectedDates: Set<Date>
     @Binding var date: Date
     
     var body: some View {
         Section(header: Text("Add Dates")) {
             Picker("Show Type", selection: $selectedShowType) {
-                Text("Custom Date/Time").tag(nil as ShowType?)
+                Text("Special Date/Time").tag(nil as ShowType?)
                 
-                ForEach(ShowType.allCases.filter { $0 != .custom }) { type in
+                ForEach(ShowType.allCases.filter { $0 != .special }) { type in
                     Text(type.displayName).tag(type as ShowType?)
                 }
             }
             
             // Use a specific subview for the DatePicker logic
-            DateInput(selectedShowType: selectedShowType, customDate: $customDate)
+            DateInput(selectedShowType: selectedShowType, specialDate: $specialDate)
 
             Button("Add Date") {
                 let dateToAdd: Date
-                if let type = selectedShowType, type != .custom, let defaultTime = type.defaultTime {
-                    dateToAdd = combineDate(date: customDate, hour: defaultTime.hour, minute: defaultTime.minute)
+                if let type = selectedShowType, type != .special, let defaultTime = type.defaultTime {
+                    dateToAdd = combineDate(date: specialDate, hour: defaultTime.hour, minute: defaultTime.minute)
                 } else {
-                    dateToAdd = customDate
+                    dateToAdd = specialDate
                 }
                 selectedDates.insert(dateToAdd)
             }

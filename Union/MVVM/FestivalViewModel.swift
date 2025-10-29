@@ -11,6 +11,11 @@ class FestivalViewModel: ObservableObject {
     @Published var knownPerformers: Set<String> = []
     @Published var isOwnerAdmin = false
     
+    @Published var unBooked: [ShowType: [Date]] = [:]
+    @Published var underBooked: [ShowType: [Date]] = [:]
+    @Published var fullyBooked: [ShowType: [Date]] = [:]
+    @Published var overBooked: [ShowType: [Date]] = [:]
+    
     @Published var pendingUsers: [AppUser] = []
     @Published var users: [AppUser] = []
     
@@ -454,6 +459,7 @@ class FestivalViewModel: ObservableObject {
                     self.knownPerformers = performers
                     print("known performers: \(self.knownPerformers)")
                 }
+                (self.unBooked, self.underBooked, self.fullyBooked, self.overBooked) = self.makeShowGroups(performances: self.performances)
             }
         } catch {
             print("No previous data found or failed to load:", error)
@@ -566,22 +572,53 @@ class FestivalViewModel: ObservableObject {
         loadData()
     }
     
-    func overBookingProtection(performance: Performance) -> Int {
-        // 1. Group all performances by their start time
+//    Calculate the number of shows at a showTime
+    private func makeShowGroups(performances: [Performance]) -> (
+        unBooked: [ShowType: [Date]],
+        underBooked: [ShowType: [Date]],
+        fullyBooked: [ShowType: [Date]],
+        overBooked: [ShowType: [Date]]
+    ) {
+        var unBooked = [ShowType: [Date]]()
+        var underBooked = [ShowType: [Date]]()
+        var fullyBooked = [ShowType: [Date]]()
+        var overBooked = [ShowType: [Date]]()
+        
+        // 1. Group performances by their showTime
         let groupedByTime = Dictionary(grouping: performances, by: { $0.showTime })
         
-        // 2. Find how many performances share the same showTime as the one passed in
-        let sameTimePerformances = groupedByTime[performance.showTime] ?? []
+        // 2. Count how many performances are at each time
+        let showCounts = groupedByTime.mapValues { $0.count }
         
-        // 3. Return how many there are (including this one)
-        return sameTimePerformances.count
-    }
-    
-    func checkPerformancesForDate(date: Set<Date>) -> [Performance]? {
-        for performance in performances {
-            
+        // 3. Categorize each showTime
+        for (showTime, count) in showCounts {
+            if let showType = ShowType.dateToShow(date: showTime) {
+                if let requiredTeamCount = showType.requiredTeamCount {
+                    switch count {
+                    case 0:
+                        unBooked[showType, default: []].append(showTime)
+                    case 1..<requiredTeamCount:
+                        underBooked[showType, default: []].append(showTime)
+                    case requiredTeamCount:
+                        fullyBooked[showType, default: []].append(showTime)
+                    default:
+                        overBooked[showType, default: []].append(showTime)
+                    }
+                } else {
+                    // special shows: consider unBooked if 0, underBooked otherwise
+                    if count == 0 {
+                        unBooked[showType, default: []].append(showTime)
+                    } else {
+                        underBooked[showType, default: []].append(showTime)
+                    }
+                }
+            } else {
+                // Unknown or special shows: treat as underBooked
+                underBooked[.special, default: []].append(showTime)
+            }
         }
-        return nil
+        print("unBooked: \(unBooked)\n underBooked: \(underBooked)\n fullyBooked: \(fullyBooked)\n overBooked: \(overBooked)\n")
+        return (unBooked, underBooked, fullyBooked, overBooked)
     }
 }
 

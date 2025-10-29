@@ -8,7 +8,7 @@ enum ShowType: String, CaseIterable, Identifiable {
     case saturdayWeekendShow
     case pickle
     case cageMatch
-    case custom
+    case special
 
     var id: String { rawValue }
 
@@ -19,7 +19,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .saturdayWeekendShow: return "Saturday Weekend Show"
         case .pickle: return "Pickle"
         case .cageMatch: return "Cage Match"
-        case .custom: return "Custom"
+        case .special: return "Special"
         }
     }
 
@@ -28,7 +28,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .fridayNightFusion, .fridayWeekendShow: return "Friday"
         case .saturdayWeekendShow, .pickle: return "Saturday"
         case .cageMatch: return "Sunday"
-        case .custom: return nil
+        case .special: return nil
         }
     }
 
@@ -39,86 +39,38 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .saturdayWeekendShow: return (19, 30)
         case .pickle: return (21, 0)
         case .cageMatch: return (19, 0)
-        case .custom: return nil
+        case .special: return nil
         }
     }
     
-    static func dateToShow(date: Date) -> String? {
-        print("Date: \(date)")
+    var requiredTeamCount: Int? {
+        switch self {
+        case .fridayNightFusion: return 2
+        case .fridayWeekendShow: return 2
+        case .saturdayWeekendShow: return 2
+        case .pickle: return 1
+        case .cageMatch: return 2
+        case .special: return nil
+        }
+    }
+    
+    static func dateToShow(date: Date) -> ShowType? {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.weekday, .hour, .minute], from: date)
         
         let weekdayName = calendar.weekdaySymbols[(components.weekday ?? 1) - 1]
         let hour = components.hour ?? 0
-        print("hour: \(hour)")
         let minute = components.minute ?? 0
-        for showType in ShowType.allCases {
-            if let showTypeTime = showType.defaultTime {
-                if showTypeTime == (hour, minute) && showType.weekday == weekdayName {
-                    return showType.displayName
-                }
-            } else {
-                print("Could not unwrap showTypeTime")
-            }
-        }
-        print("returning special show for hour: \(hour), minute: \(minute), \(weekdayName)")
-        return "Special Show"
-    }
-}
-
-// MARK: - Struct for a specific show occurrence
-struct RegularTimes: Identifiable {
-    let showType: ShowType
-    let date: Date
-
-    var id: String { "\(showType.rawValue)_\(date.timeIntervalSince1970)" }
-    var displayString: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .full
-        formatter.timeStyle = .short
-        return "\(showType.displayName) – \(formatter.string(from: date))"
-    }
-
-    // Generate upcoming occurrences
-    static func upcoming(for showType: ShowType, count: Int = 4) -> [RegularTimes] {
-        guard let weekday = showType.weekday,
-              let time = showType.defaultTime else { return [] }
         
-        let dates = nextDay(day: weekday, count: count, hour: time.hour, minute: time.minute)
-        return dates.map { RegularTimes(showType: showType, date: $0) }
-    }
-
-    // Helper function to calculate next dates
-    private static func weekdayNumber(from day: String) -> Int? {
-        switch day.lowercased() {
-        case "sunday": return 1
-        case "monday": return 2
-        case "tuesday": return 3
-        case "wednesday": return 4
-        case "thursday": return 5
-        case "friday": return 6
-        case "saturday": return 7
-        default: return nil
-        }
-    }
-
-    private static func nextDay(day: String, count: Int, hour: Int, minute: Int) -> [Date] {
-        guard let weekday = weekdayNumber(from: day) else { return [] }
-
-        var dates: [Date] = []
-        let calendar = Calendar.current
-        var date = Date()
-
-        while dates.count < count {
-            if let nextDate = calendar.nextDate(
-                after: date,
-                matching: DateComponents(hour: hour, minute: minute, weekday: weekday),
-                matchingPolicy: .nextTime
-            ) {
-                dates.append(nextDate)
-                date = nextDate.addingTimeInterval(1)
+        for showType in ShowType.allCases {
+            if let showTime = showType.defaultTime {
+                if showTime == (hour, minute) && showType.weekday == weekdayName {
+                    return showType
+                }
             }
         }
-        return dates
+        
+        return nil // or .custom if you prefer
     }
+
 }
