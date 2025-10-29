@@ -23,9 +23,7 @@ import Foundation
 //    Say what performaces are over or under booked
 
 // Current work:
-    // Deleting all performances for a team deletes the team. Save teams and their separately in the teams collection
-//        Adding a team will create two instances of the team in the teams collection
-//        None of the teams from the teams collection appear in the TeamListView
+//    A team in the Teams list without performances will not show the performers
 
 
 //MARK: Completed work
