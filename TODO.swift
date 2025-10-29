@@ -8,7 +8,6 @@
 import Foundation
 //Priority low to high
 // Separate Firebase and scheduleViewModel
-// Rename scheduleViewModel to scheduleViewModel
 
 // Organize files
 
@@ -36,3 +35,4 @@ import Foundation
 //  When a performer is on a team without performances, it will not say those teams in the performance row view
 //  Add deleting for teams
 //  Add warnings for deleting
+// Rename festivalViewModel to scheduleViewModel
