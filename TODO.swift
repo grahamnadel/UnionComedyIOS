@@ -23,7 +23,9 @@ import Foundation
 //    Say what performaces are over or under booked
 
 // Current work:
-//    A team in the Teams list without performances will not show the performers
+//  Add deleting for teams
 
 
 //MARK: Completed work
+//    A team in the Teams list without performances will not show the performers
+//  When a performer is on a team without performances, it will not say those teams in the performance row view

@@ -19,10 +19,17 @@ struct PerformerDetailView: View {
     }
     
     // Get unique teams for this performer
+//    var teamsForPerformer: [String] {
+//        let teams = Set(performancesForPerformer.map { $0.teamName })
+//        return Array(teams).sorted()
+//    }
     var teamsForPerformer: [String] {
-        let teams = Set(performancesForPerformer.map { $0.teamName })
-        return Array(teams).sorted()
+        festivalViewModel.teams
+            .filter { $0.performers.contains(performer) }
+            .map { $0.name }
+            .sorted()
     }
+
     
     var body: some View {
         ScrollView {

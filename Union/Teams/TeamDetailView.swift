@@ -35,36 +35,37 @@ struct TeamDetailView: View {
                             }
                         }
                     }
-                }
-
-                // MARK: - Performers
-                if let team = team {
-                    Section(header: Text("Performers")) {
-                        ForEach(team.performers, id: \.self) { performer in
-                            NavigationLink(destination: PerformerDetailView(performer: performer)) {
-                                HStack {
-                                    AsyncImage(url: performerURLs[performer]) { image in
-                                        image.resizable().aspectRatio(contentMode: .fill)
-                                    } placeholder: {
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .fill(Color.gray.opacity(0.3))
-                                            .overlay(
-                                                Image(systemName: "person.fill")
-                                                    .foregroundColor(.gray)
-                                            )
+                } else {
+                    
+                    // MARK: - Performers
+                    if let team = team {
+                        Section(header: Text("Performers")) {
+                            ForEach(team.performers, id: \.self) { performer in
+                                NavigationLink(destination: PerformerDetailView(performer: performer)) {
+                                    HStack {
+                                        AsyncImage(url: performerURLs[performer]) { image in
+                                            image.resizable().aspectRatio(contentMode: .fill)
+                                        } placeholder: {
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .fill(Color.gray.opacity(0.3))
+                                                .overlay(
+                                                    Image(systemName: "person.fill")
+                                                        .foregroundColor(.gray)
+                                                )
+                                        }
+                                        .frame(width: 50, height: 50)
+                                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                                        
+                                        Text(performer)
+                                            .font(.body)
+                                            .foregroundColor(.primary)
                                     }
-                                    .frame(width: 50, height: 50)
-                                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                                    
-                                    Text(performer)
-                                        .font(.body)
-                                        .foregroundColor(.primary)
+                                    .padding(.vertical, 4)
                                 }
-                                .padding(.vertical, 4)
                             }
-                        }
-                        .task {
-                            await loadPerformerURLs()
+                            .task {
+                                await loadPerformerURLs()
+                            }
                         }
                     }
                 }

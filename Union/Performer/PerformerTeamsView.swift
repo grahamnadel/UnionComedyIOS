@@ -1,10 +1,10 @@
 import SwiftUI
 
-// FIXME: Not showing Teams
 struct PerformerTeamsView: View {
     let teamsForPerformer: [String]
     let performancesForPerformer: [Performance]
     let name: String
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -16,16 +16,36 @@ struct PerformerTeamsView: View {
                 Text("Time")
                     .font(.caption)
             }
-            ForEach(performancesForPerformer, id: \.id) { performance in
-                HStack {
-                    Text("\(performance.teamName)")
-//                    TODO: Make this format a view and make it consistent for all views
-                    Spacer()
-                    Text(performance.showTime, style: .date)
-                        .font(.caption)
-                    Spacer()
-                    Text(performance.showTime, style: .time)
-                        .font(.caption)
+            .padding()
+            
+            ForEach(teamsForPerformer, id: \.self) { team in
+                // Find performances for this team
+                let teamPerformances = performancesForPerformer.filter { $0.teamName == team }
+                
+                if teamPerformances.isEmpty {
+                    // Team has no performances
+                    HStack {
+                        Text(team)
+                        Spacer()
+                        Text("-")
+                            .font(.caption)
+                        Spacer()
+                        Text("-")
+                            .font(.caption)
+                    }
+                } else {
+                    // Team has performances: show each
+                    ForEach(teamPerformances, id: \.id) { performance in
+                        HStack {
+                            Text(performance.teamName)
+                            Spacer()
+                            Text(performance.showTime, style: .date)
+                                .font(.caption)
+                            Spacer()
+                            Text(performance.showTime, style: .time)
+                                .font(.caption)
+                        }
+                    }
                 }
             }
         }
