@@ -39,10 +39,11 @@ struct InitialLoginView: View {
             .padding(.horizontal)
             
             if isSignUp {
+                Text("Do you perform on a house team?")
+                    .foregroundColor(selectedRole == nil ? .red : .blue)
                 Picker("Role", selection: $selectedRole) {
-                    Text("Audience").tag(UserRole.audience as UserRole?)
-                    Text("Performer").tag(UserRole.performer as UserRole?)
-                    Text("Coach").tag(UserRole.coach as UserRole?)
+                    Text("Yes").tag(UserRole.performer as UserRole?)
+                    Text("No").tag(UserRole.audience as UserRole?)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal)

@@ -58,18 +58,19 @@ struct FestivalView: View {
                             Image(systemName: "plus")
                         }
                     }
-                    
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Menu {
-                            Button("Sign Out") {
-                                authViewModel.signOut()
-                            }
-                        } label: {
-                            Image(systemName: "gear")
+                }
+                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Menu {
+                        Button("Sign Out") {
+                            authViewModel.signOut()
                         }
+                    } label: {
+                        Image(systemName: "gear")
                     }
                 }
             }
+            
             .sheet(isPresented: $showAddPerformance) {
                 AddPerformanceView()
             }
