@@ -94,6 +94,7 @@
 		53DCF7F52EB1351700D67BEB /* TeamDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7F42EB1351700D67BEB /* TeamDetailSection.swift */; };
 		53DCF7F72EB1352D00D67BEB /* DateSelectionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7F62EB1352D00D67BEB /* DateSelectionSection.swift */; };
 		53DCF7F92EB135D000D67BEB /* DateInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7F82EB135D000D67BEB /* DateInputView.swift */; };
+		53DCF7FD2EB29FC000D67BEB /* SimpleAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7FC2EB29FC000D67BEB /* SimpleAlert.swift */; };
 		53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EAA6F12EA14F4E00BA49C6 /* Team.swift */; };
 /* End PBXBuildFile section */
 
@@ -177,6 +178,7 @@
 		53DCF7F42EB1351700D67BEB /* TeamDetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailSection.swift; sourceTree = "<group>"; };
 		53DCF7F62EB1352D00D67BEB /* DateSelectionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectionSection.swift; sourceTree = "<group>"; };
 		53DCF7F82EB135D000D67BEB /* DateInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateInputView.swift; sourceTree = "<group>"; };
+		53DCF7FC2EB29FC000D67BEB /* SimpleAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAlert.swift; sourceTree = "<group>"; };
 		53EAA6F12EA14F4E00BA49C6 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -331,6 +333,7 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				53DCF7FC2EB29FC000D67BEB /* SimpleAlert.swift */,
 				53DCF7E22EB019E200D67BEB /* Capacity.swift */,
 				53DCF7E82EB01AA500D67BEB /* Show.swift */,
 				53B815D52EAD16B400854645 /* TODO.swift */,
@@ -666,6 +669,7 @@
 				533468782E426E9D00E069DB /* FestivalView.swift in Sources */,
 				53B815D22EAAD56F00854645 /* KeyChainHelper.swift in Sources */,
 				530C184D2E1D74D8000A80E0 /* SettingsView.swift in Sources */,
+				53DCF7FD2EB29FC000D67BEB /* SimpleAlert.swift in Sources */,
 				53DCF7DF2EB015D200D67BEB /* RestrictedCalendar.swift in Sources */,
 				53DCF7F72EB1352D00D67BEB /* DateSelectionSection.swift in Sources */,
 				531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */,

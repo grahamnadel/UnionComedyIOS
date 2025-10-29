@@ -8,6 +8,9 @@ struct DateListView: View {
     @State private var searchText = ""   // Search field text
     @State private var selectedPerformance: Performance? = nil
     @State private var showType: ShowType? = nil
+    @State private var showDeleteAlert = false
+    @State private var performanceToDelete: Performance?
+
     
     // Filtered and grouped performances
     private var groupedPerformances: [(key: Date, value: [Performance])] {
@@ -111,8 +114,9 @@ struct DateListView: View {
                                 }
                         }
                         .onDelete(perform: authViewModel.role == .owner ? { indexSet in
-                            for index in indexSet {
-                                festivalViewModel.deletePerformance(performances[index])
+                            if let index = indexSet.first {
+                                performanceToDelete = performances[index]
+                                showDeleteAlert = true
                             }
                         } : nil)
                     }
@@ -130,5 +134,17 @@ struct DateListView: View {
         .sheet(item: $selectedPerformance) { performance in
             ShowtimeDetailView(performance: performance)
         }
+        .alert(isPresented: $showDeleteAlert) {
+            SimpleAlert.confirmDeletion(
+                title: "Delete Performance?",
+                message: "This will delete the selected performance permanently.",
+                confirmAction: {
+                    if let performance = performanceToDelete {
+                        festivalViewModel.deletePerformance(performance)
+                    }
+                }
+            )
+        }
+
     }
 }

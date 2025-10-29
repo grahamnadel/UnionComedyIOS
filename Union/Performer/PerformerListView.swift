@@ -10,6 +10,9 @@ struct PerformerListView: View {
     @State private var isShowingPhotoPicker = false
     @State private var searchText = ""
     @State private var performerImageURLs: [String: URL] = [:]  // Cache URLs by performer name
+    @State private var showDeleteAlert = false
+    @State private var performerToDelete: String?
+
 
     var filteredPerformers: [String] {
         let performers = festivalViewModel.knownPerformers
@@ -59,9 +62,9 @@ struct PerformerListView: View {
                         }
                     }
                     .onDelete(perform: authViewModel.role == .owner ? { indexSet in
-                        for index in indexSet {
-                            let performerToDelete = filteredPerformers[index]
-                            festivalViewModel.removePerformerFromFirebase(teamName: nil, performerName: performerToDelete)
+                        if let index = indexSet.first {
+                            performerToDelete = filteredPerformers[index]
+                            showDeleteAlert = true
                         }
                     } : nil)
                 }
@@ -88,7 +91,19 @@ struct PerformerListView: View {
                 }
             }
         }
+        .alert(isPresented: $showDeleteAlert) {
+            SimpleAlert.confirmDeletion(
+                title: "Delete Performer?",
+                message: "This will remove the performer from all teams and delete their profile.",
+                confirmAction: {
+                    if let performer = performerToDelete {
+                        festivalViewModel.removePerformerFromFirebase(teamName: nil, performerName: performer)
+                    }
+                }
+            )
+        }
     }
+    
 
     // 🔹 Load image URLs for all performers
     private func loadPerformerImageURLs() async {

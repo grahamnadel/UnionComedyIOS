@@ -4,6 +4,8 @@ struct TeamListView: View {
     @EnvironmentObject var festivalViewModel: FestivalViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var searchText = ""   // Search field text
+    @State private var showDeleteAlert = false
+    @State private var teamToDelete: String?
 
     var filteredTeams: [String] {
         let teams = festivalViewModel.teams.map { $0.name }
@@ -45,9 +47,9 @@ struct TeamListView: View {
                     // Enable deletion only for owners
                     .onDelete { indexSet in
                         guard authViewModel.role == .owner else { return }
-                        for index in indexSet {
-                            let teamToDelete = filteredTeams[index]
-                            festivalViewModel.deleteTeam(named: teamToDelete)
+                        if let index = indexSet.first {
+                            teamToDelete = filteredTeams[index]
+                            showDeleteAlert = true
                         }
                     }
                 }
@@ -58,6 +60,17 @@ struct TeamListView: View {
                 }
             }
             .navigationTitle("Teams")
+        }
+        .alert(isPresented: $showDeleteAlert) {
+            SimpleAlert.confirmDeletion(
+                title: "Delete Team?",
+                message: "This will remove the team and all its performances.",
+                confirmAction: {
+                    if let team = teamToDelete {
+                        festivalViewModel.deleteTeam(named: team)
+                    }
+                }
+            )
         }
     }
 }
