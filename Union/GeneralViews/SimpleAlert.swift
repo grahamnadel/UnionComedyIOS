@@ -24,6 +24,21 @@ struct SimpleAlert {
         )
     }
     
+    static func confirmChange(
+        title: String,
+        message: String,
+        confirmText: String = "Change",
+        cancelText: String = "Cancel",
+        confirmAction: @escaping () -> Void
+    ) -> Alert {
+        Alert(
+            title: Text(title),
+            message: Text(message),
+            primaryButton: .destructive(Text(confirmText), action: confirmAction),
+            secondaryButton: .cancel(Text(cancelText))
+        )
+    }
+    
     static func info(title: String, message: String, dismissText: String = "OK") -> Alert {
         Alert(
             title: Text(title),

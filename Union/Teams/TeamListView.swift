@@ -58,6 +58,9 @@ struct TeamListView: View {
                     scheduleViewModel.loadData()
                     scheduleViewModel.loadTeams()
                 }
+                .onAppear {
+                    scheduleViewModel.loadTeams()
+                }
             }
             .navigationTitle("Teams")
         }
