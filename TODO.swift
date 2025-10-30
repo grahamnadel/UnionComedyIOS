@@ -9,13 +9,7 @@ import Foundation
 //Priority low to high
 // Separate Firebase and scheduleViewModel
 
-// Organize files
-
 // Review and Edit code
-
-//Info page:
-    // Add descriptions for each show type
-    // Mention the jam?
 
 // Make it easy for owners to see if they must add shows
     // Check in to see if the current method suffices
@@ -23,12 +17,19 @@ import Foundation
 // Aesthetics
 //    Human Interface Guidelines
 
+// DEBUG:
+
+
 // TODAY:
-//    If I have a performer in app and then they make an account, what happens?
+//Info page:
+    // Add descriptions for each show type
+    // Mention the jam?
 //    Say what performaces are over or under booked
+//    Allow pending approval performers to use app as audience
+//    Change syntax: owner to admin
 
-// Current work:
-
+// MARK: Current work:
+//    DEBUG: If someone is a performer and I move them to audience, they remain in the performers list
 
 //MARK: Completed work
 //    A team in the Teams list without performances will not show the performers
@@ -36,3 +37,4 @@ import Foundation
 //  Add deleting for teams
 //  Add warnings for deleting
 // Rename festivalViewModel to scheduleViewModel
+// Organize files

@@ -50,7 +50,7 @@ struct PendingApprovalView: View {
                                 .pickerStyle(.menu)
                                 .onChange(of: appUser.role) { newValue in
                                     Task {
-                                        await scheduleViewModel.updateApproval(for: appUser)
+                                        await scheduleViewModel.updateRole(for: appUser)
                                     }
                                 }
                             }

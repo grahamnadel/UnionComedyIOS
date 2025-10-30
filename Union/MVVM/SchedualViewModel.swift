@@ -79,6 +79,7 @@ class ScheduleViewModel: ObservableObject {
     }
     
     func updateRole(for user: AppUser) async {
+        print("updating role to \(user.role)")
         do {
             let snapshot = try await Firestore.firestore()
                 .collection("users")
@@ -90,8 +91,17 @@ class ScheduleViewModel: ObservableObject {
                 return
             }
             
+//                        If the user will no longer be a performer, remove them from the performers
+            if let originalRole = document.get("role") as? String {
+                print("originalRole: \(originalRole)")
+                if originalRole == UserRole.coach.rawValue || originalRole == UserRole.performer.rawValue || originalRole == UserRole.owner.rawValue  && (user.role == UserRole.audience) {
+                    print("removing \(user.name) from \(user.role) due to role change")
+                    removePerformerFromFirebase(teamName: nil, performerName: user.name)
+                }
+            }
+            
             try await document.reference.updateData([
-                "role": user.role
+                "role": user.role.rawValue
             ])
         } catch {
             print("Error updating role for \(user.name)")
@@ -99,6 +109,7 @@ class ScheduleViewModel: ObservableObject {
     }
     
     func updateApproval(for user: AppUser) async {
+        print("user Role: \(user.role)")
         do {
             let snapshot = try await Firestore.firestore()
                 .collection("users")
