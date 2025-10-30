@@ -47,7 +47,7 @@ class ScheduleViewModel: ObservableObject {
                 print("No bio found for \(performerName)")
                 return nil
             }
-            var bio = document.data()["bio"] as? String ?? ""
+            let bio = document.data()["bio"] as? String ?? ""
             return bio
             
         } catch {

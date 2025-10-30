@@ -28,7 +28,7 @@ struct PendingApprovalView: View {
                                 Toggle(isOn: $pendingUser.approved) {
                                     Text("Approval of \(pendingUser.name) as a \(pendingUser.role)")
                                 }
-                                .onChange(of: pendingUser.approved) { newValue in
+                                .onChange(of: pendingUser.approved) {
                                     Task {
                                         await scheduleViewModel.updateApproval(for: pendingUser)
                                     }
@@ -48,7 +48,7 @@ struct PendingApprovalView: View {
                                     Text("Owner").tag(UserRole.owner)
                                 }
                                 .pickerStyle(.menu)
-                                .onChange(of: appUser.role) { newValue in
+                                .onChange(of: appUser.role) {
                                     Task {
                                         await scheduleViewModel.updateRole(for: appUser)
                                     }

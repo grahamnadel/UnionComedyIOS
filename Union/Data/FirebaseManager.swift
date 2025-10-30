@@ -104,7 +104,7 @@ class FirebaseManager {
         for name in performerNames {
             performersRef.whereField("name", isEqualTo: name).getDocuments { snapshot, error in
                 if let error = error {
-                    print("Error checking for performer: \(name) in performers collection")
+                    print("Error checking for performer: \(name) in performers collection. Error: \(error)")
                     return
                 }
                 
@@ -120,7 +120,7 @@ class FirebaseManager {
                     
                     performersRef.addDocument(data: newPerformerData) { error in
                         if let error = error {
-                            print("Error adding performer \(name)")
+                            print("Error adding performer \(name). Error: \(error)")
                         } else {
                             print("Successfully added \(name) to performers collection")
                         }
