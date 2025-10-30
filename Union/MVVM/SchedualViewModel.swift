@@ -474,10 +474,12 @@ class ScheduleViewModel: ObservableObject {
     
     func loadData() {
         // Clear existing data before loading new data
-        self.festivalTeams = []
-        self.performances = []
-        self.knownPerformers = []
-        self.teams = []
+            Task { @MainActor in
+                self.festivalTeams = []
+                self.performances = []
+                self.knownPerformers = []
+                self.teams = []
+            }
         
         do {
             FirebaseManager.shared.loadFestivalTeamsWithPerformances { teams in
