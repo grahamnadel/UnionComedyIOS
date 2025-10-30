@@ -1,5 +1,5 @@
 //
-//  AdminView.swift
+//  OwnerView.swift
 //  Union
 //
 //  Created by Graham Nadel on 10/22/25.
@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 import Firebase
 
-struct AdminView: View {
-    @EnvironmentObject var adminViewModel: AdminViewModel
+struct OwnerView: View {
+    @EnvironmentObject var ownerViewModel: OwnerViewModel
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(adminViewModel.users) { user in
+                ForEach(ownerViewModel.users) { user in
                     HStack {
                         VStack(alignment: .leading) {
                             Text(user.email)
@@ -32,7 +32,7 @@ struct AdminView: View {
                                 .foregroundColor(.green)
                         } else {
                             Button("Approve") {
-                                Task { await adminViewModel.approveUser(user) }
+                                Task { await ownerViewModel.approveUser(user) }
                             }
                             .buttonStyle(.borderedProminent)
                         }
@@ -41,10 +41,10 @@ struct AdminView: View {
             }
             .navigationTitle("User Management")
             .toolbar {
-                Button("Refresh") { Task { await adminViewModel.fetchUsers() } }
+                Button("Refresh") { Task { await ownerViewModel.fetchUsers() } }
             }
             .task {
-                await adminViewModel.fetchUsers()
+                await ownerViewModel.fetchUsers()
             }
         }
     }

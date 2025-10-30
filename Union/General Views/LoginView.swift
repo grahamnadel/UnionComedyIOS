@@ -40,7 +40,7 @@
 //        .alert("Login", isPresented: $showAlert) {
 //                    Button("Close", role: .cancel) { }
 //                } message: {
-//                    if scheduleViewModel.isAdminLoggedIn {
+//                    if scheduleViewModel.isOwnerLoggedIn {
 //                        Text("Login successful")
 //                    } else {
 //                        Text("Login failed: incorrect password")

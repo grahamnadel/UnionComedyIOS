@@ -44,7 +44,7 @@ struct MainView: View {
                 }
                 .sheet(isPresented: $showPasswordPrompt) {
                                     VStack(spacing: 20) {
-                                        Text("Enter Admin Password")
+                                        Text("Enter Owner Password")
                                             .font(.headline)
                                         
                                         SecureField("Password", text: $password)

@@ -1,5 +1,5 @@
 //
-//  AdminViewModel.swift
+//  OwnerViewModel.swift
 //  Union
 //
 //  Created by Graham Nadel on 10/22/25.
@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-class AdminViewModel: ObservableObject {
+class OwnerViewModel: ObservableObject {
     @Published var users: [AppUser] = []
     private let db = Firestore.firestore()
     

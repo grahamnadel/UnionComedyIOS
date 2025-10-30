@@ -10,7 +10,7 @@ class ScheduleViewModel: ObservableObject {
     @Published var performances: [Performance] = []
     @Published var teams: [Team] = []
     @Published var knownPerformers: Set<String> = []
-    @Published var isOwnerAdmin = false
+    @Published var isAdminOwner = false
     
     @Published var unBooked: [ShowType: [Date]] = [:]
     @Published var underBooked: [ShowType: [Date]] = [:]

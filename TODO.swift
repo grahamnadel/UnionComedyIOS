@@ -27,14 +27,16 @@ import Foundation
 // DEBUG:
 //    Changing a performer to audience will not remove them from teams
 
+// Tomorrow:
+//    Add warning for changing role Tomo
+
 // TODAY:
 //Info page:
     // Add descriptions for each show type
     // Mention the jam?
+
 //    Say what performances are over or under booked
 //    Allow pending approval performers to use app as audience
-//    Change syntax: owner to admin
-//    Add warning for changing role
 
 // MARK: Current work:
 
@@ -51,3 +53,4 @@ import Foundation
 
 // Date: 10/30/25
 //    DEBUG: If someone is a performer and I move them to audience, they remain in the performers list
+//    Change syntax: owner to owner

@@ -8,7 +8,7 @@ struct FestivalView: View {
         case date = "Date"
         case performers = "Performers"
         case teams = "Teams"
-        case pendingApproval = "Pending"
+        case pendingApproval = "Admin"
     }
     
     @EnvironmentObject var authViewModel: AuthViewModel
@@ -47,9 +47,9 @@ struct FestivalView: View {
                 
                 Spacer()
             }
-            .navigationTitle("Union Comedy Festival")
+            .navigationTitle("Union Comedy")
             .toolbar {
-                // Trailing plus button (only if admin logged in)
+                // Trailing plus button (only if owner logged in)
                 if authViewModel.role == .owner {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {

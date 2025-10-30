@@ -29,7 +29,7 @@ struct UnionApp: App {
     //    @StateObject var viewModel = ViewModel()
     @StateObject var scheduleViewModel = ScheduleViewModel()
     @StateObject var authViewModel = AuthViewModel()
-    @StateObject var adminViewModel = AdminViewModel()
+    @StateObject var ownerViewModel = OwnerViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -40,7 +40,7 @@ struct UnionApp: App {
             RootView()
                 .environmentObject(authViewModel)
                 .environmentObject(scheduleViewModel)
-                .environmentObject(adminViewModel)
+                .environmentObject(ownerViewModel)
             //            FestivalView()
             //                .environmentObject(scheduleViewModel)
         }
