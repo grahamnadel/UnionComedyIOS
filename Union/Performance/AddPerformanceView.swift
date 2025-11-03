@@ -126,7 +126,10 @@ struct AddPerformanceView: View {
                     Button("Cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") { savePerformance() }
+                    Button("Save") {
+                        savePerformance()
+                        scheduleViewModel.loadData()
+                    }
                         .disabled(teamName.isEmpty || performerInputs.isEmpty || selectedDates.isEmpty)
                 }
             }
