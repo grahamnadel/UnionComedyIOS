@@ -62,7 +62,7 @@ struct TeamListView: View {
                     scheduleViewModel.loadTeams()
                 }
             }
-            .navigationTitle("Teams")
+//            .navigationTitle("Teams")
         }
         .alert(isPresented: $showDeleteAlert) {
             SimpleAlert.confirmDeletion(

@@ -123,7 +123,7 @@ struct DateListView: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("Performances")
+//            .navigationTitle("Performances")
             .refreshable {
                 scheduleViewModel.loadData()
             }

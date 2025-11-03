@@ -47,7 +47,7 @@ struct FestivalView: View {
                 
                 Spacer()
             }
-            .navigationTitle("Union Comedy")
+//            .navigationTitle("Union Comedy")
             .toolbar {
                 // Trailing plus button (only if owner logged in)
                 if authViewModel.role == .owner {

@@ -68,6 +68,6 @@ struct PendingApprovalView: View {
             await scheduleViewModel.fetchPendingUsers()
             await scheduleViewModel.fetchUsers()
         }
-        .navigationTitle("Admin")
+//        .navigationTitle("Admin")
     }
 }

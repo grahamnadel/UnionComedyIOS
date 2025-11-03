@@ -74,7 +74,7 @@ struct PerformerListView: View {
                     await loadPerformerImageURLs()
                 }
             }
-            .navigationTitle("Performers")
+//            .navigationTitle("Performers")
             .task {
                 await loadPerformerImageURLs()
             }
