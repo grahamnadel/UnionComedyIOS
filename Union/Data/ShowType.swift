@@ -8,10 +8,22 @@ enum ShowType: String, CaseIterable, Identifiable {
     case saturdayWeekendShow
     case pickle
     case cageMatch
-    case classShow
+//    case classShow
     case special
 
     var id: String { rawValue }
+    
+    var dayToInt: Int? {
+        switch self {
+        case .fridayNightFusion: return 6
+        case .fridayWeekendShow: return 6
+        case .saturdayWeekendShow: return 7
+        case .pickle: return 7
+        case .cageMatch: return 1
+//        case .classShow: return nil
+        case .special: return nil
+        }
+    }
 
     var displayName: String {
         switch self {
@@ -20,7 +32,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .saturdayWeekendShow: return "Saturday Weekend Show"
         case .pickle: return "Pickle"
         case .cageMatch: return "Cage Match"
-        case .classShow: return "Class Show"
+//        case .classShow: return "Class Show"
         case .special: return "Special"
         }
     }
@@ -30,7 +42,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .fridayNightFusion, .fridayWeekendShow: return "Friday"
         case .saturdayWeekendShow, .pickle: return "Saturday"
         case .cageMatch: return "Sunday"
-        case .special, .classShow: return nil
+        case .special/*, .classShow*/: return nil
         }
     }
 
@@ -41,7 +53,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .saturdayWeekendShow: return (19, 30)
         case .pickle: return (21, 0)
         case .cageMatch: return (19, 0)
-        case .special, .classShow: return nil
+        case .special/*, .classShow*/: return nil
         }
     }
     
@@ -52,7 +64,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .saturdayWeekendShow: return 2
         case .pickle: return 1
         case .cageMatch: return 2
-        case .special, .classShow: return nil
+        case .special/*, .classShow*/: return nil
         }
     }
     
@@ -64,10 +76,16 @@ enum ShowType: String, CaseIterable, Identifiable {
         let hour = components.hour ?? 0
         let minute = components.minute ?? 0
         
+        let isDST = calendar.timeZone.isDaylightSavingTime(for: date)
+//        print("isDST: \(isDST)")
+        
+        
         for showType in ShowType.allCases {
             if let showTime = showType.defaultTime {
                 if showTime == (hour, minute) && showType.weekday == weekdayName {
                     return showType
+                } else {
+                    print("showType: \(showType), time: \(showTime) != (\(hour), \(minute)), day: \(weekdayName)")
                 }
             }
         }

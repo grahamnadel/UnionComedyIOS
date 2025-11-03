@@ -7,11 +7,15 @@ struct PendingApprovalView: View {
 
     var body: some View {
         VStack {
+//            Button("Get Bookings") {
+//                scheduleViewModel.newMakeShowGroups(performances: scheduleViewModel.performances)
+//            }
+            
             // Search field
             TextField("Search by name…", text: $searchText)
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
-
+            
             // Toggle for pending/all users
             Toggle(showPending ? "Pending Users" : "All Users", isOn: $showPending)
                 .padding(.horizontal)
@@ -64,6 +68,6 @@ struct PendingApprovalView: View {
             await scheduleViewModel.fetchPendingUsers()
             await scheduleViewModel.fetchUsers()
         }
-        .navigationTitle("User Management")
+        .navigationTitle("Admin")
     }
 }

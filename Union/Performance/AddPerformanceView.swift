@@ -18,7 +18,13 @@ struct AddPerformanceView: View {
     @State private var proceedAnyway = false
     
     @State private var selectedShowType: ShowType? = nil
-    @State private var specialDate = Date()
+//    FIXME: how is it set?
+    @State private var today: Date = {
+        let calendar = Calendar.current
+        let now = Date()
+        return calendar.startOfDay(for: now) // strips time, locks to local midnight
+    }()
+
     
     var isShowTypeSelected: Bool {
         selectedShowType != nil && selectedShowType != .special
@@ -50,7 +56,7 @@ struct AddPerformanceView: View {
 // MARK: - Add Dates
                 DateSelectionSection(
                                     selectedShowType: $selectedShowType,
-                                    specialDate: $specialDate,
+                                    newShowDate: $today,
                                     selectedDates: $selectedDates,
                                     date: $date
                                 )
@@ -211,6 +217,9 @@ struct AddPerformanceView: View {
         }
         
         // Save performance if no overbooking or user chooses to proceed
+//        FIXME: adding the date. where does it come from? Does the issue come from loading the dates? Do the dates load an hour earlier?
+//        2:00
+        print("DEBUG selectedDatesArray: \(selectedDatesArray)")
         scheduleViewModel.createPerformance(
             id: UUID().uuidString,
             teamName: teamToSave,

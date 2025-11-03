@@ -9,6 +9,8 @@ import Foundation
 // MARK: Check with Client
 //  Have bio and detail views for indie performers
 //    Separate Union and Indie teams
+//  For warnings of over/under booking
+//    How far out do they want the warning? Default to 1 month
 
 // TODO: List
 
@@ -27,18 +29,42 @@ import Foundation
 // DEBUG:
 //    Changing a performer to audience will not remove them from teams
 
-// Tomorrow:
-//    Add warning for changing role Tomo
-
-// TODAY:
+                                                    // Tomorrow:
+// Auto refresh dates page after adding a new team
+// Not pulling list of teams from the collection("teams")
+//    Add warning for changing role Tomorrow
 //Info page:
     // Add descriptions for each show type
     // Mention the jam?
 
-//    Say what performances are over or under booked
+                                                    // TODAY:
 //    Allow pending approval performers to use app as audience
 
 // MARK: Current work:
+//    Say what performances are over or under booked
+//  No shows for a team deletes team bug
+//  Separate indie and house teams
+//  Upon changing showtype in add date, select the next not fully booked date
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //MARK: Completed work
@@ -54,3 +80,7 @@ import Foundation
 // Date: 10/30/25
 //    DEBUG: If someone is a performer and I move them to audience, they remain in the performers list
 //    Change syntax: owner to owner
+
+// Date: 10/31/25
+//    Auto delete old shows
+//      at the least only show future shows

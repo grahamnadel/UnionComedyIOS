@@ -12,6 +12,8 @@ class ScheduleViewModel: ObservableObject {
     @Published var knownPerformers: Set<String> = []
     @Published var isAdminOwner = false
     
+//    Arrays of the showstypes and dates
+//    I want to list all the improperly booked shows
     @Published var unBooked: [ShowType: [Date]] = [:]
     @Published var underBooked: [ShowType: [Date]] = [:]
     @Published var fullyBooked: [ShowType: [Date]] = [:]
@@ -473,6 +475,7 @@ class ScheduleViewModel: ObservableObject {
     
     
     func loadData() {
+        let now = Date()
         // Clear existing data before loading new data
             Task { @MainActor in
                 self.festivalTeams = []
@@ -491,7 +494,13 @@ class ScheduleViewModel: ObservableObject {
                     for showInstance in team.showTimes {
                         print("showInstance: \(showInstance)")
                         let show = Performance(teamName: team.teamName, showTime: showInstance, performers: team.performers)
-                        self.performances.append(show)
+//                        FIXME: does it load correctly?
+//                        1:00 ** one of these is for 2:00. WTF!
+                        print("Debug: showInstance: \(showInstance)")
+//                        Only show upcoming shows
+                        if show.showTime > now {
+                            self.performances.append(show)
+                        }
                         print("performances: \(self.performances)")
                     }
                 }
@@ -542,7 +551,6 @@ class ScheduleViewModel: ObservableObject {
     
     func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date]) {
         FirebaseManager.shared.createPerformance(id: id, teamName: teamName, performerIds: performerIds, dates: dates)
-        //        FIXME: This loads the teams, but creates duplicates
         loadData()
         loadTeams()
     }
@@ -647,55 +655,6 @@ class ScheduleViewModel: ObservableObject {
         loadData()
     }
     
-//    Calculate the number of shows at a showTime
-    private func makeShowGroups(performances: [Performance]) -> (
-        unBooked: [ShowType: [Date]],
-        underBooked: [ShowType: [Date]],
-        fullyBooked: [ShowType: [Date]],
-        overBooked: [ShowType: [Date]]
-    ) {
-        var unBooked = [ShowType: [Date]]()
-        var underBooked = [ShowType: [Date]]()
-        var fullyBooked = [ShowType: [Date]]()
-        var overBooked = [ShowType: [Date]]()
-        
-        // 1. Group performances by their showTime
-        let groupedByTime = Dictionary(grouping: performances, by: { $0.showTime })
-        
-        // 2. Count how many performances are at each time
-        let showCounts = groupedByTime.mapValues { $0.count }
-        
-        // 3. Categorize each showTime
-        for (showTime, count) in showCounts {
-            if let showType = ShowType.dateToShow(date: showTime) {
-                if let requiredTeamCount = showType.requiredTeamCount {
-                    switch count {
-                    case 0:
-                        unBooked[showType, default: []].append(showTime)
-                    case 1..<requiredTeamCount:
-                        underBooked[showType, default: []].append(showTime)
-                    case requiredTeamCount:
-                        fullyBooked[showType, default: []].append(showTime)
-                    default:
-                        overBooked[showType, default: []].append(showTime)
-                    }
-                } else {
-                    // special shows: consider unBooked if 0, underBooked otherwise
-                    if count == 0 {
-                        unBooked[showType, default: []].append(showTime)
-                    } else {
-                        underBooked[showType, default: []].append(showTime)
-                    }
-                }
-            } else {
-                // Unknown or special shows: treat as underBooked
-                underBooked[.special, default: []].append(showTime)
-            }
-        }
-        print("unBooked: \(unBooked)\n underBooked: \(underBooked)\n fullyBooked: \(fullyBooked)\n overBooked: \(overBooked)\n")
-        return (unBooked, underBooked, fullyBooked, overBooked)
-    }
-    
     
     func deleteTeam(named teamName: String) {
         // Find all performances in memory for this team
@@ -728,5 +687,145 @@ class ScheduleViewModel: ObservableObject {
                 }
             }
     }
+   
+//    MARK: calculate booking issues
+    //    Calculate the number of shows at a showTime
+//    func newMakeShowGroups(performances: [Performance]) {
+//        print("\(performances)")
+//        let upcomingShowDates = getShowDates()
+//        for showTypeShows in upcomingShowDates {
+//            for show in showTypeShows {
+//                print("Show: \(show)")
+//                for performance in performances {
+//                    if showTypeShows.contains(where: { $0 == performance.showTime }) {
+////                        9pm shows are listed as 01:00:00
+//                        print("showType: \(showTypeShows), showTime: \(show), performance: \(performance)")
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
+        private func makeShowGroups(performances: [Performance]) -> (
+            unBooked: [ShowType: [Date]],
+            underBooked: [ShowType: [Date]],
+            fullyBooked: [ShowType: [Date]],
+            overBooked: [ShowType: [Date]]
+        ) {
+            var unBooked = [ShowType: [Date]]()
+            var underBooked = [ShowType: [Date]]()
+            var fullyBooked = [ShowType: [Date]]()
+            var overBooked = [ShowType: [Date]]()
+            
+            let upcomingShowDates = getShowDates()
+            print("upcomingShowDates: \(upcomingShowDates)")
+            
+            // 1. Group performances by their showTime
+            let groupedByTime = Dictionary(grouping: performances, by: { $0.showTime })
+            print("groupedByTime: \(groupedByTime)")
+            
+            // 2. Count how many performances are at each time
+            let showCounts = groupedByTime.mapValues { $0.count }
+            print("showCounts: \(showCounts)")
+            
+            // 3. Categorize each showTime
+            for (showTime, count) in showCounts {
+                if let showType = ShowType.dateToShow(date: showTime) {
+                    if let requiredTeamCount = showType.requiredTeamCount {
+                        switch count {
+                        case 0:
+                            unBooked[showType, default: []].append(showTime)
+                        case 1..<requiredTeamCount:
+                            underBooked[showType, default: []].append(showTime)
+                        case requiredTeamCount:
+                            fullyBooked[showType, default: []].append(showTime)
+                        default:
+                            overBooked[showType, default: []].append(showTime)
+                        }
+                    } else {
+                        // special shows: consider unBooked if 0, underBooked otherwise
+                        if count == 0 {
+                            unBooked[showType, default: []].append(showTime)
+                        } else {
+                            underBooked[showType, default: []].append(showTime)
+                        }
+                    }
+                } else {
+                    // Unknown or special shows: treat as underBooked
+                    underBooked[.special, default: []].append(showTime)
+                }
+            }
+            
+//            Check to through all upcoming show dats to see which ones are booked so some degree (fully, partially, over). remove all booked dates to get the unbooked ones
+            for type in ShowType.allCases {
+                print("showType type: \(type)")
+//                all upcoming dates for the showType
+                var allDates = upcomingShowDates[type.rawValue]
+                print("allDates for upcomingShowDates[\(type)]: upcomingShowDates[\(type.rawValue)]: \(allDates ?? [])\n")
+                if let allDates = allDates {
+                    // Collect all booked dates for this show type
+                    let bookedDates = (underBooked[type] ?? []) + (fullyBooked[type] ?? []) + (overBooked[type] ?? [])
+                    let unBookedDates = allDates.filter { !bookedDates.contains($0)}
+                    unBooked[type] = unBookedDates
+                } else {
+                    print("could not unwrap allDates for \(type.rawValue)")
+                }
+            }
+            
+            print("unBooked: \(unBooked)\n underBooked: \(underBooked)\n fullyBooked: \(fullyBooked)\n overBooked: \(overBooked)\n")
+            return (unBooked, underBooked, fullyBooked, overBooked)
+        }
+    
+//    This will calculate if there are shows in the next month that are over, under, or unbooked
+    func getShowDates() -> [String: [Date]] {
+        let calendar = Calendar.current
+        let oneMonth = datesForNextMonth() // your array of all dates
+
+        var fridayNightFusionTimes: [Date] = []
+        var fridayWeekendShowTimes: [Date] = []
+        var saturdayWeekendShowTimes: [Date] = []
+        var pickleTimes: [Date] = []
+        var cageMatchTimes: [Date] = []
+
+        for date in oneMonth {
+            switch calendar.component(.weekday, from: date) {
+            case 6: // Friday
+                if let fusion = calendar.date(bySettingHour: 21, minute: 00, second: 0, of: date) {
+                    fridayNightFusionTimes.append(fusion)
+                    print("getShowDates: Friday night show time: \(fusion)")
+                }
+                if let weekendShow = calendar.date(bySettingHour: 19, minute: 30, second: 0, of: date) {
+                            fridayWeekendShowTimes.append(weekendShow)
+                        }
+            case 7: // Saturday
+                if let weekendShow = calendar.date(bySettingHour: 19, minute: 30, second: 0, of: date) {
+                    saturdayWeekendShowTimes.append(weekendShow)
+                }
+                if let pickle = calendar.date(bySettingHour: 21, minute: 0, second: 0, of: date) {
+                    pickleTimes.append(pickle)
+                }
+            case 1: // Sunday
+                if let cageMatch = calendar.date(bySettingHour: 19, minute: 30, second: 0, of: date) {
+                    cageMatchTimes.append(cageMatch)
+                }
+            default:
+                break
+            }
+        }
+
+        return ["fridayNightFusion": fridayNightFusionTimes, "fridayWeekendShow": fridayWeekendShowTimes, "saturdayWeekendShow": saturdayWeekendShowTimes, "pickle": pickleTimes, "cageMatch": cageMatchTimes]
+    }
+
+
+    func datesForNextMonth() -> [Date] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date()) // normalize to start of day
+        let numberOfDays = 30
+
+        return (0..<numberOfDays).compactMap { offset in
+            calendar.date(byAdding: .day, value: offset, to: today)
+        }
+    }
+
 }
 

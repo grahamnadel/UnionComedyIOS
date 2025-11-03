@@ -9,8 +9,10 @@ import Foundation
 import SwiftUI
 
 struct DateSelectionSection: View {
+    @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @Binding var selectedShowType: ShowType?
-    @Binding var specialDate: Date
+//    FIXME: I'm on the trail!!
+    @Binding var newShowDate: Date
     @Binding var selectedDates: Set<Date>
     @Binding var date: Date
     
@@ -25,37 +27,81 @@ struct DateSelectionSection: View {
             }
             
             // Use a specific subview for the DatePicker logic
-            DateInput(selectedShowType: selectedShowType, specialDate: $specialDate)
-
+            DateInput(selectedShowType: selectedShowType, newShowDate: $newShowDate)
+            
             Button("Add Date") {
                 let dateToAdd: Date
                 if let type = selectedShowType, type != .special, let defaultTime = type.defaultTime {
-                    dateToAdd = combineDate(date: specialDate, hour: defaultTime.hour, minute: defaultTime.minute)
+                    print("type.defaultTime: \(String(describing: type.defaultTime))")
+                    dateToAdd = combineDate(date: newShowDate, hour: defaultTime.hour, minute: defaultTime.minute)
+//FIXME: debug
+                    //                    DEBUG: 2:00
+                    print("dateToAdd: \(String(describing: dateToAdd))")
                 } else {
-                    dateToAdd = specialDate
+                    dateToAdd = newShowDate
                 }
                 selectedDates.insert(dateToAdd)
             }
             .disabled(selectedDates.contains(date))
         }
+        .onChange(of: selectedShowType) {
+            if let showType = selectedShowType {
+                if let nextShowDate = getNextWeekdayDate() {
+                    print("nextShowDate: \(String(describing: nextShowDate))")
+                    newShowDate = nextShowDate
+                }
+            }
+        }
     }
     
+    // Get the next non-fully booked show, prioritizing underbooked
+    private func getNextWeekdayDate() -> Date? {
+//        let calendar = Calendar.current
+
+        if let showType = selectedShowType {
+            let unBookedShows = scheduleViewModel.unBooked[showType]
+            let underBookedShows = scheduleViewModel.underBooked[showType]
+            print("unBookedShows: \(unBookedShows ?? []), underBookedShows: \(underBookedShows ?? [])")
+            
+            if let unBookedShows = unBookedShows, !unBookedShows.isEmpty, let underBookedShows = underBookedShows, !underBookedShows.isEmpty {
+                let firstUnBookedShow = unBookedShows.first!
+                let firstUnderBookedShow = underBookedShows.first!
+                if firstUnBookedShow < firstUnderBookedShow {
+                    return firstUnBookedShow
+                } else if firstUnderBookedShow < firstUnBookedShow {
+                    return firstUnderBookedShow
+                } else {
+                    print("Error: There should not be an underbooked show and an unbooked show at the same time")
+                }
+            } else if let unBookedShows = unBookedShows, !unBookedShows.isEmpty {
+                let firstUnBookedShow = unBookedShows.first!
+                return firstUnBookedShow
+            } else if let underBookedShows = underBookedShows, !underBookedShows.isEmpty {
+                let firstUnderBookedShow = underBookedShows.first!
+                return firstUnderBookedShow
+            }
+        } else {
+            print("Could not unwrap showtype")
+        }
+        return nil
+    }
+    
+//    FIXME: Today's date gets passed in as date
     private func combineDate(date: Date, hour: Int, minute: Int) -> Date {
-        let calendar = Calendar.current
+        // 1. Get the current calendar, but ensure it uses the current device time zone
+        print("date day: \(String(describing: Calendar.current.component(.day, from: date)))")
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.current // Explicitly lock the TimeZone
         
-        // Extract year, month, day from the input date
-        let dayComponents = calendar.dateComponents([.year, .month, .day], from: date)
+        // 2. Use the simplified setter for greater consistency
+
+        guard let combinedDate = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: date) else {
+            // Fallback safety
+            print("Error with combinedDate")
+            return date
+        }
         
-        // Create the new components with the static time
-        var timeComponents = DateComponents()
-        timeComponents.year = dayComponents.year
-        timeComponents.month = dayComponents.month
-        timeComponents.day = dayComponents.day
-        timeComponents.hour = hour
-        timeComponents.minute = minute
-        timeComponents.second = 0
-        
-        // Return the new combined Date, or the original if creation fails
-        return calendar.date(from: timeComponents) ?? date
+        // The resulting Date object now consistently represents the exact moment (e.g., 9:00 PM local)
+        return combinedDate
     }
 }

@@ -84,7 +84,7 @@ struct DateListView: View {
                 .padding(.horizontal)
             
             Picker("Show Type", selection: $showType) {
-                Text("Select Show Type").tag(nil as ShowType?)
+                Text("All Shows").tag(nil as ShowType?)
                 ForEach(ShowType.allCases) { type in
                     Text(type.displayName)
                         .tag(type as ShowType?)

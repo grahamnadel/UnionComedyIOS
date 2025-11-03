@@ -10,18 +10,18 @@ import SwiftUI
 
 struct DateInput: View {
     let selectedShowType: ShowType?
-    @Binding var specialDate: Date
+    @Binding var newShowDate: Date
     
     var body: some View {
         if selectedShowType == .special || selectedShowType == nil {
             // Use a full date/time picker for special
-            DatePicker("Date & Time", selection: $specialDate, displayedComponents: [.date, .hourAndMinute])
+            DatePicker("Date & Time", selection: $newShowDate, displayedComponents: [.date, .hourAndMinute])
         } else if let weekday = selectedShowType?.weekday {
             // Restrict picker to this weekday only
             DatePicker(
                 "\(weekday)s",
                 selection: Binding(
-                    get: { specialDate },
+                    get: { newShowDate },
                     set: { newValue in
                         let calendar = Calendar.current
                         
@@ -31,7 +31,7 @@ struct DateInput: View {
                             
                             if newWeekday == targetWeekday {
                                 // Allow if it matches the target weekday
-                                specialDate = newValue
+                                newShowDate = newValue
                             } else {
                                 // Snap to the *nearest* next valid weekday
                                 if let nextMatching = calendar.nextDate(
@@ -39,12 +39,12 @@ struct DateInput: View {
                                     matching: DateComponents(weekday: targetWeekday),
                                     matchingPolicy: .nextTime
                                 ) {
-                                    specialDate = nextMatching
+                                    newShowDate = nextMatching
                                 }
                             }
                         } else {
                             // Fallback if weekday string is invalid
-                            specialDate = newValue
+                            newShowDate = newValue
                         }
                     }
                 ),
