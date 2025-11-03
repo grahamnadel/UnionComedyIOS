@@ -17,7 +17,8 @@ struct AddPerformanceView: View {
     @State private var overbookedDates: [Date] = []
     @State private var proceedAnyway = false
     
-    @State private var isTeamToAddRedundant = false
+//    @State private var isTeamToAddRedundant = false
+    @State private var redundantPerformances: [Performance] = []
     
     @State private var selectedShowType: ShowType? = nil
 //    FIXME: how is it set?
@@ -76,6 +77,11 @@ struct AddPerformanceView: View {
                         let sortedDates = selectedDates.sorted()
                         ForEach(sortedDates, id: \.self) { selectedDate in
                             Text(selectedDate, style: .date) + Text(", ") + Text(selectedDate, style: .time)
+                                .foregroundColor(
+                                    redundantPerformances.contains(where: { $0.showTime == selectedDate })
+                                    ? .red
+                                    : .green
+                                )
                         }
                         .onDelete { indexSet in
                             let sortedDates = selectedDates.sorted()
@@ -132,7 +138,7 @@ struct AddPerformanceView: View {
                         savePerformance()
                         scheduleViewModel.loadData()
                     }
-                    .disabled(teamName.isEmpty || performerInputs.isEmpty || selectedDates.isEmpty || isTeamToAddRedundant == true )
+                    .disabled(teamName.isEmpty || performerInputs.isEmpty || selectedDates.isEmpty || !redundantPerformances.isEmpty )
                 }
             }
             .alert(isPresented: $showOverbookAlert) {
@@ -183,30 +189,33 @@ struct AddPerformanceView: View {
                     teamName = ""
                 }
             }
-//            .onChange(of: selectedDates) {
-//                blockRedundantTeamSave()
-//            }
-//            .onChange(of: selectedTeamName) {
-//                blockRedundantTeamSave()
-//            }
+            .onChange(of: selectedDates) {
+                redundantPerformances = blockRedundantTeamSave()
+            }
+            .onChange(of: selectedTeamName) {
+                redundantPerformances = blockRedundantTeamSave()
+            }
         }
     }
     
     // MARK: - Helper Functions
     
 //    I want to make a function scan the selected dates to see which are underBooked. if they are, and contain the team selected, block the save
-    private func blockRedundantTeamSave() {
+    private func blockRedundantTeamSave() -> [Performance] {
+        print("called blockRedundantTeamSave")
+        var blockSave = false
+        var redundantShows: [Performance] = []
+        
         for date in selectedDates {
             let filteredShows = scheduleViewModel.performances.filter { $0.showTime == date }
             for show in filteredShows {
-                print("show: \(show)")
                 if show.teamName == teamName {
-                    isTeamToAddRedundant = true
-                } else {
-                    isTeamToAddRedundant = false
+                    print("blocked show: \(show)")
+                    redundantShows.append(show)
                 }
             }
         }
+        return redundantShows
     }
     
     private func addPerformerManually() {
