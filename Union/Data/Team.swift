@@ -13,4 +13,5 @@ struct Team: Identifiable, Decodable {
     var name: String
     let id: String
     var performers: [String]
+    var houseTeam = false
 }

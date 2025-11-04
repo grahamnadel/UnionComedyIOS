@@ -8,8 +8,8 @@ class ViewModel: ObservableObject {
     @Published var voteCounts: [String: Int] = [:]
     @Published var hasVoted = false
     @Published var teams = [
-        Team(name: "Team 1", id: UUID().uuidString, performers: ["Temporary"]),
-        Team(name: "Team 2", id: UUID().uuidString, performers: ["Temporary"])
+        Team(name: "Team 1", id: UUID().uuidString, performers: ["Temporary"], houseTeam: false),
+        Team(name: "Team 2", id: UUID().uuidString, performers: ["Temporary"], houseTeam: false)
     ]
     let correctPassword = "UnionComedy"
     

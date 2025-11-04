@@ -32,16 +32,15 @@ import Foundation
                                                     // Tomorrow:
 //  Add a second team button on the addPerformanceView?
 // Not pulling list of teams from the collection("teams")
-//    Add warning for changing role Tomorrow
 //Info page:
     // Add descriptions for each show type
     // Mention the jam?
+//    Theatre location and contact info
 
                                                     // TODAY:
 //    Allow pending approval performers to use app as audience
 
 // MARK: Current work:
-//    Make a list of over or under booked Performances in the admin page
 //  No shows for a team deletes team bug
 //  Separate indie and house teams
 
@@ -87,3 +86,4 @@ import Foundation
 
 
 // Auto refresh dates page after adding a new team
+//    Make a list of over or under booked Performances in the admin page

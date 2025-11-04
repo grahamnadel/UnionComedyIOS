@@ -24,10 +24,12 @@ enum BookingStatus: String, CaseIterable {
 
 struct AdminView: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
-
+    
     var body: some View {
         ScrollView {
             VStack {
+                Spacer()
+                
                 NavigationLink(destination: BookingStatusView()) {
                     HStack {
                         Image(systemName: "calendar.badge.clock")
@@ -47,43 +49,43 @@ struct AdminView: View {
                 .buttonStyle(.plain)
                 .padding()
                 
-                ScrollView {
-                    VStack(spacing: 8) {
-                        NavigationLink(destination: EditUserStatusView()) {
-                            HStack {
-                                Image(systemName: "calendar.badge.clock")
-                                    .font(.title3)
-                                Text("Edit User Status")
-                                    .font(.headline)
-                            }
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .cornerRadius(12)
-                            .shadow(radius: 3)
-                            .padding(.horizontal)
-                            .padding(.top, 10)
-                        }
-                        
-                        NavigationLink(destination: PendingUsersView()) {
-                            HStack {
-                                Image(systemName: "calendar.badge.clock")
-                                    .font(.title3)
-                                Text("Pending Users")
-                                    .font(.headline)
-                            }
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue)
-                            .cornerRadius(12)
-                            .shadow(radius: 3)
-                            .padding(.horizontal)
-                            .padding(.top, 10)
-                        }
+                NavigationLink(destination: EditUserStatusView()) {
+                    HStack {
+                        Image(systemName: "person.crop.circle.badge.checkmark")
+                            .font(.title3)
+                        Text("Edit User Status")
+                            .font(.headline)
                     }
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(12)
+                    .shadow(radius: 3)
+                    .padding(.horizontal)
+                    .padding(.top, 10)
                 }
+                .buttonStyle(.plain)
+                .padding()
+                
+                NavigationLink(destination: PendingUsersView()) {
+                    HStack {
+                        Image(systemName: "person.badge.clock")
+                            .font(.title3)
+                        Text("Pending Users")
+                            .font(.headline)
+                    }
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(12)
+                    .shadow(radius: 3)
+                    .padding(.horizontal)
+                    .padding(.top, 10)
+                }
+                .buttonStyle(.plain)
+                .padding()
             }
             .refreshable {
                 await scheduleViewModel.fetchPendingUsers()
