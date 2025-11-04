@@ -42,7 +42,7 @@ struct FestivalView: View {
                 case .teams:
                     TeamListView()
                 case .pendingApproval:
-                    PendingApprovalView()
+                    AdminView()
                 }
                 
                 Spacer()
@@ -72,7 +72,7 @@ struct FestivalView: View {
             }
             
             .sheet(isPresented: $showAddPerformance) {
-                AddPerformanceView()
+                AddPerformanceView(date: nil, showType: nil)
             }
         }
     }

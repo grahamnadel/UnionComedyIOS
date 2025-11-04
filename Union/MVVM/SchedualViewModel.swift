@@ -826,6 +826,22 @@ class ScheduleViewModel: ObservableObject {
             calendar.date(byAdding: .day, value: offset, to: today)
         }
     }
+    
+    func getBookingDates(for status: BookingStatus) -> [ShowType : [Date]] {
+            switch status {
+            case .unBooked:
+                // Return the raw array
+                return unBooked
+            case .underBooked:
+                // Could return a pre-sorted array here if needed
+                return underBooked
+            case .booked:
+                // Could apply additional filtering
+                return fullyBooked
+            case .overBooked:
+                return overBooked
+            }
+        }
 
 }
 

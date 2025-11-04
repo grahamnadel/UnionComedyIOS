@@ -6,7 +6,7 @@ struct AddPerformanceView: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     
     @State private var date = Date.nextFriday730PM
-    @State private var selectedDates: Set<Date> = Set()
+    @State var selectedDates: Set<Date> = Set()
     @State private var teamName = ""
     @State private var selectedTeamName: String? = nil
     @State private var newTeamNameInput = ""
@@ -17,16 +17,29 @@ struct AddPerformanceView: View {
     @State private var overbookedDates: [Date] = []
     @State private var proceedAnyway = false
     
-//    @State private var isTeamToAddRedundant = false
     @State private var redundantPerformances: [Performance] = []
     
     @State private var selectedShowType: ShowType? = nil
-//    FIXME: how is it set?
     @State private var today: Date = {
         let calendar = Calendar.current
         let now = Date()
         return calendar.startOfDay(for: now) // strips time, locks to local midnight
     }()
+    
+    
+    init(date: Date?, showType: ShowType?) {
+        if let date = date {
+            _selectedDates = State(initialValue: Set([date]))
+        } else {
+            _selectedDates = State(initialValue: Set())
+        }
+        
+        if let showType = showType {
+            _selectedShowType = State(initialValue: showType)
+        } else {
+            _selectedShowType = State(initialValue: nil)
+        }
+    }
 
     
     var isShowTypeSelected: Bool {
@@ -58,30 +71,41 @@ struct AddPerformanceView: View {
             Form {
 // MARK: - Add Dates
                 DateSelectionSection(
-                                    selectedShowType: $selectedShowType,
-                                    newShowDate: $today,
-                                    selectedDates: $selectedDates,
-                                    date: $date
-                                )
+                    selectedShowType: $selectedShowType,
+                    newShowDate: $today,
+                    selectedDates: $selectedDates,
+                    date: $date
+                )
                 
 // MARK: - Team Details
                 TeamDetailSection(
-                                    allTeams: allTeams,
-                                    selectedTeamName: $selectedTeamName,
-                                    teamName: $teamName
-                                )
+                    allTeams: allTeams,
+                    selectedTeamName: $selectedTeamName,
+                    teamName: $teamName
+                )
                 
                 // MARK: - List of Selected Dates
                 if !selectedDates.isEmpty {
                     Section(header: Text("Dates to Add")) {
                         let sortedDates = selectedDates.sorted()
                         ForEach(sortedDates, id: \.self) { selectedDate in
-                            Text(selectedDate, style: .date) + Text(", ") + Text(selectedDate, style: .time)
-                                .foregroundColor(
-                                    redundantPerformances.contains(where: { $0.showTime == selectedDate })
-                                    ? .red
-                                    : .green
-                                )
+                            HStack {
+                                Text(selectedDate, style: .date) + Text(", ") + Text(selectedDate, style: .time)
+                                    .foregroundColor(
+                                        // The coloring condition is now correct
+                                        redundantPerformances.contains(where: { $0.showTime == selectedDate })
+                                        ? .red
+                                        : .green
+                                    )
+                                
+                                // Display an indicator if the team is already booked for this time
+                                if redundantPerformances.contains(where: { $0.showTime == selectedDate }) {
+                                    Spacer()
+                                    Image(systemName: "exclamationmark.triangle.fill")
+                                        .foregroundColor(.red)
+                                        .help("Team already scheduled for this time.")
+                                }
+                            }
                         }
                         .onDelete { indexSet in
                             let sortedDates = selectedDates.sorted()
@@ -169,6 +193,10 @@ struct AddPerformanceView: View {
                     selectedTeamName = firstTeam
                     teamName = firstTeam
                 }
+                // Recalculate redundancy immediately if dates/team were passed in init
+                if !selectedDates.isEmpty && !teamName.isEmpty {
+                    redundantPerformances = blockRedundantTeamSave()
+                }
             }
             .onChange(of: selectedTeamName) {
                 // Clear existing performers
@@ -188,28 +216,34 @@ struct AddPerformanceView: View {
                 } else {
                     teamName = ""
                 }
+                // Recalculate redundancy when team changes
+                redundantPerformances = blockRedundantTeamSave()
             }
             .onChange(of: selectedDates) {
                 redundantPerformances = blockRedundantTeamSave()
             }
-            .onChange(of: selectedTeamName) {
-                redundantPerformances = blockRedundantTeamSave()
-            }
+            // Note: Removed redundant onChange(of: selectedTeamName) since the logic is in the other onChange
         }
     }
     
     // MARK: - Helper Functions
     
-//    I want to make a function scan the selected dates to see which are underBooked. if they are, and contain the team selected, block the save
+    // Function to check if the current team is already booked for any selected date
     private func blockRedundantTeamSave() -> [Performance] {
         print("called blockRedundantTeamSave")
-        var blockSave = false
         var redundantShows: [Performance] = []
+        
+        // Use the current teamName from state
+        let currentTeam = teamName
+        
+        // Only proceed if a team name is actually set
+        guard !currentTeam.isEmpty else { return [] }
         
         for date in selectedDates {
             let filteredShows = scheduleViewModel.performances.filter { $0.showTime == date }
             for show in filteredShows {
-                if show.teamName == teamName {
+                // Check if any existing show at this time has the same team name
+                if show.teamName == currentTeam {
                     print("blocked show: \(show)")
                     redundantShows.append(show)
                 }
@@ -252,8 +286,6 @@ struct AddPerformanceView: View {
         }
         
         // Save performance if no overbooking or user chooses to proceed
-//        FIXME: adding the date. where does it come from? Does the issue come from loading the dates? Do the dates load an hour earlier?
-//        2:00
         print("DEBUG selectedDatesArray: \(selectedDatesArray)")
         scheduleViewModel.createPerformance(
             id: UUID().uuidString,
@@ -273,7 +305,6 @@ extension Date {
         let now = Date()
         
         // 1. Find the date of the next Friday (weekday 6)
-        // This calculates the NEXT Friday, *regardless* of the time of day today.
         let nextFriday = calendar.nextDate(
             after: now,
             matching: DateComponents(weekday: 6), // Friday is 6 in Gregorian
@@ -281,8 +312,7 @@ extension Date {
             direction: .forward
         ) ?? now
         
-        // 2. 🎯 CORRECTED LINE: Set the time to 7:30 PM (19:30:00)
-        // We use date(bySettingHour:...) to apply the specific time to the found date.
+        // 2. Set the time to 7:30 PM (19:30:00)
         let targetDate = calendar.date(
             bySettingHour: 19, // 7 PM
             minute: 30,

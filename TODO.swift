@@ -30,7 +30,7 @@ import Foundation
 //    Changing a performer to audience will not remove them from teams
 
                                                     // Tomorrow:
-// Auto refresh dates page after adding a new team
+//  Add a second team button on the addPerformanceView?
 // Not pulling list of teams from the collection("teams")
 //    Add warning for changing role Tomorrow
 //Info page:
@@ -41,10 +41,9 @@ import Foundation
 //    Allow pending approval performers to use app as audience
 
 // MARK: Current work:
-//    Say what performances are over or under booked
+//    Make a list of over or under booked Performances in the admin page
 //  No shows for a team deletes team bug
 //  Separate indie and house teams
-//  Upon changing showtype in add date, select the next not fully booked date
 
 
 
@@ -84,3 +83,7 @@ import Foundation
 // Date: 10/31/25
 //    Auto delete old shows
 //      at the least only show future shows
+
+
+
+// Auto refresh dates page after adding a new team
