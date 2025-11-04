@@ -24,95 +24,63 @@ enum BookingStatus: String, CaseIterable {
 
 struct AdminView: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
-    @State private var showPending = true
-    @State private var searchText = ""
-    @State private var selectedShowType: ShowType = .special
-    @State private var selectedBookingStatus: BookingStatus = .unBooked
-    
-    var dates: [ShowType : [Date]] {
-        scheduleViewModel.getBookingDates(for: selectedBookingStatus)
-    }
 
     var body: some View {
         ScrollView {
             VStack {
-                Text("Bookings")
-                HStack {
-                    Picker("Select View", selection: $selectedShowType) {
-                        ForEach(ShowType.allCases, id: \.self) { option in
-                            if option != .special {
-                                Text(option.rawValue).tag(option)
-                            } else if option == .special {
-                                Text("All Show Types")
-                            }
-                        }
+                NavigationLink(destination: BookingStatusView()) {
+                    HStack {
+                        Image(systemName: "calendar.badge.clock")
+                            .font(.title3)
+                        Text("View Booking Status")
+                            .font(.headline)
                     }
-                    
-                    Picker("Booking Status", selection: $selectedBookingStatus) {
-                        ForEach(BookingStatus.allCases, id: \.self) { option in
-                            Text(option.localizedDescription).tag(option)
-                        }
-                    }
-                }
-                
-                ForEach(dates.sorted(by: { $0.key.rawValue < $1.key.rawValue }), id: \.key.rawValue) { key, dates in
-                    //                Make this bring up addPerformance with the current performance pulled up
-                    if key == selectedShowType || selectedShowType == .special {
-                        Text(key.displayName)
-                        ForEach(dates, id: \.self) { showDate in
-                            NavigationLink("\(showDate.formatted(.dateTime.month(.abbreviated).day()))", destination: AddPerformanceView(date: showDate, showType: selectedShowType))
-                        }
-                    }
-                }
-                
-                TextField("Search by name…", text: $searchText)
-                    .textFieldStyle(.roundedBorder)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(12)
+                    .shadow(radius: 3)
                     .padding(.horizontal)
-                
-                // Toggle for pending/all users
-                Toggle(showPending ? "Pending Users" : "All Users", isOn: $showPending)
-                    .padding(.horizontal)
+                    .padding(.top, 10)
+                }
+                .buttonStyle(.plain)
+                .padding()
                 
                 ScrollView {
                     VStack(spacing: 8) {
-                        if showPending {
-                            Text(scheduleViewModel.pendingUsers.isEmpty ? "No pending Approvals" : "Pending Approvals")
-                                .font(.headline)
-                            
-                            ForEach($scheduleViewModel.pendingUsers.filter { $0.name.wrappedValue.lowercased().contains(searchText.lowercased()) || searchText.isEmpty }, id: \.id) { $pendingUser in
-                                HStack {
-                                    Spacer()
-                                    Toggle(isOn: $pendingUser.approved) {
-                                        Text("Approval of \(pendingUser.name) as a \(pendingUser.role)")
-                                    }
-                                    .onChange(of: pendingUser.approved) { newValue in
-                                        Task {
-                                            await scheduleViewModel.updateApproval(for: pendingUser)
-                                        }
-                                    }
-                                }
-                                .padding(.horizontal)
+                        NavigationLink(destination: EditUserStatusView()) {
+                            HStack {
+                                Image(systemName: "calendar.badge.clock")
+                                    .font(.title3)
+                                Text("Edit User Status")
+                                    .font(.headline)
                             }
-                        } else {
-                            ForEach($scheduleViewModel.users.filter { $0.name.wrappedValue.lowercased().contains(searchText.lowercased()) || searchText.isEmpty }, id: \.id) { $appUser in
-                                HStack {
-                                    Text("\(appUser.name)")
-                                    Spacer()
-                                    Picker("Role", selection: $appUser.role) {
-                                        Text("Audience").tag(UserRole.audience)
-                                        Text("Performer").tag(UserRole.performer)
-                                        Text("Coach").tag(UserRole.coach)
-                                        Text("Owner").tag(UserRole.owner)
-                                    }
-                                    .pickerStyle(.menu)
-                                    .onChange(of: appUser.role) { newValue in
-                                        Task {
-                                            await scheduleViewModel.updateRole(for: appUser)
-                                        }
-                                    }
-                                }
-                                .padding(.horizontal)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .cornerRadius(12)
+                            .shadow(radius: 3)
+                            .padding(.horizontal)
+                            .padding(.top, 10)
+                        }
+                        
+                        NavigationLink(destination: PendingUsersView()) {
+                            HStack {
+                                Image(systemName: "calendar.badge.clock")
+                                    .font(.title3)
+                                Text("Pending Users")
+                                    .font(.headline)
                             }
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .cornerRadius(12)
+                            .shadow(radius: 3)
+                            .padding(.horizontal)
+                            .padding(.top, 10)
                         }
                     }
                 }
@@ -121,7 +89,6 @@ struct AdminView: View {
                 await scheduleViewModel.fetchPendingUsers()
                 await scheduleViewModel.fetchUsers()
             }
-            //        .navigationTitle("Admin")
         }
     }
 }

@@ -15,6 +15,9 @@
 		531DDD8F2E59018600E210EE /* PerformerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8E2E59018600E210EE /* PerformerImageView.swift */; };
 		531DDDB52E70A56500E210EE /* EditTeamPerformersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDDB42E70A56500E210EE /* EditTeamPerformersView.swift */; };
 		531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDDB62E70AB1400E210EE /* CreatePerformerView.swift */; };
+		5333D66D2EBA7C2A0006CC3B /* BookingStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5333D66C2EBA7C2A0006CC3B /* BookingStatusView.swift */; };
+		5333D66F2EBA7DCE0006CC3B /* PendingUsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5333D66E2EBA7DCE0006CC3B /* PendingUsersView.swift */; };
+		5333D6712EBA7E1C0006CC3B /* EditUserStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5333D6702EBA7E1C0006CC3B /* EditUserStatusView.swift */; };
 		53343A122E4E4F1700224553 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A112E4E4F1700224553 /* LoginView.swift */; };
 		53343A142E4E587300224553 /* TeamDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A132E4E587300224553 /* TeamDetailView.swift */; };
 		53343A162E4E59E500224553 /* PerformanceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A152E4E59E500224553 /* PerformanceRow.swift */; };
@@ -123,6 +126,9 @@
 		531DDD8E2E59018600E210EE /* PerformerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerImageView.swift; sourceTree = "<group>"; };
 		531DDDB42E70A56500E210EE /* EditTeamPerformersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTeamPerformersView.swift; sourceTree = "<group>"; };
 		531DDDB62E70AB1400E210EE /* CreatePerformerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePerformerView.swift; sourceTree = "<group>"; };
+		5333D66C2EBA7C2A0006CC3B /* BookingStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingStatusView.swift; sourceTree = "<group>"; };
+		5333D66E2EBA7DCE0006CC3B /* PendingUsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingUsersView.swift; sourceTree = "<group>"; };
+		5333D6702EBA7E1C0006CC3B /* EditUserStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserStatusView.swift; sourceTree = "<group>"; };
 		53343A112E4E4F1700224553 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		53343A132E4E587300224553 /* TeamDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailView.swift; sourceTree = "<group>"; };
 		53343A152E4E59E500224553 /* PerformanceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceRow.swift; sourceTree = "<group>"; };
@@ -336,6 +342,9 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				5333D6702EBA7E1C0006CC3B /* EditUserStatusView.swift */,
+				5333D66E2EBA7DCE0006CC3B /* PendingUsersView.swift */,
+				5333D66C2EBA7C2A0006CC3B /* BookingStatusView.swift */,
 				53B815D52EAD16B400854645 /* TODO.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,
@@ -657,6 +666,7 @@
 				533468882E44F5E500E069DB /* SelectedPerformerList.swift in Sources */,
 				53DCF7F32EB130ED00D67BEB /* AddDateView.swift in Sources */,
 				531DDD8D2E58FF6800E210EE /* PerformerTeamsView.swift in Sources */,
+				5333D66D2EBA7C2A0006CC3B /* BookingStatusView.swift in Sources */,
 				531DDD8B2E57828200E210EE /* PerformanceDetailView.swift in Sources */,
 				53847C7F2E02F10E00EE649A /* Item.swift in Sources */,
 				53B815CC2EA93A0C00854645 /* AdminViewModel.swift in Sources */,
@@ -664,6 +674,7 @@
 				5334687C2E4272FF00E069DB /* TeamListView.swift in Sources */,
 				53847C7B2E02F10E00EE649A /* UnionApp.swift in Sources */,
 				53343A162E4E59E500224553 /* PerformanceRow.swift in Sources */,
+				5333D6712EBA7E1C0006CC3B /* EditUserStatusView.swift in Sources */,
 				53847C912E02FEBF00EE649A /* ViewModel.swift in Sources */,
 				5334687E2E42731A00E069DB /* DateListView.swift in Sources */,
 				533468782E426E9D00E069DB /* FestivalView.swift in Sources */,
@@ -675,6 +686,7 @@
 				531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */,
 				53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */,
 				53B815B72EA6BA3E00854645 /* ShowtimeDetailView.swift in Sources */,
+				5333D66F2EBA7DCE0006CC3B /* PendingUsersView.swift in Sources */,
 				533468802E42740300E069DB /* Performance.swift in Sources */,
 				533468842E42759700E069DB /* AddPerformanceView.swift in Sources */,
 				53B815C82EA9395200854645 /* InitialLoginView.swift in Sources */,
