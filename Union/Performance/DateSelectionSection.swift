@@ -15,6 +15,7 @@ struct DateSelectionSection: View {
     @Binding var newShowDate: Date
     @Binding var selectedDates: Set<Date>
     @Binding var date: Date
+    @Binding var isFestivalDate: Bool
     
     var body: some View {
         Section(header: Text("Add Dates")) {
@@ -28,6 +29,10 @@ struct DateSelectionSection: View {
             
             // Use a specific subview for the DatePicker logic
             DateInput(selectedShowType: selectedShowType, newShowDate: $newShowDate)
+            
+            Toggle(isOn: $isFestivalDate) {
+                Text("Festival Show")
+            }
             
             Button("Add Date") {
                 let dateToAdd: Date
