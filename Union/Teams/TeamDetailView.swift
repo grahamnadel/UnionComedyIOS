@@ -30,6 +30,7 @@ struct TeamDetailView: View {
                 )) {
                     Text(team.houseTeam ? "House Team" : "Indie Team")
                 }
+                .padding()
             }
             List {
                 // MARK: - Performances

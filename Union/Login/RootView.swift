@@ -19,13 +19,19 @@ struct RootView: View {
                             authViewModel.signOut()
                         }
                     } else {
-                        FestivalView()
-                            .task {
-                                if authViewModel.role == .owner {
-                                    await scheduleViewModel.fetchPendingUsers()
-                                    await scheduleViewModel.fetchUsers()
+                        TabView {
+                            FestivalView()
+                                .task {
+                                    if authViewModel.role == .owner {
+                                        await scheduleViewModel.fetchPendingUsers()
+                                        await scheduleViewModel.fetchUsers()
+                                    }
                                 }
-                            }
+                                .tabItem { Label("Schedule", systemImage: "calendar") }
+
+                                 InfoView()
+                                     .tabItem { Label("Info", systemImage: "info.circle") }
+                        }
                     }
                 } else {
                     ProgressView("Loading user data…")

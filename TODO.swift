@@ -39,12 +39,6 @@ import Foundation
 //    Allow pending approval performers to use app as audience
 
 // MARK: Current work:
-
-//  Separate indie and house teams
-//    Filter adding teams by indie or house
-//      Show house teams at the top
-//      If adding a new team for a show, allow for selecting if house team?
-
 //  Add a second team button on the addPerformanceView?
 
 

@@ -49,9 +49,12 @@ struct AddPerformanceView: View {
     // Computed property to get all unique team names from performances
 //    TODO: change this to getting the list of teams
     var allTeams: [String] {
-        let teams = Set(scheduleViewModel.teams.map { $0.name })
-        return Array(teams).sorted()
+        let houseTeams = Set(scheduleViewModel.teams.filter { $0.houseTeam }.map { $0.name })
+        let indieTeams = Set(scheduleViewModel.teams.filter { !$0.houseTeam }.map { $0.name })
+        
+        return Array(houseTeams).sorted() + Array(indieTeams).sorted()
     }
+
     
     // This computed property filters suggestions for the user as they type.
     var filteredSuggestions: [String] {
