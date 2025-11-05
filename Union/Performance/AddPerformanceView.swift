@@ -47,8 +47,9 @@ struct AddPerformanceView: View {
     }
     
     // Computed property to get all unique team names from performances
+//    TODO: change this to getting the list of teams
     var allTeams: [String] {
-        let teams = Set(scheduleViewModel.performances.map { $0.teamName })
+        let teams = Set(scheduleViewModel.teams.map { $0.name })
         return Array(teams).sorted()
     }
     

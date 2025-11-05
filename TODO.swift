@@ -30,19 +30,22 @@ import Foundation
 //    Changing a performer to audience will not remove them from teams
 
                                                     // Tomorrow:
-//  Add a second team button on the addPerformanceView?
-// Not pulling list of teams from the collection("teams")
 //Info page:
     // Add descriptions for each show type
     // Mention the jam?
-//    Theatre location and contact info
+    // Theatre location and contact info
 
                                                     // TODAY:
 //    Allow pending approval performers to use app as audience
 
 // MARK: Current work:
-//  No shows for a team deletes team bug
+
 //  Separate indie and house teams
+//    Filter adding teams by indie or house
+//      Show house teams at the top
+//      If adding a new team for a show, allow for selecting if house team?
+
+//  Add a second team button on the addPerformanceView?
 
 
 

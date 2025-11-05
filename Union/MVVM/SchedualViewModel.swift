@@ -8,6 +8,7 @@ import FirebaseStorage
 class ScheduleViewModel: ObservableObject {
     @Published var festivalTeams = [TeamData]()
     @Published var performances: [Performance] = []
+//    TODO: fix how teams is populated
     @Published var teams: [Team] = []
     @Published var knownPerformers: Set<String> = []
     @Published var isAdminOwner = false
@@ -293,6 +294,31 @@ class ScheduleViewModel: ObservableObject {
         }
     }
     
+//    Change the team too and from a house team
+    func updateTeamType(teamName: String, isHouseTeam: Bool) {
+        let db = Firestore.firestore()
+        let teamsRef = db.collection("teams")
+        
+        teamsRef.whereField("name", isEqualTo: teamName).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error finding team \(teamName): \(error)")
+                return
+            }
+            
+            guard let document = snapshot?.documents.first else {
+                print("No team found with name: \(teamName)")
+                return
+            }
+            
+            let docRef = teamsRef.document(document.documentID)
+            docRef.updateData(["houseTeam": isHouseTeam]) { error in
+                if let error = error {
+                    print("Error updating performers for festival team \(teamName): \(error)")
+                }
+            }
+        }
+    }
+    
     
     // MARK: - Performer Management
     /// Adds a performer to a specific team's performances and to the known performers list.
@@ -526,6 +552,7 @@ class ScheduleViewModel: ObservableObject {
             }
 
             // ✅ compactMap allows `nil` returns inside
+//            TODO: find where teams are saved and add indie/house team bool
             let fetchedTeams: [Team] = snapshot?.documents.compactMap { document in
                 let data = document.data()
                 guard let name = data["name"] as? String,

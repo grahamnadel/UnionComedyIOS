@@ -3,8 +3,8 @@ import SwiftUI
 struct TeamDetailView: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
-    let teamName: String
     @State private var performerURLs: [String: URL] = [:]
+    let teamName: String
     
     var team: Team? {
         scheduleViewModel.teams.first { $0.name == teamName }
@@ -18,6 +18,19 @@ struct TeamDetailView: View {
     
     var body: some View {
         VStack {
+            if let team = team {
+                Toggle(isOn: Binding(
+                    get: { team.houseTeam },
+                    set: { newValue in
+                        if let index = scheduleViewModel.teams.firstIndex(where: { $0.id == team.id }) {
+                            scheduleViewModel.teams[index].houseTeam = newValue
+                            scheduleViewModel.updateTeamType(teamName: teamName, isHouseTeam: newValue)
+                        }
+                    }
+                )) {
+                    Text(team.houseTeam ? "House Team" : "Indie Team")
+                }
+            }
             List {
                 // MARK: - Performances
                 if !performancesForTeam.isEmpty {
