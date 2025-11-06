@@ -3,8 +3,8 @@ import SwiftUI
 
 // MARK: - Enum for show types (no associated value)
 enum ShowType: String, CaseIterable, Identifiable {
-    case fridayNightFusion
     case fridayWeekendShow
+    case fridayNightFusion
     case saturdayWeekendShow
     case pickle
     case cageMatch
