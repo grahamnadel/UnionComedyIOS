@@ -4,32 +4,20 @@ import PhotosUI
 // Detail view showing all teams for a given performer
 struct PerformerDetailView: View {
     let performer: String
-//    let performerURL: URL?
+    //    let performerURL: URL?
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @State private var loadedPerformerURL: URL?
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var isShowingPhotoPicker = false
-//    @State private var performerImageURLs: [String: URL] = [:]  // Cache URLs by performer name  
     
     var performancesForPerformer: [Performance] {
         scheduleViewModel.performances.filter { $0.performers.contains(performer) }
             .sorted { $0.showTime < $1.showTime }
     }
     
-    // Get unique teams for this performer
-//    var teamsForPerformer: [String] {
-//        let teams = Set(performancesForPerformer.map { $0.teamName })
-//        return Array(teams).sorted()
-//    }
-    var teamsForPerformer: [String] {
-        scheduleViewModel.teams
-            .filter { $0.performers.contains(performer) }
-            .map { $0.name }
-            .sorted()
-    }
-
+    @State private var teamsForPerformer = [String]()
     
     var body: some View {
         ScrollView {
@@ -38,12 +26,31 @@ struct PerformerDetailView: View {
                     .frame(width: 250, height: 250)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .navigationTitle(performer)
-                
-                PerformerTeamsView(
-                    teamsForPerformer: teamsForPerformer,
-                    performancesForPerformer: performancesForPerformer,
-                    name: performer
-                )
+                ForEach(teamsForPerformer, id: \.self) { team in
+                    NavigationLink(destination: TeamDetailView(teamName: team)) {
+                        HStack {
+                            Text(team)
+                                .font(.headline)
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color(.systemGray6))
+                                .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.horizontal)
+                    .padding(.vertical, 4)
+                    //                        NavigationLink(team, destination: TeamDetailView(teamName: team)) {
+                    //                        Text(team)
+                    .padding(.vertical, 4)
+                }
                 .padding()
                 
                 BiographyView(performer: performer)
@@ -56,16 +63,16 @@ struct PerformerDetailView: View {
                         .foregroundColor(scheduleViewModel.favoritePerformerColor)
                 }
             }
-            .toolbar {
-                if authViewModel.role != .audience &&
-                    loadedPerformerURL == nil && authViewModel.name == performer {
-                    Button(action: {
-                        selectedPerformer = performer
-                        isShowingPhotoPicker = true
-                    }) {
-                        Image(systemName: "camera.fill")
-                            .foregroundColor(.blue)
-                    }
+        }
+        .toolbar {
+            if authViewModel.role != .audience &&
+                loadedPerformerURL == nil && authViewModel.name == performer {
+                Button(action: {
+                    selectedPerformer = performer
+                    isShowingPhotoPicker = true
+                }) {
+                    Image(systemName: "camera.fill")
+                        .foregroundColor(.blue)
                 }
             }
         }
@@ -80,7 +87,7 @@ struct PerformerDetailView: View {
         )
         .onChange(of: selectedPhoto) { photo in
             guard let photo else { return }
-
+            
             photo.loadTransferable(type: Data.self) { result in
                 switch result {
                 case .success(let data):
@@ -105,41 +112,32 @@ struct PerformerDetailView: View {
                             }
                         }
                     }
-
+                    
                 case .failure(let error):
                     print("Failed to load image for saving: \(error)")
                 }
             }
+        }
+        .onAppear {
+            getTeamsForPerformer()
         }
     }
     
     private func loadPerformerImageURLs() async {
         print("Loading performer url")
         if loadedPerformerURL == nil {
-                if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
-                    loadedPerformerURL = url
-                }
+            if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
+                loadedPerformerURL = url
             }
+        }
     }
-
-    // 🔹 Upload a new photo
-//    private func loadImage(from item: PhotosPickerItem, for performer: String) {
-//        print("Loading performer image")
-//        item.loadTransferable(type: Data.self) { result in
-//            switch result {
-//            case .success(let data):
-//                if let imageData = data {
-//                    Task { @MainActor in
-//                        await scheduleViewModel.savePerformerImage(for: performer, imageData: imageData)
-//                        // Refresh that performer’s image
-//                        if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
-//                            performerImageURLs[performer] = url
-//                        }
-//                    }
-//                }
-//            case .failure(let error):
-//                print("Failed to load image: \(error)")
-//            }
-//        }
-//    }
+    
+    private func getTeamsForPerformer() {
+        print("called getTeamsForPerformer()")
+        let teams = scheduleViewModel.teams
+            .filter { $0.performers.contains(performer) }
+            .map { $0.name }
+            .sorted()
+        teamsForPerformer = teams
+    }
 }

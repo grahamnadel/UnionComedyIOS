@@ -18,19 +18,21 @@ struct TeamDetailView: View {
     
     var body: some View {
         VStack {
-            if let team = team {
-                Toggle(isOn: Binding(
-                    get: { team.houseTeam },
-                    set: { newValue in
-                        if let index = scheduleViewModel.teams.firstIndex(where: { $0.id == team.id }) {
-                            scheduleViewModel.teams[index].houseTeam = newValue
-                            scheduleViewModel.updateTeamType(teamName: teamName, isHouseTeam: newValue)
+            if authViewModel.role == .owner {
+                if let team = team {
+                    Toggle(isOn: Binding(
+                        get: { team.houseTeam },
+                        set: { newValue in
+                            if let index = scheduleViewModel.teams.firstIndex(where: { $0.id == team.id }) {
+                                scheduleViewModel.teams[index].houseTeam = newValue
+                                scheduleViewModel.updateTeamType(teamName: teamName, isHouseTeam: newValue)
+                            }
                         }
+                    )) {
+                        Text(team.houseTeam ? "House Team" : "Indie Team")
                     }
-                )) {
-                    Text(team.houseTeam ? "House Team" : "Indie Team")
+                    .padding()
                 }
-                .padding()
             }
             List {
                 // MARK: - Performances
@@ -49,6 +51,8 @@ struct TeamDetailView: View {
                             }
                         }
                     }
+                } else {
+                    Text("No performances for this team yet.")
                 }
                 
                 // MARK: - Performers
