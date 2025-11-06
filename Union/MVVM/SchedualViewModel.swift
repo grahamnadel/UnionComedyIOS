@@ -577,9 +577,9 @@ class ScheduleViewModel: ObservableObject {
         }
     }
     
-    
-    func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date]) {
-        FirebaseManager.shared.createPerformance(id: id, teamName: teamName, performerIds: performerIds, dates: dates)
+//    FIXME: add isFestivalDate
+    func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date], isFestivalShow: Bool) {
+        FirebaseManager.shared.createPerformance(id: id, teamName: teamName, performerIds: performerIds, dates: dates, isFestivalShow: isFestivalShow)
         loadData()
         loadTeams()
     }
@@ -718,22 +718,6 @@ class ScheduleViewModel: ObservableObject {
     }
    
 //    MARK: calculate booking issues
-    //    Calculate the number of shows at a showTime
-//    func newMakeShowGroups(performances: [Performance]) {
-//        print("\(performances)")
-//        let upcomingShowDates = getShowDates()
-//        for showTypeShows in upcomingShowDates {
-//            for show in showTypeShows {
-//                print("Show: \(show)")
-//                for performance in performances {
-//                    if showTypeShows.contains(where: { $0 == performance.showTime }) {
-////                        9pm shows are listed as 01:00:00
-//                        print("showType: \(showTypeShows), showTime: \(show), performance: \(performance)")
-//                    }
-//                }
-//            }
-//        }
-//    }
     
         private func makeShowGroups(performances: [Performance]) -> (
             unBooked: [ShowType: [Date]],

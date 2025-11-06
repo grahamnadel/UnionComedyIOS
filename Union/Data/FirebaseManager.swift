@@ -118,7 +118,7 @@ class FirebaseManager {
     }
     
     
-    func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date]) {
+    func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date], isFestivalShow: Bool) {
         checkForExistingTeam(teamName: teamName) { exists in
             if exists {
                 print("exists")
@@ -155,7 +155,8 @@ class FirebaseManager {
                     "name": teamName,
                     "performers": performerIds,
                     "showTimes": dates,
-                    "id": id
+                    "id": id,
+                    "isFestivalShow": isFestivalShow
                 ]) { error in
                     if let error = error {
                         print("Error writing team: \(error)")
@@ -249,12 +250,53 @@ class FirebaseManager {
                 let id = doc.documentID
                 let name = data["name"] as? String ?? "Unknown"
                 let performers = data["performers"] as? [String] ?? []
+                let isFestivalShow = data["isFestivalShow"] as? Bool ?? false
                 
                 if let timestampArray = data["showTimes"] as? [Timestamp] {
                     let showTimes = timestampArray.map { $0.dateValue() }
 //                    FIXME: debug
 //                    1:00
                     print("DEBUG loadFestivalTeamsWithPerformances dateValue: \(showTimes)")
+//                    FIXME: load the data in a way that I can designate isFestivalShow dates. Change this to loading an array of Performances. 
+                    
+                    festivalTeams.append(TeamData(id: id, teamName: name, showTimes: showTimes, performers: performers))
+                } else {
+                    print("⚠️ error loading showTimes for team: \(name)")
+                }
+            }
+            completion(festivalTeams)
+        }
+    }
+    func loadPerformances(completion: @escaping ([TeamData]) -> Void) {
+        db.collection("festivalTeams").getDocuments { (snapshot, error) in
+            if let error = error {
+                print("❌ Error loading teams: \(error.localizedDescription)")
+                completion([]) // Return an empty array on error
+                return
+            }
+            
+            guard let documents = snapshot?.documents else {
+                print("No documents found")
+                completion([])
+                return
+            }
+            
+            var festivalTeams = [TeamData]()
+            
+            for doc in documents {
+                let data = doc.data()
+                let id = doc.documentID
+                let name = data["name"] as? String ?? "Unknown"
+                let performers = data["performers"] as? [String] ?? []
+                let isFestivalShow = data["isFestivalShow"] as? Bool ?? false
+                
+                if let timestampArray = data["showTimes"] as? [Timestamp] {
+                    let showTimes = timestampArray.map { $0.dateValue() }
+//                    FIXME: debug
+//                    1:00
+                    print("DEBUG loadFestivalTeamsWithPerformances dateValue: \(showTimes)")
+//                    FIXME: load the data in a way that I can designate isFestivalShow dates. Change this to loading an array of Performances.
+                    
                     festivalTeams.append(TeamData(id: id, teamName: name, showTimes: showTimes, performers: performers))
                 } else {
                     print("⚠️ error loading showTimes for team: \(name)")

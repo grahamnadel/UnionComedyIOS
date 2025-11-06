@@ -26,6 +26,7 @@ struct AddPerformanceView: View {
         let now = Date()
         return calendar.startOfDay(for: now) // strips time, locks to local midnight
     }()
+    @State var isFestivalDate: Bool = false
     
     
     init(date: Date?, showType: ShowType?) {
@@ -71,7 +72,8 @@ struct AddPerformanceView: View {
                     selectedShowType: $selectedShowType,
                     newShowDate: $today,
                     selectedDates: $selectedDates,
-                    date: $date
+                    date: $date,
+                    isFestivalDate: $isFestivalDate
                 )
                 
 // MARK: - Team Details
@@ -282,7 +284,8 @@ struct AddPerformanceView: View {
             id: UUID().uuidString,
             teamName: teamToSave,
             performerIds: performerInputs.map { $0.name },
-            dates: selectedDatesArray
+            dates: selectedDatesArray,
+            isFestivalShow: isFestivalDate
         )
         
         dismiss()
