@@ -86,6 +86,26 @@ struct AdminView: View {
                 }
                 .buttonStyle(.plain)
                 .padding()
+                
+                NavigationLink(destination: SetFestivalDatesView()) {
+                    HStack {
+                        Image(systemName: "person.crop.circle.badge.checkmark")
+                            .font(.title3)
+                        Text("Set Festival Dates")
+                            .font(.headline)
+                    }
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(12)
+                    .shadow(radius: 3)
+                    .padding(.horizontal)
+                    .padding(.top, 10)
+                }
+                .buttonStyle(.plain)
+                .padding()
+                
             }
             .refreshable {
                 await scheduleViewModel.fetchPendingUsers()

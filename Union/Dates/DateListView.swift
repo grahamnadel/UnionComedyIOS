@@ -10,34 +10,34 @@ struct DateListView: View {
     @State private var showType: ShowType? = nil
     @State private var showDeleteAlert = false
     @State private var performanceToDelete: Performance?
-
+    
     
     // Filtered and grouped performances
     private var groupedPerformances: [(key: Date, value: [Performance])] {
         let calendar = Calendar.current
-
+        
         // Step 1: Filter by search text and show type
         let filtered = scheduleViewModel.performances.filter { performance in
             let matchesSearch =
-                searchText.isEmpty ||
-                performance.teamName.localizedCaseInsensitiveContains(searchText) ||
-                performance.performers.contains(where: { $0.localizedCaseInsensitiveContains(searchText) })
-
+            searchText.isEmpty ||
+            performance.teamName.localizedCaseInsensitiveContains(searchText) ||
+            performance.performers.contains(where: { $0.localizedCaseInsensitiveContains(searchText) })
+            
             let matchesShowType: Bool
             if let selectedType = showType {
                 matchesShowType = ShowType.dateToShow(date: performance.showTime)?.displayName == selectedType.displayName
             } else {
                 matchesShowType = true
             }
-
+            
             return matchesSearch && matchesShowType
         }
-
+        
         // Step 2: Group by day
         let grouped = Dictionary(grouping: filtered) { performance in
             calendar.startOfDay(for: performance.showTime)
         }
-
+        
         // Step 3: Sort by date
         return grouped.sorted { $0.key < $1.key }
     }
@@ -45,41 +45,32 @@ struct DateListView: View {
     private var groupedPerformancesByTime: [(key: Date, value: [Performance])] {
         let filtered = scheduleViewModel.performances.filter { performance in
             let matchesSearch =
-                searchText.isEmpty ||
-                performance.teamName.localizedCaseInsensitiveContains(searchText) ||
-                performance.performers.contains(where: { $0.localizedCaseInsensitiveContains(searchText) })
-
+            searchText.isEmpty ||
+            performance.teamName.localizedCaseInsensitiveContains(searchText) ||
+            performance.performers.contains(where: { $0.localizedCaseInsensitiveContains(searchText) })
+            
             let matchesShowType: Bool
             if let selectedType = showType {
                 matchesShowType = ShowType.dateToShow(date: performance.showTime)?.displayName == selectedType.displayName
             } else {
                 matchesShowType = true
             }
-
+            
             return matchesSearch && matchesShowType
         }
-
+        
         // Group by exact showTime
         let grouped = Dictionary(grouping: filtered) { performance in
             performance.showTime
         }
-
+        
         return grouped.sorted { $0.key < $1.key }
     }
-
-
+    
+    
     
     var body: some View {
         VStack {
-//            NavigationLink(
-//                "Calendar",
-//                destination: ColorCodedCalendar(
-//                    selectedDate: .constant(Date()),         // fixed binding for demo
-//                    month: Date(),                           // current month
-//                    eventDates: [Date(), Date().addingTimeInterval(86400)] // today and tomorrow
-//                )
-//            )
-            // 🔍 Combined search for team or performer
             SearchBar(searchCategory: "team or performer", searchText: $searchText)
                 .padding(.horizontal)
             
@@ -94,12 +85,24 @@ struct DateListView: View {
             List {
                 ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
                     Section(header: Text(showTime, style: .date)) {
-                        if let showType = ShowType.dateToShow(date: showTime)?.displayName {
-                            HStack {
-                                Text(showType).bold()
-                                Spacer()
-                                Text(showTime.formatted(.dateTime.hour().minute()))
+                        if let festivalStart = scheduleViewModel.festivalStartDate, let festivalEndDate = scheduleViewModel.festivalEndDate, let festivalLocation = scheduleViewModel.festivalLocation {
+                            if showTime < festivalStart || showTime > festivalEndDate {
+                                if let showType = ShowType.dateToShow(date: showTime)?.displayName {
+                                    HStack {
+                                        Text(showType).bold()
+                                        Spacer()
+                                        Text(showTime.formatted(.dateTime.hour().minute()))
+                                    }
+                                }
+                            } else {
+                                HStack {
+                                    Text("Festival Show: at \(festivalLocation)").bold()
+                                        .foregroundColor(.purple)
+                                    Spacer()
+                                    Text(showTime.formatted(.dateTime.hour().minute()))
+                                }
                             }
+                            
                         }
                         ForEach(performances, id: \.id) { performance in
                             ShowDate(performance: performance)
@@ -123,7 +126,7 @@ struct DateListView: View {
                 }
             }
             .listStyle(.insetGrouped)
-//            .navigationTitle("Performances")
+            //            .navigationTitle("Performances")
             .refreshable {
                 scheduleViewModel.loadData()
             }
@@ -145,6 +148,6 @@ struct DateListView: View {
                 }
             )
         }
-
+        
     }
 }

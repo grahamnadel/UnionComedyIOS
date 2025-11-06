@@ -23,11 +23,16 @@ class ScheduleViewModel: ObservableObject {
     @Published var pendingUsers: [AppUser] = []
     @Published var users: [AppUser] = []
     
+    @Published var festivalStartDate: Date?
+    @Published var festivalEndDate: Date?
+    @Published var festivalLocation: String?
+    
     // USER FAVORITES
     @Published var favoriteTeams: [String] = []
     @Published var favoritePerformers: [String] = []
     @AppStorage("favoriteTeams") private var favoriteTeamsData: Data = Data()
     @AppStorage("favoritePerformers") private var favoritePerformersData: Data = Data()
+    
     
     let favoriteTeamColor = Color.yellow
     let favoritePerformerColor = Color.purple
@@ -37,6 +42,11 @@ class ScheduleViewModel: ObservableObject {
         loadData()
         loadFavorites()
         loadTeams()
+        loadFestivalDatesAndLocation { start, end, location in
+            self.festivalStartDate = start
+            self.festivalEndDate = end
+            self.festivalLocation = location
+        }
     }
     
     func fetchBiography(for performerName: String) async -> String? {
@@ -577,9 +587,8 @@ class ScheduleViewModel: ObservableObject {
         }
     }
     
-//    FIXME: add isFestivalDate
-    func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date], isFestivalShow: Bool) {
-        FirebaseManager.shared.createPerformance(id: id, teamName: teamName, performerIds: performerIds, dates: dates, isFestivalShow: isFestivalShow)
+    func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date]) {
+        FirebaseManager.shared.createPerformance(id: id, teamName: teamName, performerIds: performerIds, dates: dates)
         loadData()
         loadTeams()
     }
@@ -855,6 +864,75 @@ class ScheduleViewModel: ObservableObject {
                 return overBooked
             }
         }
+    
+    func saveFestivalDatesAndLocation(start: Date, end: Date, location: String) {
+        let db = Firestore.firestore()
+        let collection = db.collection("festivalDates")
 
+        collection.getDocuments { snapshot, error in
+            if let error = error {
+                print("❌ Error fetching documents: \(error)")
+                return
+            }
+
+            if let document = snapshot?.documents.first {
+                // ✅ Update existing festival info
+                document.reference.setData([
+                    "startDate": Timestamp(date: start),
+                    "endDate": Timestamp(date: end),
+                    "location": location
+                ], merge: true) { error in
+                    if let error = error {
+                        print("❌ Error updating festival info: \(error)")
+                    } else {
+                        print("✅ Festival information updated successfully")
+                    }
+                }
+
+            } else {
+                // ✅ No document found — create a new one
+                collection.addDocument(data: [
+                    "startDate": Timestamp(date: start),
+                    "endDate": Timestamp(date: end),
+                    "location": location
+                ]) { error in
+                    if let error = error {
+                        print("❌ Error creating festival info: \(error)")
+                    } else {
+                        print("✅ Festival information added successfully")
+                    }
+                }
+            }
+        }
+    }
+    
+    func loadFestivalDatesAndLocation(completion: @escaping (Date?, Date?, String?) -> Void) {
+        let db = Firestore.firestore()
+        let collection = db.collection("festivalDates")
+
+        collection.getDocuments { snapshot, error in
+            if let error = error {
+                print("❌ Error fetching festival data: \(error)")
+                completion(nil, nil, nil)
+                return
+            }
+
+            guard let document = snapshot?.documents.first else {
+                print("ℹ️ No festival data found.")
+                completion(nil, nil, nil)
+                return
+            }
+
+            let data = document.data()
+
+            let startDate = (data["startDate"] as? Timestamp)?.dateValue()
+            let endDate = (data["endDate"] as? Timestamp)?.dateValue()
+            let location = data["location"] as? String
+
+            print("✅ Loaded festival info: start=\(String(describing: startDate)), end=\(String(describing: endDate)), location=\(location ?? "N/A")")
+
+            completion(startDate, endDate, location)
+        }
+    }
 }
 

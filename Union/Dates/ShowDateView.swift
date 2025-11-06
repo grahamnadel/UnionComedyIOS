@@ -15,16 +15,8 @@ struct ShowDate: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             VStack(alignment: .leading) {
-                if performance.isFestivalShow {
-                    HStack {
-                        Image(systemName: "sun.max")
-                            .foregroundColor(.yellow)
-                        Text("Festival Show at The Rockwell")
-                    }
-                }
                 Text(performance.teamName)
                     .font(.headline)
-                    .foregroundColor(performance.isFestivalShow ? .purple : .primary)
                 Text("Performers: \(performance.performers.joined(separator: ", "))")
                     .font(.footnote)
                     .foregroundColor(.secondary)

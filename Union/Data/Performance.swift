@@ -13,7 +13,6 @@ struct Performance: Identifiable, Codable, Hashable {
     let teamName: String
     var showTime: Date
     var performers: [String]
-    var isFestivalShow = false
 }
 
 //FIXME: is this necessary if I have a Team struct? or that I have performances. What is the difference? why not just load an array of Performances?

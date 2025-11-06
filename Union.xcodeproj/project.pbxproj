@@ -20,6 +20,7 @@
 		5333D6712EBA7E1C0006CC3B /* EditUserStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5333D6702EBA7E1C0006CC3B /* EditUserStatusView.swift */; };
 		5333D6732EBBAE190006CC3B /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5333D6722EBBAE190006CC3B /* InfoView.swift */; };
 		5333D6752EBD120B0006CC3B /* TeamListPerformanceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5333D6742EBD120B0006CC3B /* TeamListPerformanceRow.swift */; };
+		5333D6772EBD35910006CC3B /* SetFestivalDatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5333D6762EBD35910006CC3B /* SetFestivalDatesView.swift */; };
 		53343A122E4E4F1700224553 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A112E4E4F1700224553 /* LoginView.swift */; };
 		53343A142E4E587300224553 /* TeamDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A132E4E587300224553 /* TeamDetailView.swift */; };
 		53343A162E4E59E500224553 /* PerformanceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53343A152E4E59E500224553 /* PerformanceRow.swift */; };
@@ -133,6 +134,7 @@
 		5333D6702EBA7E1C0006CC3B /* EditUserStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserStatusView.swift; sourceTree = "<group>"; };
 		5333D6722EBBAE190006CC3B /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		5333D6742EBD120B0006CC3B /* TeamListPerformanceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamListPerformanceRow.swift; sourceTree = "<group>"; };
+		5333D6762EBD35910006CC3B /* SetFestivalDatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetFestivalDatesView.swift; sourceTree = "<group>"; };
 		53343A112E4E4F1700224553 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		53343A132E4E587300224553 /* TeamDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamDetailView.swift; sourceTree = "<group>"; };
 		53343A152E4E59E500224553 /* PerformanceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceRow.swift; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				5333D6762EBD35910006CC3B /* SetFestivalDatesView.swift */,
 				5333D6742EBD120B0006CC3B /* TeamListPerformanceRow.swift */,
 				5333D6722EBBAE190006CC3B /* InfoView.swift */,
 				5333D6702EBA7E1C0006CC3B /* EditUserStatusView.swift */,
@@ -683,6 +686,7 @@
 				53343A162E4E59E500224553 /* PerformanceRow.swift in Sources */,
 				5333D6712EBA7E1C0006CC3B /* EditUserStatusView.swift in Sources */,
 				53847C912E02FEBF00EE649A /* ViewModel.swift in Sources */,
+				5333D6772EBD35910006CC3B /* SetFestivalDatesView.swift in Sources */,
 				5334687E2E42731A00E069DB /* DateListView.swift in Sources */,
 				533468782E426E9D00E069DB /* FestivalView.swift in Sources */,
 				53B815D22EAAD56F00854645 /* KeyChainHelper.swift in Sources */,
