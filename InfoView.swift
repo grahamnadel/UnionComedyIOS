@@ -18,6 +18,8 @@ struct InfoView: View {
                 Text("593 Somerville Ave in Somerville, MA")
                 Text("Contact: info@unioncomedy.com")
                 Text("Hours: Friday–Saturday 7-10pm, Sunday 5pm-8pm")
+                Spacer()
+                Text("Festival Location: 255 Elm St, Somerville, MA 02144")
             }
             .padding()
         }
