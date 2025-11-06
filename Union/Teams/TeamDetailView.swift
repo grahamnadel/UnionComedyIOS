@@ -18,22 +18,23 @@ struct TeamDetailView: View {
     
     var body: some View {
         VStack {
-            if authViewModel.role == .owner {
-                if let team = team {
-                    Toggle(isOn: Binding(
-                        get: { team.houseTeam },
-                        set: { newValue in
-                            if let index = scheduleViewModel.teams.firstIndex(where: { $0.id == team.id }) {
-                                scheduleViewModel.teams[index].houseTeam = newValue
-                                scheduleViewModel.updateTeamType(teamName: teamName, isHouseTeam: newValue)
-                            }
-                        }
-                    )) {
-                        Text(team.houseTeam ? "House Team" : "Indie Team")
-                    }
-                    .padding()
-                }
-            }
+//            TODO: add this feature of selecting indie or house team
+//            if authViewModel.role == .owner {
+//                if let team = team {
+//                    Toggle(isOn: Binding(
+//                        get: { team.houseTeam },
+//                        set: { newValue in
+//                            if let index = scheduleViewModel.teams.firstIndex(where: { $0.id == team.id }) {
+//                                scheduleViewModel.teams[index].houseTeam = newValue
+//                                scheduleViewModel.updateTeamType(teamName: teamName, isHouseTeam: newValue)
+//                            }
+//                        }
+//                    )) {
+//                        Text(team.houseTeam ? "House Team" : "Indie Team")
+//                    }
+//                    .padding()
+//                }
+//            }
             List {
                 // MARK: - Performances
                 if !performancesForTeam.isEmpty {
