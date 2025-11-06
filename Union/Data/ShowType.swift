@@ -10,6 +10,7 @@ enum ShowType: String, CaseIterable, Identifiable {
     case cageMatch
 //    case classShow
     case special
+    case festival
 
     var id: String { rawValue }
     
@@ -22,6 +23,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .cageMatch: return 1
 //        case .classShow: return nil
         case .special: return nil
+        case .festival: return nil
         }
     }
 
@@ -34,6 +36,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .cageMatch: return "Cage Match"
 //        case .classShow: return "Class Show"
         case .special: return "Special"
+        case .festival: return "Festival"
         }
     }
 
@@ -42,7 +45,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .fridayNightFusion, .fridayWeekendShow: return "Friday"
         case .saturdayWeekendShow, .pickle: return "Saturday"
         case .cageMatch: return "Sunday"
-        case .special/*, .classShow*/: return nil
+        case .special, .festival/*, .classShow*/: return nil
         }
     }
 
@@ -53,7 +56,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .saturdayWeekendShow: return (19, 30)
         case .pickle: return (21, 0)
         case .cageMatch: return (19, 0)
-        case .special/*, .classShow*/: return nil
+        case .special, .festival/*, .classShow*/: return nil
         }
     }
     
@@ -64,7 +67,7 @@ enum ShowType: String, CaseIterable, Identifiable {
         case .saturdayWeekendShow: return 2
         case .pickle: return 1
         case .cageMatch: return 2
-        case .special/*, .classShow*/: return nil
+        case .special, .festival/*, .classShow*/: return nil
         }
     }
     

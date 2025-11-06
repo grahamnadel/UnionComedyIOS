@@ -507,7 +507,6 @@ class ScheduleViewModel: ObservableObject {
                 self.festivalTeams = []
                 self.performances = []
                 self.knownPerformers = []
-                self.teams = []
             }
         
         do {
@@ -543,6 +542,9 @@ class ScheduleViewModel: ObservableObject {
     }
     
     func loadTeams() {
+        Task { @MainActor in
+            self.teams = []
+        }
         let db = Firestore.firestore()
 
         db.collection("teams").getDocuments { snapshot, error in

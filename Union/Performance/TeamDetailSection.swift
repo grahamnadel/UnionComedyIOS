@@ -10,23 +10,23 @@ import SwiftUI
 
 
 struct TeamDetailSection: View {
-    let allTeams: [String]
-    @Binding var selectedTeamName: String?
+    let allTeams: [Team]
+    @Binding var selectedTeam: Team?
     @Binding var teamName: String
     
     @State private var newTeamNameInput: String = "" // Local state for new input
     
     var body: some View {
         Section(header: Text("Team Details")) {
-            Picker("Team Name", selection: $selectedTeamName) {
-                Text("New Team...").tag(nil as String?)
+            Picker("Team Name", selection: $selectedTeam) {
+                Text("New Team...").tag(nil as Team?)
                 
                 ForEach(allTeams, id: \.self) { team in
-                    Text(team).tag(team as String?)
+                    Text(team.name).tag(team as Team?)
                 }
             }
             
-            if selectedTeamName == nil {
+            if selectedTeam == nil {
                 TextField("New Team Name", text: $newTeamNameInput)
                     // Update the final teamName binding directly from local state
                     .onChange(of: newTeamNameInput) {
@@ -35,6 +35,7 @@ struct TeamDetailSection: View {
                     .onAppear {
                         // Ensure 'teamName' is initially set from local input when 'New Team' is selected
                         teamName = newTeamNameInput
+                        print("selectedTeam: \(String(describing: selectedTeam))/nteamName: \(teamName)")
                     }
             }
         }

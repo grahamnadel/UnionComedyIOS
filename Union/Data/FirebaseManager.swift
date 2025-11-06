@@ -69,19 +69,6 @@ class FirebaseManager {
     
 //    FIXME: could the problem be with empties?
     func checkForExistingTeam(teamName: String, completion: @escaping (Bool) -> Void) {
-        db.collection("festivalTeams")
-            .whereField("name", isEqualTo: teamName)
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    print("Error checking team name: \(error.localizedDescription)")
-                    completion(false)
-                    return
-                }
-                
-                let exists = !(snapshot?.documents.isEmpty ?? true)
-                completion(exists)
-            }
-        
         db.collection("teams")
             .whereField("name", isEqualTo: teamName)
             .getDocuments { snapshot, error in
@@ -134,6 +121,7 @@ class FirebaseManager {
     func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date]) {
         checkForExistingTeam(teamName: teamName) { exists in
             if exists {
+                print("exists")
                 self.db.collection("festivalTeams").whereField("name", isEqualTo: teamName).getDocuments { snapshot, error in
                     if let error = error {
                         print("❌ Error finding team: \(error)")
@@ -149,10 +137,7 @@ class FirebaseManager {
 
                     // Convert Date array to Firestore Timestamp array
                     let timestamps = dates.map { Timestamp(date: $0) }
-//FIXME: debug
-//                    2:00
-                    print("DEBUG dates going into createPerformance: \(dates)")
-                    print("DEBUG timestamps in createPerformance: \(timestamps)")
+                    
                     docRef.updateData([
                         "showTimes": FieldValue.arrayUnion(timestamps)
                     ]) { error in
@@ -164,10 +149,8 @@ class FirebaseManager {
                     }
                 }
             } else {
-                print("Team not found")
                 //FIXME: debug
-                print("DEBUG dates going into createPerformance for team not found: \(dates)")
-                
+                print("!exists")
                 self.db.collection("festivalTeams").document(id).setData([
                     "name": teamName,
                     "performers": performerIds,

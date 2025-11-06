@@ -25,6 +25,7 @@ import Foundation
 // Aesthetics and UI
 //    Human Interface Guidelines
 //    pending Users/All Users toggle is not user friendly
+//  Change colors of showType labels in DatesList
 
 // DEBUG:
 //    Changing a performer to audience will not remove them from teams

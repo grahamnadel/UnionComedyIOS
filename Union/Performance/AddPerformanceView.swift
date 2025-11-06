@@ -8,7 +8,8 @@ struct AddPerformanceView: View {
     @State private var date = Date.nextFriday730PM
     @State var selectedDates: Set<Date> = Set()
     @State private var teamName = ""
-    @State private var selectedTeamName: String? = nil
+//    @State private var selectedTeamName: String? = nil
+    @State private var selectedTeam: Team? = nil
     @State private var newTeamNameInput = ""
     @State private var performerInput = ""
     @State private var performerInputs: Set<PerformerInput> = Set()
@@ -45,18 +46,10 @@ struct AddPerformanceView: View {
     var isShowTypeSelected: Bool {
         selectedShowType != nil && selectedShowType != .special
     }
-    
-    // Computed property to get all unique team names from performances
-//    TODO: change this to getting the list of teams
-    var allTeams: [String] {
-        let houseTeams = Set(scheduleViewModel.teams.filter { $0.houseTeam }.map { $0.name })
-        let indieTeams = Set(scheduleViewModel.teams.filter { !$0.houseTeam }.map { $0.name })
-        
-        return Array(houseTeams).sorted() + Array(indieTeams).sorted()
-    }
 
     
     // This computed property filters suggestions for the user as they type.
+//    TODO: change to get rid of knownPerformers to just Performers?
     var filteredSuggestions: [String] {
         let existingNames = Set(performerInputs.map(\.name))
         // Ensure performerInput is not empty to avoid showing all suggestions initially.
@@ -83,8 +76,8 @@ struct AddPerformanceView: View {
                 
 // MARK: - Team Details
                 TeamDetailSection(
-                    allTeams: allTeams,
-                    selectedTeamName: $selectedTeamName,
+                    allTeams: scheduleViewModel.teams,
+                    selectedTeam: $selectedTeam,
                     teamName: $teamName
                 )
                 
@@ -164,7 +157,6 @@ struct AddPerformanceView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         savePerformance()
-                        scheduleViewModel.loadData()
                     }
                     .disabled(teamName.isEmpty || performerInputs.isEmpty || selectedDates.isEmpty || !redundantPerformances.isEmpty )
                 }
@@ -193,28 +185,24 @@ struct AddPerformanceView: View {
                 )
             }
             .onAppear {
-                if let firstTeam = allTeams.first {
-                    selectedTeamName = firstTeam
-                    teamName = firstTeam
+                if let firstTeam = scheduleViewModel.teams.first {
+                    selectedTeam = firstTeam
+                    teamName = firstTeam.name
                 }
+                
                 // Recalculate redundancy immediately if dates/team were passed in init
                 if !selectedDates.isEmpty && !teamName.isEmpty {
                     redundantPerformances = blockRedundantTeamSave()
                 }
             }
-            .onChange(of: selectedTeamName) {
+            .onChange(of: selectedTeam) {
                 // Clear existing performers
                 performerInputs.removeAll()
-                if let newTeam = selectedTeamName {
-                    teamName = newTeam
-                    
-                    // Find all performers for this team
-                    let existingPerformers = scheduleViewModel.performances
-                        .filter { $0.teamName == newTeam }
-                        .flatMap { $0.performers }
+                if let newTeam = selectedTeam {
+                    teamName = newTeam.name
                     
                     // Add unique performers to the selected list
-                    for performerName in Set(existingPerformers) {
+                    for performerName in newTeam.performers {
                         performerInputs.insert(PerformerInput(name: performerName))
                     }
                 } else {
@@ -226,7 +214,6 @@ struct AddPerformanceView: View {
             .onChange(of: selectedDates) {
                 redundantPerformances = blockRedundantTeamSave()
             }
-            // Note: Removed redundant onChange(of: selectedTeamName) since the logic is in the other onChange
         }
     }
     
