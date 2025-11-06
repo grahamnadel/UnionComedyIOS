@@ -37,7 +37,7 @@ struct TeamDetailView: View {
                 if !performancesForTeam.isEmpty {
                     Section(header: Text("Performances")) {
                         ForEach(performancesForTeam, id: \.id) { performance in
-                            PerformanceRow(performance: performance)
+                            TeamListPerformanceRow(performance: performance)
                         }
                         // ✅ Only owners can delete
                         .onDelete { indexSet in
@@ -49,37 +49,36 @@ struct TeamDetailView: View {
                             }
                         }
                     }
-                } else {
-                    
-                    // MARK: - Performers
-                    if let team = team {
-                        Section(header: Text("Performers")) {
-                            ForEach(team.performers, id: \.self) { performer in
-                                NavigationLink(destination: PerformerDetailView(performer: performer)) {
-                                    HStack {
-                                        AsyncImage(url: performerURLs[performer]) { image in
-                                            image.resizable().aspectRatio(contentMode: .fill)
-                                        } placeholder: {
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .fill(Color.gray.opacity(0.3))
-                                                .overlay(
-                                                    Image(systemName: "person.fill")
-                                                        .foregroundColor(.gray)
-                                                )
-                                        }
-                                        .frame(width: 50, height: 50)
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        
-                                        Text(performer)
-                                            .font(.body)
-                                            .foregroundColor(.primary)
+                }
+                
+                // MARK: - Performers
+                if let team = team {
+                    Section(header: Text("Performers")) {
+                        ForEach(team.performers, id: \.self) { performer in
+                            NavigationLink(destination: PerformerDetailView(performer: performer)) {
+                                HStack {
+                                    AsyncImage(url: performerURLs[performer]) { image in
+                                        image.resizable().aspectRatio(contentMode: .fill)
+                                    } placeholder: {
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(Color.gray.opacity(0.3))
+                                            .overlay(
+                                                Image(systemName: "person.fill")
+                                                    .foregroundColor(.gray)
+                                            )
                                     }
-                                    .padding(.vertical, 4)
+                                    .frame(width: 50, height: 50)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    
+                                    Text(performer)
+                                        .font(.body)
+                                        .foregroundColor(.primary)
                                 }
+                                .padding(.vertical, 4)
                             }
-                            .task {
-                                await loadPerformerURLs()
-                            }
+                        }
+                        .task {
+                            await loadPerformerURLs()
                         }
                     }
                 }
