@@ -6,20 +6,10 @@ struct EditTeamPerformersView: View {
     let teamName: String
     @State private var showCreatePerformer = false
     
-    var sortedKnownPerformers: [String] {
-        var performers: Set<String> = []
-        for team in scheduleViewModel.teams {
-            for performer in team.performers {
-                performers.insert(performer)
-            }
-        }
-        return Array(performers.sorted())
-    }
-    
     var body: some View {
         List {
             Section("Performers") {
-                ForEach(sortedKnownPerformers, id: \.self) { performer in
+                ForEach(scheduleViewModel.knownPerformers.sorted(), id: \.self) { performer in
                     HStack {
                         Text(performer)
                         Spacer()

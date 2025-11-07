@@ -8,13 +8,13 @@ import FirebaseStorage
 class ScheduleViewModel: ObservableObject {
     @Published var festivalTeams = [TeamData]()
     @Published var performances: [Performance] = []
-//    TODO: fix how teams is populated
+    //    TODO: fix how teams is populated
     @Published var teams: [Team] = []
     @Published var knownPerformers: Set<String> = []
     @Published var isAdminOwner = false
     
-//    Arrays of the showstypes and dates
-//    I want to list all the improperly booked shows
+    //    Arrays of the showstypes and dates
+    //    I want to list all the improperly booked shows
     @Published var unBooked: [ShowType: [Date]] = [:]
     @Published var underBooked: [ShowType: [Date]] = [:]
     @Published var fullyBooked: [ShowType: [Date]] = [:]
@@ -104,7 +104,7 @@ class ScheduleViewModel: ObservableObject {
                 return
             }
             
-//                        If the user will no longer be a performer, remove them from the performers
+            //                        If the user will no longer be a performer, remove them from the performers
             if let originalRole = document.get("role") as? String {
                 print("originalRole: \(originalRole)")
                 if originalRole == UserRole.coach.rawValue || originalRole == UserRole.performer.rawValue || originalRole == UserRole.owner.rawValue  && (user.role == UserRole.audience) {
@@ -304,7 +304,7 @@ class ScheduleViewModel: ObservableObject {
         }
     }
     
-//    Change the team too and from a house team
+    //    Change the team too and from a house team
     func updateTeamType(teamName: String, isHouseTeam: Bool) {
         let db = Firestore.firestore()
         let teamsRef = db.collection("teams")
@@ -336,44 +336,44 @@ class ScheduleViewModel: ObservableObject {
         let db = Firestore.firestore()
         let festivalTeamsRef = db.collection("festivalTeams")
         let teamsRef = db.collection("teams")
-
+        
         festivalTeamsRef.whereField("name", isEqualTo: teamName).getDocuments { snapshot, error in
             if let error = error {
                 print("Error finding team \(teamName): \(error)")
                 return
             }
-
+            
             guard let document = snapshot?.documents.first else {
                 print("No team found with name: \(teamName)")
                 return
             }
-
+            
             let docRef = festivalTeamsRef.document(document.documentID)
             var performers = document.data()["performers"] as? [String] ?? []
-
+            
             // Only add if not already present
             if !performers.contains(performerName) {
                 performers.append(performerName)
-
+                
                 // ✅ Update festivalTeams
                 docRef.updateData(["performers": performers]) { error in
                     if let error = error {
                         print("Error updating performers for festival team \(teamName): \(error)")
                     } else {
                         print("✅ Successfully added performer \(performerName) to festivalTeams")
-
+                        
                         // ✅ Also update the main teams collection
                         teamsRef.whereField("name", isEqualTo: teamName).getDocuments { teamSnapshot, error in
                             if let error = error {
                                 print("Error finding team in teams collection: \(error)")
                                 return
                             }
-
+                            
                             guard let teamDoc = teamSnapshot?.documents.first else {
                                 print("No team found with name \(teamName) in teams collection")
                                 return
                             }
-
+                            
                             let teamDocRef = teamsRef.document(teamDoc.documentID)
                             teamDocRef.updateData(["performers": performers]) { error in
                                 if let error = error {
@@ -389,10 +389,10 @@ class ScheduleViewModel: ObservableObject {
                 print("⚠️ Performer \(performerName) is already on the team \(teamName)")
             }
         }
-
+        
         loadData()
     }
-
+    
     
     
     // Upload a performer's image to Firebase Storage and save URL in Firestore
@@ -513,11 +513,11 @@ class ScheduleViewModel: ObservableObject {
     func loadData() {
         let now = Date()
         // Clear existing data before loading new data
-            Task { @MainActor in
-                self.festivalTeams = []
-                self.performances = []
-                self.knownPerformers = []
-            }
+        Task { @MainActor in
+            self.festivalTeams = []
+            self.performances = []
+            self.knownPerformers = []
+        }
         
         do {
             FirebaseManager.shared.loadFestivalTeamsWithPerformances { teams in
@@ -529,10 +529,10 @@ class ScheduleViewModel: ObservableObject {
                     for showInstance in team.showTimes {
                         print("showInstance: \(showInstance)")
                         let show = Performance(teamName: team.teamName, showTime: showInstance, performers: team.performers)
-//                        FIXME: does it load correctly?
-//                        1:00 ** one of these is for 2:00. WTF!
+                        //                        FIXME: does it load correctly?
+                        //                        1:00 ** one of these is for 2:00. WTF!
                         print("Debug: showInstance: \(showInstance)")
-//                        Only show upcoming shows
+                        //                        Only show upcoming shows
                         if show.showTime > now {
                             self.performances.append(show)
                         }
@@ -540,10 +540,10 @@ class ScheduleViewModel: ObservableObject {
                     }
                 }
                 
-//                self.loadKnownPerformers { performers in
-//                    self.knownPerformers = performers
-//                    print("known performers: \(self.knownPerformers)")
-//                }
+                //                self.loadKnownPerformers { performers in
+                //                    self.knownPerformers = performers
+                //                    print("known performers: \(self.knownPerformers)")
+                //                }
                 (self.unBooked, self.underBooked, self.fullyBooked, self.overBooked) = self.makeShowGroups(performances: self.performances)
             }
         } catch {
@@ -556,22 +556,22 @@ class ScheduleViewModel: ObservableObject {
             self.teams = []
         }
         let db = Firestore.firestore()
-
+        
         db.collection("teams").getDocuments { snapshot, error in
             if let error = error {
                 print("❌ Error loading teams: \(error.localizedDescription)")
                 return
             }
-
+            
             // ✅ compactMap allows `nil` returns inside
-//            TODO: find where teams are saved and add indie/house team bool
+            //            TODO: find where teams are saved and add indie/house team bool
             let fetchedTeams: [Team] = snapshot?.documents.compactMap { document in
                 let data = document.data()
                 guard let name = data["name"] as? String,
                       let performers = data["performers"] as? [String] else {
                     return nil
                 }
-
+                
                 // Use Firestore’s document ID as the team’s id
                 return Team(
                     name: name,
@@ -579,7 +579,7 @@ class ScheduleViewModel: ObservableObject {
                     performers: performers
                 )
             } ?? []
-
+            
             DispatchQueue.main.async {
                 self.teams = fetchedTeams
                 self.knownPerformers = Set(fetchedTeams.flatMap { $0.performers })
@@ -595,88 +595,46 @@ class ScheduleViewModel: ObservableObject {
     }
     
     
-//    func loadKnownPerformers(completion: @escaping (Set<String>) -> Void) {
-//        let db = Firestore.firestore()
-//        var performerNames = Set<String>()
-//        
-//        db.collection("performers").getDocuments { snapshot, error in
-//            if let error = error {
-//                print("❌ Error loading known performers: \(error.localizedDescription)")
-//                completion([])
-//                return
-//            }
-//            
-//            guard let documents = snapshot?.documents else {
-//                print("⚠️ No performer documents found")
-//                completion([])
-//                return
-//            }
-//            
-//            for doc in documents {
-//                if let performerName = doc.data()["name"] as? String {
-//                    performerNames.insert(performerName)
-//                }
-//            }
-//            
-//            completion(performerNames)
-//        }
-//    }
-    
-    
-//    TODO: Remove from Teams
+    //    TODO: Remove from Teams
     func removePerformerFromFirebase(teamName: String?, performerName: String) {
         let db = Firestore.firestore()
-        let teamsRef = db.collection("festivalTeams")
+        let teamsRef = db.collection("teams")
         let performersRef = db.collection("performers")
-        //        Clear from performers
-        let performersQuery = performersRef.whereField("name", isEqualTo: performerName)
-        performersQuery.getDocuments { snapshot, error in
+        let festivalTeamsRef = db.collection("festivalTeams")
+        
+        // 1️⃣ Delete performer documents from the "performers" collection
+        performersRef.whereField("name", isEqualTo: performerName).getDocuments { snapshot, error in
             if let error = error {
-                print("Error fetching performers: \(error)")
+                print("❌ Error fetching performers: \(error)")
                 return
             }
-            
             guard let documents = snapshot?.documents, !documents.isEmpty else {
-                print("Performer: \(performerName) not found in query")
+                print("⚠️ Performer '\(performerName)' not found in performers collection")
                 return
             }
             
-            // Loop through and delete each matching document (should usually be 1)
             for document in documents {
-                let docID = document.documentID
-                performersRef.document(docID).delete { error in
+                performersRef.document(document.documentID).delete { error in
                     if let error = error {
-                        print("Error deleting performer \(performerName): \(error.localizedDescription)")
+                        print("❌ Error deleting performer \(performerName): \(error.localizedDescription)")
                     } else {
-                        print("✅ Successfully deleted performer \(performerName) (ID: \(docID))")
+                        print("✅ Deleted performer '\(performerName)' (ID: \(document.documentID)) from performers")
                     }
                 }
             }
         }
         
-        //        Clear from teams
-        let teamsQuery: Query
-        if let teamName = teamName {
-            teamsQuery = teamsRef.whereField("name", isEqualTo: teamName)
-        } else {
-            teamsQuery = teamsRef // all teams
-        }
-        
-        teamsQuery.getDocuments { snapshot, error in
+        // 2️⃣ Remove performer name from "teams" collection
+        teamsRef.getDocuments { snapshot, error in
             if let error = error {
                 print("❌ Error fetching teams: \(error)")
                 return
             }
-            
-            guard let documents = snapshot?.documents, !documents.isEmpty else {
-                print("⚠️ No teams found for query")
-                return
-            }
+            guard let documents = snapshot?.documents else { return }
             
             for document in documents {
                 var performers = document.data()["performers"] as? [String] ?? []
                 let originalCount = performers.count
-                
                 performers.removeAll { $0 == performerName }
                 
                 if performers.count != originalCount {
@@ -684,15 +642,42 @@ class ScheduleViewModel: ObservableObject {
                         if let error = error {
                             print("❌ Error updating team \(document.documentID): \(error)")
                         } else {
-                            print("✅ Removed '\(performerName)' from team \(document.data()["name"] ?? "Unknown")")
+                            print("✅ Removed '\(performerName)' from team \(document.data()["name"] ?? "Unknown") in teams")
                         }
                     }
                 }
             }
         }
-        //        Have UI reflect changes
+        
+        // 3️⃣ Remove performer name from "festivalTeams" collection
+        festivalTeamsRef.getDocuments { snapshot, error in
+            if let error = error {
+                print("❌ Error fetching festivalTeams: \(error)")
+                return
+            }
+            guard let documents = snapshot?.documents else { return }
+            
+            for document in documents {
+                var performers = document.data()["performers"] as? [String] ?? []
+                let originalCount = performers.count
+                performers.removeAll { $0 == performerName }
+                
+                if performers.count != originalCount {
+                    festivalTeamsRef.document(document.documentID).updateData(["performers": performers]) { error in
+                        if let error = error {
+                            print("❌ Error updating festivalTeam \(document.documentID): \(error)")
+                        } else {
+                            print("✅ Removed '\(performerName)' from festivalTeam \(document.data()["name"] ?? "Unknown")")
+                        }
+                    }
+                }
+            }
+        }
+
+        // 4️⃣ Refresh UI
         loadData()
     }
+
     
     
     func deleteTeam(named teamName: String) {
@@ -726,90 +711,90 @@ class ScheduleViewModel: ObservableObject {
                 }
             }
     }
-   
-//    MARK: calculate booking issues
     
-        private func makeShowGroups(performances: [Performance]) -> (
-            unBooked: [ShowType: [Date]],
-            underBooked: [ShowType: [Date]],
-            fullyBooked: [ShowType: [Date]],
-            overBooked: [ShowType: [Date]]
-        ) {
-            var unBooked = [ShowType: [Date]]()
-            var underBooked = [ShowType: [Date]]()
-            var fullyBooked = [ShowType: [Date]]()
-            var overBooked = [ShowType: [Date]]()
-            
-            let upcomingShowDates = getShowDates()
-            print("upcomingShowDates: \(upcomingShowDates)")
-            
-            // 1. Group performances by their showTime
-            let groupedByTime = Dictionary(grouping: performances, by: { $0.showTime })
-            print("groupedByTime: \(groupedByTime)")
-            
-            // 2. Count how many performances are at each time
-            let showCounts = groupedByTime.mapValues { $0.count }
-            print("showCounts: \(showCounts)")
-            
-            // 3. Categorize each showTime
-            for (showTime, count) in showCounts {
-                if let showType = ShowType.dateToShow(date: showTime) {
-                    if let requiredTeamCount = showType.requiredTeamCount {
-                        switch count {
-                        case 0:
-                            unBooked[showType, default: []].append(showTime)
-                        case 1..<requiredTeamCount:
-                            underBooked[showType, default: []].append(showTime)
-                        case requiredTeamCount:
-                            fullyBooked[showType, default: []].append(showTime)
-                        default:
-                            overBooked[showType, default: []].append(showTime)
-                        }
-                    } else {
-                        // special shows: consider unBooked if 0, underBooked otherwise
-                        if count == 0 {
-                            unBooked[showType, default: []].append(showTime)
-                        } else {
-                            underBooked[showType, default: []].append(showTime)
-                        }
+    //    MARK: calculate booking issues
+    
+    private func makeShowGroups(performances: [Performance]) -> (
+        unBooked: [ShowType: [Date]],
+        underBooked: [ShowType: [Date]],
+        fullyBooked: [ShowType: [Date]],
+        overBooked: [ShowType: [Date]]
+    ) {
+        var unBooked = [ShowType: [Date]]()
+        var underBooked = [ShowType: [Date]]()
+        var fullyBooked = [ShowType: [Date]]()
+        var overBooked = [ShowType: [Date]]()
+        
+        let upcomingShowDates = getShowDates()
+        print("upcomingShowDates: \(upcomingShowDates)")
+        
+        // 1. Group performances by their showTime
+        let groupedByTime = Dictionary(grouping: performances, by: { $0.showTime })
+        print("groupedByTime: \(groupedByTime)")
+        
+        // 2. Count how many performances are at each time
+        let showCounts = groupedByTime.mapValues { $0.count }
+        print("showCounts: \(showCounts)")
+        
+        // 3. Categorize each showTime
+        for (showTime, count) in showCounts {
+            if let showType = ShowType.dateToShow(date: showTime) {
+                if let requiredTeamCount = showType.requiredTeamCount {
+                    switch count {
+                    case 0:
+                        unBooked[showType, default: []].append(showTime)
+                    case 1..<requiredTeamCount:
+                        underBooked[showType, default: []].append(showTime)
+                    case requiredTeamCount:
+                        fullyBooked[showType, default: []].append(showTime)
+                    default:
+                        overBooked[showType, default: []].append(showTime)
                     }
                 } else {
-                    // Unknown or special shows: treat as underBooked
-                    underBooked[.special, default: []].append(showTime)
+                    // special shows: consider unBooked if 0, underBooked otherwise
+                    if count == 0 {
+                        unBooked[showType, default: []].append(showTime)
+                    } else {
+                        underBooked[showType, default: []].append(showTime)
+                    }
                 }
+            } else {
+                // Unknown or special shows: treat as underBooked
+                underBooked[.special, default: []].append(showTime)
             }
-            
-//            Check to through all upcoming show dats to see which ones are booked so some degree (fully, partially, over). remove all booked dates to get the unbooked ones
-            for type in ShowType.allCases {
-                print("showType type: \(type)")
-//                all upcoming dates for the showType
-                var allDates = upcomingShowDates[type.rawValue]
-                print("allDates for upcomingShowDates[\(type)]: upcomingShowDates[\(type.rawValue)]: \(allDates ?? [])\n")
-                if let allDates = allDates {
-                    // Collect all booked dates for this show type
-                    let bookedDates = (underBooked[type] ?? []) + (fullyBooked[type] ?? []) + (overBooked[type] ?? [])
-                    let unBookedDates = allDates.filter { !bookedDates.contains($0)}
-                    unBooked[type] = unBookedDates
-                } else {
-                    print("could not unwrap allDates for \(type.rawValue)")
-                }
-            }
-            
-            print("unBooked: \(unBooked)\n underBooked: \(underBooked)\n fullyBooked: \(fullyBooked)\n overBooked: \(overBooked)\n")
-            return (unBooked, underBooked, fullyBooked, overBooked)
         }
+        
+        //            Check to through all upcoming show dats to see which ones are booked so some degree (fully, partially, over). remove all booked dates to get the unbooked ones
+        for type in ShowType.allCases {
+            print("showType type: \(type)")
+            //                all upcoming dates for the showType
+            var allDates = upcomingShowDates[type.rawValue]
+            print("allDates for upcomingShowDates[\(type)]: upcomingShowDates[\(type.rawValue)]: \(allDates ?? [])\n")
+            if let allDates = allDates {
+                // Collect all booked dates for this show type
+                let bookedDates = (underBooked[type] ?? []) + (fullyBooked[type] ?? []) + (overBooked[type] ?? [])
+                let unBookedDates = allDates.filter { !bookedDates.contains($0)}
+                unBooked[type] = unBookedDates
+            } else {
+                print("could not unwrap allDates for \(type.rawValue)")
+            }
+        }
+        
+        print("unBooked: \(unBooked)\n underBooked: \(underBooked)\n fullyBooked: \(fullyBooked)\n overBooked: \(overBooked)\n")
+        return (unBooked, underBooked, fullyBooked, overBooked)
+    }
     
-//    This will calculate if there are shows in the next month that are over, under, or unbooked
+    //    This will calculate if there are shows in the next month that are over, under, or unbooked
     func getShowDates() -> [String: [Date]] {
         let calendar = Calendar.current
         let oneMonth = datesForNextMonth() // your array of all dates
-
+        
         var fridayNightFusionTimes: [Date] = []
         var fridayWeekendShowTimes: [Date] = []
         var saturdayWeekendShowTimes: [Date] = []
         var pickleTimes: [Date] = []
         var cageMatchTimes: [Date] = []
-
+        
         for date in oneMonth {
             switch calendar.component(.weekday, from: date) {
             case 6: // Friday
@@ -818,8 +803,8 @@ class ScheduleViewModel: ObservableObject {
                     print("getShowDates: Friday night show time: \(fusion)")
                 }
                 if let weekendShow = calendar.date(bySettingHour: 19, minute: 30, second: 0, of: date) {
-                            fridayWeekendShowTimes.append(weekendShow)
-                        }
+                    fridayWeekendShowTimes.append(weekendShow)
+                }
             case 7: // Saturday
                 if let weekendShow = calendar.date(bySettingHour: 19, minute: 30, second: 0, of: date) {
                     saturdayWeekendShowTimes.append(weekendShow)
@@ -835,47 +820,47 @@ class ScheduleViewModel: ObservableObject {
                 break
             }
         }
-
+        
         return ["fridayNightFusion": fridayNightFusionTimes, "fridayWeekendShow": fridayWeekendShowTimes, "saturdayWeekendShow": saturdayWeekendShowTimes, "pickle": pickleTimes, "cageMatch": cageMatchTimes]
     }
-
-
+    
+    
     func datesForNextMonth() -> [Date] {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date()) // normalize to start of day
         let numberOfDays = 30
-
+        
         return (0..<numberOfDays).compactMap { offset in
             calendar.date(byAdding: .day, value: offset, to: today)
         }
     }
     
     func getBookingDates(for status: BookingStatus) -> [ShowType : [Date]] {
-            switch status {
-            case .unBooked:
-                // Return the raw array
-                return unBooked
-            case .underBooked:
-                // Could return a pre-sorted array here if needed
-                return underBooked
-            case .booked:
-                // Could apply additional filtering
-                return fullyBooked
-            case .overBooked:
-                return overBooked
-            }
+        switch status {
+        case .unBooked:
+            // Return the raw array
+            return unBooked
+        case .underBooked:
+            // Could return a pre-sorted array here if needed
+            return underBooked
+        case .booked:
+            // Could apply additional filtering
+            return fullyBooked
+        case .overBooked:
+            return overBooked
         }
+    }
     
     func saveFestivalDatesAndLocation(start: Date, end: Date, location: String) {
         let db = Firestore.firestore()
         let collection = db.collection("festivalDates")
-
+        
         collection.getDocuments { snapshot, error in
             if let error = error {
                 print("❌ Error fetching documents: \(error)")
                 return
             }
-
+            
             if let document = snapshot?.documents.first {
                 // ✅ Update existing festival info
                 document.reference.setData([
@@ -889,7 +874,7 @@ class ScheduleViewModel: ObservableObject {
                         print("✅ Festival information updated successfully")
                     }
                 }
-
+                
             } else {
                 // ✅ No document found — create a new one
                 collection.addDocument(data: [
@@ -910,28 +895,28 @@ class ScheduleViewModel: ObservableObject {
     func loadFestivalDatesAndLocation(completion: @escaping (Date?, Date?, String?) -> Void) {
         let db = Firestore.firestore()
         let collection = db.collection("festivalDates")
-
+        
         collection.getDocuments { snapshot, error in
             if let error = error {
                 print("❌ Error fetching festival data: \(error)")
                 completion(nil, nil, nil)
                 return
             }
-
+            
             guard let document = snapshot?.documents.first else {
                 print("ℹ️ No festival data found.")
                 completion(nil, nil, nil)
                 return
             }
-
+            
             let data = document.data()
-
+            
             let startDate = (data["startDate"] as? Timestamp)?.dateValue()
             let endDate = (data["endDate"] as? Timestamp)?.dateValue()
             let location = data["location"] as? String
-
+            
             print("✅ Loaded festival info: start=\(String(describing: startDate)), end=\(String(describing: endDate)), location=\(location ?? "N/A")")
-
+            
             completion(startDate, endDate, location)
         }
     }

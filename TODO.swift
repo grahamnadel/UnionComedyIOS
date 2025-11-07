@@ -36,4 +36,7 @@ import Foundation
 //  Add a second team button on the addPerformanceView?
 
 
-// FIXME: 
+// FIXME:
+/// 1. Edit \(team) in what i think is the team list detail view
+///         Toggling is weird
+///         
