@@ -1,5 +1,5 @@
 import SwiftUI
-
+//FIXME: I must confirm changes twice
 struct EditTeamPerformersView: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     
@@ -35,6 +35,11 @@ struct EditTeamPerformersView: View {
         }
         .navigationTitle("Edit \(teamName)")
         .listStyle(.insetGrouped)
+        .refreshable {
+            scheduleViewModel.loadData()
+            scheduleViewModel.loadTeams()
+            scheduleViewModel.loadPerformers()
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: { showCreatePerformer = true }) {
@@ -45,6 +50,7 @@ struct EditTeamPerformersView: View {
         .sheet(isPresented: $showCreatePerformer) {
             CreatePerformerView(teamName: teamName)
         }
+        
     }
     
     /// Helper: Check if a performer is currently in the team
@@ -57,20 +63,26 @@ struct EditTeamPerformersView: View {
     /// Apply all toggle changes to Firestore
     private func applyChanges() {
         for (performer, isOn) in tempSelections {
-            if isOn && !isPerformerInTeam(performer) {
-                scheduleViewModel.addPerformer(named: performer, toTeam: teamName)
-            } else if !isOn && isPerformerInTeam(performer) {
-                scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer)
-                scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: performer)
+            Task {
+                if isOn && !isPerformerInTeam(performer) {
+                    scheduleViewModel.addPerformer(named: performer, toTeam: teamName)
+                } else if !isOn && isPerformerInTeam(performer) {
+                    scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer)
+                    scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: performer)
+                }
+                await scheduleViewModel.loadData()
+                await scheduleViewModel.loadTeams()
+                await scheduleViewModel.loadPerformers()
+                await tempSelections.removeAll()
             }
         }
         
         // Reload the data once after all updates
-        scheduleViewModel.loadData()
-        scheduleViewModel.loadTeams()
-        scheduleViewModel.loadPerformers()
+//        scheduleViewModel.loadData()
+//        scheduleViewModel.loadTeams()
+//        scheduleViewModel.loadPerformers()
         
         // Clear temp selections
-        tempSelections.removeAll()
+//        tempSelections.removeAll()
     }
 }

@@ -98,6 +98,11 @@ struct TeamDetailView: View {
             }
         }
         .navigationTitle(teamName)
+        .refreshable {
+            scheduleViewModel.loadData()
+            scheduleViewModel.loadTeams()
+            scheduleViewModel.loadPerformers()
+        }
         .toolbar {
             // Owners can still edit performers
             if authViewModel.role == .owner {

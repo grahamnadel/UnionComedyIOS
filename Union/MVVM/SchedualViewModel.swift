@@ -398,9 +398,9 @@ class ScheduleViewModel: ObservableObject {
         addPerformerToFestivalTeam(performerName: performerName, teamName: teamName)
         addPerformerToTeamCollection(performerName: performerName, teamName: teamName)
         FirebaseManager.shared.checkForExistingPerformers(for: [performerName])
-        loadData()
-        loadTeams()
-        loadPerformers()
+//        loadData()
+//        loadTeams()
+//        loadPerformers()
     }
 
     private func addPerformerToFestivalTeam(performerName: String, teamName: String) {
