@@ -54,7 +54,11 @@ struct EditTeamPerformersView: View {
                 } else {
                     // Remove the performer from the team
 //                    scheduleViewModel.deletePerformer(named: performer, fromTeam: teamName)
-                    scheduleViewModel.removePerformerFromFirebase(teamName: teamName, performerName: performer)
+                    scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer)
+                    scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: performer)
+                    
+                    // Refresh UI
+                    scheduleViewModel.loadData()
                 }
             }
         )

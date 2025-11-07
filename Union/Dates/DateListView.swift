@@ -129,6 +129,8 @@ struct DateListView: View {
             //            .navigationTitle("Performances")
             .refreshable {
                 scheduleViewModel.loadData()
+                scheduleViewModel.loadTeams()
+                scheduleViewModel.loadPerformers()
             }
         }
         .sheet(item: $editingPerformance) { performance in

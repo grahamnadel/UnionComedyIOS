@@ -15,10 +15,7 @@ struct PerformerListView: View {
 
 
     var filteredPerformers: [String] {
-        var performers = [String]()
-        for team in scheduleViewModel.teams {
-            team.performers.forEach { performers.append($0) }
-        }
+        var performers = Array(scheduleViewModel.knownPerformers)
         if searchText.isEmpty {
             return performers.sorted()
         } else {
@@ -74,6 +71,8 @@ struct PerformerListView: View {
                 .listStyle(.insetGrouped)
                 .refreshable {
                     scheduleViewModel.loadData()
+                    scheduleViewModel.loadTeams()
+                    scheduleViewModel.loadPerformers()
                     await loadPerformerImageURLs()
                 }
             }
@@ -101,6 +100,7 @@ struct PerformerListView: View {
                 confirmAction: {
                     if let performer = performerToDelete {
                         scheduleViewModel.removePerformerFromFirebase(teamName: nil, performerName: performer)
+                        scheduleViewModel.loadPerformers()
                     }
                 }
             )

@@ -34,6 +34,7 @@ import Foundation
 
 // MARK: Current work:
 //  Add a second team button on the addPerformanceView?
+//Editing a team by adding a performer doesn't add to performers?
 
 
 // FIXME:

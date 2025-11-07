@@ -57,6 +57,7 @@ struct TeamListView: View {
                 .refreshable {
                     scheduleViewModel.loadData()
                     scheduleViewModel.loadTeams()
+                    scheduleViewModel.loadPerformers()
                 }
                 .onAppear {
                     scheduleViewModel.loadTeams()

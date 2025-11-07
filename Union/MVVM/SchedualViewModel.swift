@@ -8,7 +8,7 @@ import FirebaseStorage
 class ScheduleViewModel: ObservableObject {
     @Published var festivalTeams = [TeamData]()
     @Published var performances: [Performance] = []
-    //    TODO: fix how teams is populated
+//    @Published var performers: [String]
     @Published var teams: [Team] = []
     @Published var knownPerformers: Set<String> = []
     @Published var isAdminOwner = false
@@ -42,6 +42,7 @@ class ScheduleViewModel: ObservableObject {
         loadData()
         loadFavorites()
         loadTeams()
+        loadPerformers()
         loadFestivalDatesAndLocation { start, end, location in
             self.festivalStartDate = start
             self.festivalEndDate = end
@@ -540,16 +541,40 @@ class ScheduleViewModel: ObservableObject {
                     }
                 }
                 
-                //                self.loadKnownPerformers { performers in
-                //                    self.knownPerformers = performers
-                //                    print("known performers: \(self.knownPerformers)")
-                //                }
                 (self.unBooked, self.underBooked, self.fullyBooked, self.overBooked) = self.makeShowGroups(performances: self.performances)
             }
         } catch {
             print("No previous data found or failed to load:", error)
         }
     }
+    
+    func loadPerformers() {
+        Task { @MainActor in
+            self.knownPerformers = []
+        }
+        
+        let db = Firestore.firestore()
+        
+        db.collection("performers").getDocuments { snapshot, error in
+            if let error = error {
+                print("❌ Error loading performers: \(error.localizedDescription)")
+                return
+            }
+            
+            let fetchedPerformerNames: [String] = snapshot?.documents.compactMap { document in
+                let data = document.data()
+                return data["name"] as? String
+            } ?? []
+            
+            let performerSet = Set(fetchedPerformerNames)
+            
+            DispatchQueue.main.async {
+                self.knownPerformers = performerSet
+                print("✅ Loaded \(performerSet.count) performers from Firestore")
+            }
+        }
+    }
+
     
     func loadTeams() {
         Task { @MainActor in
@@ -582,7 +607,7 @@ class ScheduleViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 self.teams = fetchedTeams
-                self.knownPerformers = Set(fetchedTeams.flatMap { $0.performers })
+//                self.knownPerformers = Set(fetchedTeams.flatMap { $0.performers })
                 print("✅ Loaded \(fetchedTeams.count) teams from Firestore")
             }
         }
@@ -596,13 +621,10 @@ class ScheduleViewModel: ObservableObject {
     
     
     //    TODO: Remove from Teams
-    func removePerformerFromFirebase(teamName: String?, performerName: String) {
+    func removePerformerFromPerformersCollection(performerName: String) {
         let db = Firestore.firestore()
-        let teamsRef = db.collection("teams")
         let performersRef = db.collection("performers")
-        let festivalTeamsRef = db.collection("festivalTeams")
         
-        // 1️⃣ Delete performer documents from the "performers" collection
         performersRef.whereField("name", isEqualTo: performerName).getDocuments { snapshot, error in
             if let error = error {
                 print("❌ Error fetching performers: \(error)")
@@ -623,33 +645,12 @@ class ScheduleViewModel: ObservableObject {
                 }
             }
         }
+    }
+    
+    func removePerformerFromFestivalTeamsCollection(performerName: String) {
+        let db = Firestore.firestore()
+        let festivalTeamsRef = db.collection("festivalTeams")
         
-        // 2️⃣ Remove performer name from "teams" collection
-        teamsRef.getDocuments { snapshot, error in
-            if let error = error {
-                print("❌ Error fetching teams: \(error)")
-                return
-            }
-            guard let documents = snapshot?.documents else { return }
-            
-            for document in documents {
-                var performers = document.data()["performers"] as? [String] ?? []
-                let originalCount = performers.count
-                performers.removeAll { $0 == performerName }
-                
-                if performers.count != originalCount {
-                    teamsRef.document(document.documentID).updateData(["performers": performers]) { error in
-                        if let error = error {
-                            print("❌ Error updating team \(document.documentID): \(error)")
-                        } else {
-                            print("✅ Removed '\(performerName)' from team \(document.data()["name"] ?? "Unknown") in teams")
-                        }
-                    }
-                }
-            }
-        }
-        
-        // 3️⃣ Remove performer name from "festivalTeams" collection
         festivalTeamsRef.getDocuments { snapshot, error in
             if let error = error {
                 print("❌ Error fetching festivalTeams: \(error)")
@@ -673,10 +674,48 @@ class ScheduleViewModel: ObservableObject {
                 }
             }
         }
+    }
 
-        // 4️⃣ Refresh UI
+    
+    func removePerformerFromTeamsCollection(performerName: String) {
+        let db = Firestore.firestore()
+        let teamsRef = db.collection("teams")
+        
+        teamsRef.getDocuments { snapshot, error in
+            if let error = error {
+                print("❌ Error fetching teams: \(error)")
+                return
+            }
+            guard let documents = snapshot?.documents else { return }
+            
+            for document in documents {
+                var performers = document.data()["performers"] as? [String] ?? []
+                let originalCount = performers.count
+                performers.removeAll { $0 == performerName }
+                
+                if performers.count != originalCount {
+                    teamsRef.document(document.documentID).updateData(["performers": performers]) { error in
+                        if let error = error {
+                            print("❌ Error updating team \(document.documentID): \(error)")
+                        } else {
+                            print("✅ Removed '\(performerName)' from team \(document.data()["name"] ?? "Unknown") in teams")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    func removePerformerFromFirebase(teamName: String?, performerName: String) {
+        removePerformerFromPerformersCollection(performerName: performerName)
+        removePerformerFromTeamsCollection(performerName: performerName)
+        removePerformerFromFestivalTeamsCollection(performerName: performerName)
+        
+        // Refresh UI
         loadData()
     }
+
 
     
     
