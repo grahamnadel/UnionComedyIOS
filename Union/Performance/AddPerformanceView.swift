@@ -277,7 +277,7 @@ struct AddPerformanceView: View {
         }
         
         // Save performance if no overbooking or user chooses to proceed
-        print("DEBUG selectedDatesArray: \(selectedDatesArray)")
+        print("createPerformance: \(teamToSave), \(performerInputs.map(\.name)), \(selectedDatesArray)")
         scheduleViewModel.createPerformance(
             id: UUID().uuidString,
             teamName: teamToSave,

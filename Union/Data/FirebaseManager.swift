@@ -159,8 +159,6 @@ class FirebaseManager {
                             ]) { error in
                                 if let error = error {
                                     print("❌ Failed to update showTimes: \(error)")
-                                } else {
-                                    print("✅ Successfully added dates to team \(teamName)")
                                 }
                             }
                         }
@@ -181,10 +179,21 @@ class FirebaseManager {
                     }
                 }
             } else {
-                //                Team does not exist
-//                Add any mising performers to performers collection
+                
                 self.checkForExistingPerformers(for: performerIds)
                 self.createTeam(teamName: teamName, performers: performerIds)
+                self.db.collection("festivalTeams").document(id).setData([
+                    "name": teamName,
+                    "performers": performerIds,
+                    "showTimes": dates,
+                    "id": id
+                ]) { error in
+                    if let error = error {
+                        print("Error writing team: \(error)")
+                    } else {
+                        print("Team successfully written!")
+                    }
+                }
             }
         }
     }

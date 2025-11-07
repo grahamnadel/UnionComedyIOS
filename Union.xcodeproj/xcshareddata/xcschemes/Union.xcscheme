@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "53847C762E02F10E00EE649A"
-               BuildableName = "Union.app"
+               BuildableName = "Union Comedy.app"
                BlueprintName = "Union"
                ReferencedContainer = "container:Union.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "53847C762E02F10E00EE649A"
-            BuildableName = "Union.app"
+            BuildableName = "Union Comedy.app"
             BlueprintName = "Union"
             ReferencedContainer = "container:Union.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "53847C762E02F10E00EE649A"
-            BuildableName = "Union.app"
+            BuildableName = "Union Comedy.app"
             BlueprintName = "Union"
             ReferencedContainer = "container:Union.xcodeproj">
          </BuildableReference>
