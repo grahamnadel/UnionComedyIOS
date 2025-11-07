@@ -540,10 +540,10 @@ class ScheduleViewModel: ObservableObject {
                     }
                 }
                 
-                self.loadKnownPerformers { performers in
-                    self.knownPerformers = performers
-                    print("known performers: \(self.knownPerformers)")
-                }
+//                self.loadKnownPerformers { performers in
+//                    self.knownPerformers = performers
+//                    print("known performers: \(self.knownPerformers)")
+//                }
                 (self.unBooked, self.underBooked, self.fullyBooked, self.overBooked) = self.makeShowGroups(performances: self.performances)
             }
         } catch {
@@ -582,6 +582,7 @@ class ScheduleViewModel: ObservableObject {
 
             DispatchQueue.main.async {
                 self.teams = fetchedTeams
+                self.knownPerformers = Set(fetchedTeams.flatMap { $0.performers })
                 print("✅ Loaded \(fetchedTeams.count) teams from Firestore")
             }
         }
@@ -594,32 +595,32 @@ class ScheduleViewModel: ObservableObject {
     }
     
     
-    func loadKnownPerformers(completion: @escaping (Set<String>) -> Void) {
-        let db = Firestore.firestore()
-        var performerNames = Set<String>()
-        
-        db.collection("performers").getDocuments { snapshot, error in
-            if let error = error {
-                print("❌ Error loading known performers: \(error.localizedDescription)")
-                completion([])
-                return
-            }
-            
-            guard let documents = snapshot?.documents else {
-                print("⚠️ No performer documents found")
-                completion([])
-                return
-            }
-            
-            for doc in documents {
-                if let performerName = doc.data()["name"] as? String {
-                    performerNames.insert(performerName)
-                }
-            }
-            
-            completion(performerNames)
-        }
-    }
+//    func loadKnownPerformers(completion: @escaping (Set<String>) -> Void) {
+//        let db = Firestore.firestore()
+//        var performerNames = Set<String>()
+//        
+//        db.collection("performers").getDocuments { snapshot, error in
+//            if let error = error {
+//                print("❌ Error loading known performers: \(error.localizedDescription)")
+//                completion([])
+//                return
+//            }
+//            
+//            guard let documents = snapshot?.documents else {
+//                print("⚠️ No performer documents found")
+//                completion([])
+//                return
+//            }
+//            
+//            for doc in documents {
+//                if let performerName = doc.data()["name"] as? String {
+//                    performerNames.insert(performerName)
+//                }
+//            }
+//            
+//            completion(performerNames)
+//        }
+//    }
     
     
 //    TODO: Remove from Teams

@@ -15,7 +15,10 @@ struct PerformerListView: View {
 
 
     var filteredPerformers: [String] {
-        let performers = scheduleViewModel.knownPerformers
+        var performers = [String]()
+        for team in scheduleViewModel.teams {
+            team.performers.forEach { performers.append($0) }
+        }
         if searchText.isEmpty {
             return performers.sorted()
         } else {

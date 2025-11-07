@@ -7,7 +7,13 @@ struct EditTeamPerformersView: View {
     @State private var showCreatePerformer = false
     
     var sortedKnownPerformers: [String] {
-        scheduleViewModel.knownPerformers.sorted()
+        var performers: Set<String> = []
+        for team in scheduleViewModel.teams {
+            for performer in team.performers {
+                performers.insert(performer)
+            }
+        }
+        return Array(performers.sorted())
     }
     
     var body: some View {

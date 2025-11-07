@@ -35,7 +35,5 @@ import Foundation
 // MARK: Current work:
 //  Add a second team button on the addPerformanceView?
 
-//Deleting all performances for a team eliminates team from suggestions
-//  show if the performance is for the festival
-//Find this:
-//FIXME: load the data in a way that I can designate isFestivalShow dates. Change this to loading an array of Performances.
+
+// FIXME: 
