@@ -333,67 +333,141 @@ class ScheduleViewModel: ObservableObject {
     
     // MARK: - Performer Management
     /// Adds a performer to a specific team's performances and to the known performers list.
+//    func addPerformer(named performerName: String, toTeam teamName: String) {
+//        let db = Firestore.firestore()
+//        let festivalTeamsRef = db.collection("festivalTeams")
+//        let teamsRef = db.collection("teams")
+//        
+//        festivalTeamsRef.whereField("name", isEqualTo: teamName).getDocuments { snapshot, error in
+//            if let error = error {
+//                print("Error finding team \(teamName): \(error)")
+//                return
+//            }
+//            
+//            guard let document = snapshot?.documents.first else {
+//                print("No team found with name: \(teamName)")
+//                return
+//            }
+//            
+//            let docRef = festivalTeamsRef.document(document.documentID)
+//            var performers = document.data()["performers"] as? [String] ?? []
+//            
+//            // Only add if not already present
+//            if !performers.contains(performerName) {
+//                performers.append(performerName)
+//                
+//                // ✅ Update festivalTeams
+//                docRef.updateData(["performers": performers]) { error in
+//                    if let error = error {
+//                        print("Error updating performers for festival team \(teamName): \(error)")
+//                    } else {
+//                        print("✅ Successfully added performer \(performerName) to festivalTeams")
+//                        
+//                        // ✅ Also update the main teams collection
+//                        teamsRef.whereField("name", isEqualTo: teamName).getDocuments { teamSnapshot, error in
+//                            if let error = error {
+//                                print("Error finding team in teams collection: \(error)")
+//                                return
+//                            }
+//                            
+//                            guard let teamDoc = teamSnapshot?.documents.first else {
+//                                print("No team found with name \(teamName) in teams collection")
+//                                return
+//                            }
+//                            
+//                            let teamDocRef = teamsRef.document(teamDoc.documentID)
+//                            teamDocRef.updateData(["performers": performers]) { error in
+//                                if let error = error {
+//                                    print("Error updating performers for team \(teamName) in teams collection: \(error)")
+//                                } else {
+//                                    print("✅ Successfully synced performer \(performerName) to teams collection")
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            } else {
+//                print("⚠️ Performer \(performerName) is already on the team \(teamName)")
+//            }
+//        }
+//        
+//        loadData()
+//    }
+    
     func addPerformer(named performerName: String, toTeam teamName: String) {
+        addPerformerToFestivalTeam(performerName: performerName, teamName: teamName)
+        addPerformerToTeamCollection(performerName: performerName, teamName: teamName)
+        FirebaseManager.shared.checkForExistingPerformers(for: [performerName])
+        loadData()
+        loadTeams()
+        loadPerformers()
+    }
+
+    private func addPerformerToFestivalTeam(performerName: String, teamName: String) {
         let db = Firestore.firestore()
         let festivalTeamsRef = db.collection("festivalTeams")
-        let teamsRef = db.collection("teams")
         
         festivalTeamsRef.whereField("name", isEqualTo: teamName).getDocuments { snapshot, error in
             if let error = error {
-                print("Error finding team \(teamName): \(error)")
+                print("Error finding team \(teamName) in festivalTeams: \(error)")
                 return
             }
             
             guard let document = snapshot?.documents.first else {
-                print("No team found with name: \(teamName)")
+                print("No festival team found with name: \(teamName)")
                 return
             }
             
             let docRef = festivalTeamsRef.document(document.documentID)
             var performers = document.data()["performers"] as? [String] ?? []
             
-            // Only add if not already present
             if !performers.contains(performerName) {
                 performers.append(performerName)
-                
-                // ✅ Update festivalTeams
                 docRef.updateData(["performers": performers]) { error in
                     if let error = error {
                         print("Error updating performers for festival team \(teamName): \(error)")
                     } else {
-                        print("✅ Successfully added performer \(performerName) to festivalTeams")
-                        
-                        // ✅ Also update the main teams collection
-                        teamsRef.whereField("name", isEqualTo: teamName).getDocuments { teamSnapshot, error in
-                            if let error = error {
-                                print("Error finding team in teams collection: \(error)")
-                                return
-                            }
-                            
-                            guard let teamDoc = teamSnapshot?.documents.first else {
-                                print("No team found with name \(teamName) in teams collection")
-                                return
-                            }
-                            
-                            let teamDocRef = teamsRef.document(teamDoc.documentID)
-                            teamDocRef.updateData(["performers": performers]) { error in
-                                if let error = error {
-                                    print("Error updating performers for team \(teamName) in teams collection: \(error)")
-                                } else {
-                                    print("✅ Successfully synced performer \(performerName) to teams collection")
-                                }
-                            }
-                        }
+                        print("✅ Added performer \(performerName) to festivalTeams")
                     }
                 }
             } else {
-                print("⚠️ Performer \(performerName) is already on the team \(teamName)")
+                print("⚠️ Performer \(performerName) already in festivalTeams \(teamName)")
             }
         }
-        
-        loadData()
     }
-    
+
+    private func addPerformerToTeamCollection(performerName: String, teamName: String) {
+        let db = Firestore.firestore()
+        let teamsRef = db.collection("teams")
+        
+        teamsRef.whereField("name", isEqualTo: teamName).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error finding team \(teamName) in teams collection: \(error)")
+                return
+            }
+            
+            guard let teamDoc = snapshot?.documents.first else {
+                print("No team found with name \(teamName) in teams collection")
+                return
+            }
+            
+            let teamDocRef = teamsRef.document(teamDoc.documentID)
+            var performers = teamDoc.data()["performers"] as? [String] ?? []
+            
+            if !performers.contains(performerName) {
+                performers.append(performerName)
+                teamDocRef.updateData(["performers": performers]) { error in
+                    if let error = error {
+                        print("Error updating performers for team \(teamName) in teams collection: \(error)")
+                    } else {
+                        print("✅ Added performer \(performerName) to teams collection")
+                    }
+                }
+            } else {
+                print("⚠️ Performer \(performerName) already in teams collection \(teamName)")
+            }
+        }
+    }
     
     
     // Upload a performer's image to Firebase Storage and save URL in Firestore
