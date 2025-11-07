@@ -5,6 +5,7 @@ struct EditTeamPerformersView: View {
     
     let teamName: String
     @State private var showCreatePerformer = false
+    @State private var tempSelections: [String: Bool] = [:] // Local toggle state
     
     var body: some View {
         List {
@@ -14,21 +15,29 @@ struct EditTeamPerformersView: View {
                         Text(performer)
                         Spacer()
                         
-                        // Toggle for adding/removing a performer from this team
-                        Toggle("", isOn: binding(for: performer))
-                            .labelsHidden()
-                            .tint(.blue)
+                        Toggle("", isOn: Binding(
+                            get: { tempSelections[performer] ?? isPerformerInTeam(performer) },
+                            set: { tempSelections[performer] = $0 }
+                        ))
+                        .labelsHidden()
+                        .tint(.blue)
                     }
                 }
+            }
+            
+            // Confirm button section
+            Section {
+                Button("Confirm Changes") {
+                    applyChanges()
+                }
+                .buttonStyle(.borderedProminent)
             }
         }
         .navigationTitle("Edit \(teamName)")
         .listStyle(.insetGrouped)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    showCreatePerformer = true
-                }) {
+                Button(action: { showCreatePerformer = true }) {
                     Image(systemName: "plus.circle.fill")
                 }
             }
@@ -38,29 +47,30 @@ struct EditTeamPerformersView: View {
         }
     }
     
-    /// Creates a binding for the toggle to add/remove a performer from the team.
-    private func binding(for performer: String) -> Binding<Bool> {
-        return Binding<Bool>(
-            get: {
-                // Check if the performer is in any performance for this team
-                scheduleViewModel.performances
-                    .filter { $0.teamName == teamName }
-                    .contains { $0.performers.contains(performer) }
-            },
-            set: { isOn in
-                if isOn {
-                    // Add the performer to the team
-                    scheduleViewModel.addPerformer(named: performer, toTeam: teamName)
-                } else {
-                    // Remove the performer from the team
-//                    scheduleViewModel.deletePerformer(named: performer, fromTeam: teamName)
-                    scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer)
-                    scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: performer)
-                    
-                    // Refresh UI
-                    scheduleViewModel.loadData()
-                }
+    /// Helper: Check if a performer is currently in the team
+    private func isPerformerInTeam(_ performer: String) -> Bool {
+        scheduleViewModel.performances
+            .filter { $0.teamName == teamName }
+            .contains { $0.performers.contains(performer) }
+    }
+    
+    /// Apply all toggle changes to Firestore
+    private func applyChanges() {
+        for (performer, isOn) in tempSelections {
+            if isOn && !isPerformerInTeam(performer) {
+                scheduleViewModel.addPerformer(named: performer, toTeam: teamName)
+            } else if !isOn && isPerformerInTeam(performer) {
+                scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer)
+                scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: performer)
             }
-        )
+        }
+        
+        // Reload the data once after all updates
+        scheduleViewModel.loadData()
+        scheduleViewModel.loadTeams()
+        scheduleViewModel.loadPerformers()
+        
+        // Clear temp selections
+        tempSelections.removeAll()
     }
 }
