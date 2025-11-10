@@ -129,14 +129,17 @@ struct FestivalView: View {
                 print("Account deletion sequence initiated.")
             }
         }
-        if authViewModel.role != .audience {
-            if let name = authViewModel.name {
+        if let name = authViewModel.name {
+            if authViewModel.role != .audience {
+                print("name for deletion: \(name)")
                 scheduleViewModel.removePerformerFromFirebase(teamName: nil, performerName: name)
                 scheduleViewModel.removePerformerFromTeamsCollection(performerName: name)
                 scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: name)
                 scheduleViewModel.removePerformerFromPerformersCollection(performerName: name)
-                scheduleViewModel.removeFromUsersCollection(name: name)
             }
+            scheduleViewModel.removeFromUsersCollection(name: name)
+        } else {
+            print("Could not unwrap name")
         }
     }
 }
