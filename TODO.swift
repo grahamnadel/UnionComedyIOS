@@ -30,3 +30,4 @@ import Foundation
 
 
 // MARK: Current work:
+//    Remove from users collection function

@@ -626,7 +626,30 @@ class ScheduleViewModel: ObservableObject {
     }
     
     
-    //    TODO: Remove from Teams
+    func removeFromUsersCollection(name: String) {
+        let db = Firestore.firestore()
+        let usersRef = db.collection("users")
+        usersRef.whereField("name", isEqualTo: name).getDocuments { snapshot, error in
+            if let error = error {
+                print("❌ Error fetching users: \(error)")
+                return
+            }
+            guard let documents = snapshot?.documents, !documents.isEmpty else {
+                print("⚠️ User '\(name)' not found in users collection")
+                return
+            }
+            
+            for document in documents {
+                usersRef.document(document.documentID).delete() { err in
+                    if let err = err {
+                        print("Error deleting document: \(err)")
+                    } else {
+                        print("Document successfully deleted!")
+                    }
+                }
+            }
+        }
+    }
     func removePerformerFromPerformersCollection(performerName: String) {
         let db = Firestore.firestore()
         let performersRef = db.collection("performers")

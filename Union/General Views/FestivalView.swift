@@ -135,6 +135,7 @@ struct FestivalView: View {
                 scheduleViewModel.removePerformerFromTeamsCollection(performerName: name)
                 scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: name)
                 scheduleViewModel.removePerformerFromPerformersCollection(performerName: name)
+                scheduleViewModel.removeFromUsersCollection(name: name)
             }
         }
     }
