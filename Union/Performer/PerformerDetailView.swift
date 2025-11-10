@@ -27,14 +27,14 @@ struct PerformerDetailView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .navigationTitle(performer)
                 ForEach(teamsForPerformer, id: \.self) { team in
-                    NavigationLink(destination: TeamDetailView(teamName: team)) {
+//                    NavigationLink(destination: TeamDetailView(teamName: team)) {
                         HStack {
                             Text(team)
                                 .font(.headline)
                                 .foregroundColor(.primary)
                             Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.gray)
+//                            Image(systemName: "chevron.right")
+//                                .foregroundColor(.gray)
                         }
                         .padding()
                         .frame(maxWidth: .infinity)
@@ -43,7 +43,7 @@ struct PerformerDetailView: View {
                                 .fill(Color(.systemGray6))
                                 .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                         )
-                    }
+//                    }
                     .buttonStyle(.plain)
                     .padding(.horizontal)
                     .padding(.vertical, 4)

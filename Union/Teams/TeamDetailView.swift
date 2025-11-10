@@ -60,7 +60,7 @@ struct TeamDetailView: View {
                 if let team = team {
                     Section(header: Text("Performers")) {
                         ForEach(team.performers, id: \.self) { performer in
-                            NavigationLink(destination: PerformerDetailView(performer: performer)) {
+//                            NavigationLink(destination: PerformerDetailView(performer: performer)) {
                                 HStack {
                                     AsyncImage(url: performerURLs[performer]) { image in
                                         image.resizable().aspectRatio(contentMode: .fill)
@@ -80,7 +80,7 @@ struct TeamDetailView: View {
                                         .foregroundColor(.primary)
                                 }
                                 .padding(.vertical, 4)
-                            }
+//                            }
                         }
                         .task {
                             await loadPerformerURLs()
