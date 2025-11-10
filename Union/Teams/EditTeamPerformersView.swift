@@ -1,5 +1,5 @@
 import SwiftUI
-//FIXME: I must confirm changes twice
+
 struct EditTeamPerformersView: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     

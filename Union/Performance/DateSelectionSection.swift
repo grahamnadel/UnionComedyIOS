@@ -11,7 +11,6 @@ import SwiftUI
 struct DateSelectionSection: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @Binding var selectedShowType: ShowType?
-//    FIXME: I'm on the trail!!
     @Binding var newShowDate: Date
     @Binding var selectedDates: Set<Date>
     @Binding var date: Date
@@ -34,8 +33,6 @@ struct DateSelectionSection: View {
                 if let type = selectedShowType, type != .special, let defaultTime = type.defaultTime {
                     print("type.defaultTime: \(String(describing: type.defaultTime))")
                     dateToAdd = combineDate(date: newShowDate, hour: defaultTime.hour, minute: defaultTime.minute)
-//FIXME: debug
-                    //                    DEBUG: 2:00
                     print("dateToAdd: \(String(describing: dateToAdd))")
                 } else {
                     dateToAdd = newShowDate
@@ -86,7 +83,7 @@ struct DateSelectionSection: View {
         return nil
     }
     
-//    FIXME: Today's date gets passed in as date
+
     private func combineDate(date: Date, hour: Int, minute: Int) -> Date {
         // 1. Get the current calendar, but ensure it uses the current device time zone
         print("date day: \(String(describing: Calendar.current.component(.day, from: date)))")

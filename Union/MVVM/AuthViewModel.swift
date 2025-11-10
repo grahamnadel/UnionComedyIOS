@@ -17,6 +17,7 @@ class AuthViewModel: ObservableObject {
     @Published var approved = false
     @Published var isLoading = false
     @Published var error: String?
+    @Published var currentUserEmail: String?
     
     private var db = Firestore.firestore()
     private var handle: AuthStateDidChangeListenerHandle?
@@ -25,6 +26,7 @@ class AuthViewModel: ObservableObject {
         handle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
             self?.user = user
             if let user = user { self?.fetchUserData(uid: user.uid) }
+            self?.currentUserEmail = user?.email
         }
     }
 

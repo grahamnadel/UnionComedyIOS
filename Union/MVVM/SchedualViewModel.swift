@@ -8,13 +8,10 @@ import FirebaseStorage
 class ScheduleViewModel: ObservableObject {
     @Published var festivalTeams = [TeamData]()
     @Published var performances: [Performance] = []
-//    @Published var performers: [String]
     @Published var teams: [Team] = []
     @Published var knownPerformers: Set<String> = []
     @Published var isAdminOwner = false
     
-    //    Arrays of the showstypes and dates
-    //    I want to list all the improperly booked shows
     @Published var unBooked: [ShowType: [Date]] = [:]
     @Published var underBooked: [ShowType: [Date]] = [:]
     @Published var fullyBooked: [ShowType: [Date]] = [:]
@@ -333,74 +330,12 @@ class ScheduleViewModel: ObservableObject {
     
     // MARK: - Performer Management
     /// Adds a performer to a specific team's performances and to the known performers list.
-//    func addPerformer(named performerName: String, toTeam teamName: String) {
-//        let db = Firestore.firestore()
-//        let festivalTeamsRef = db.collection("festivalTeams")
-//        let teamsRef = db.collection("teams")
-//        
-//        festivalTeamsRef.whereField("name", isEqualTo: teamName).getDocuments { snapshot, error in
-//            if let error = error {
-//                print("Error finding team \(teamName): \(error)")
-//                return
-//            }
-//            
-//            guard let document = snapshot?.documents.first else {
-//                print("No team found with name: \(teamName)")
-//                return
-//            }
-//            
-//            let docRef = festivalTeamsRef.document(document.documentID)
-//            var performers = document.data()["performers"] as? [String] ?? []
-//            
-//            // Only add if not already present
-//            if !performers.contains(performerName) {
-//                performers.append(performerName)
-//                
-//                // ✅ Update festivalTeams
-//                docRef.updateData(["performers": performers]) { error in
-//                    if let error = error {
-//                        print("Error updating performers for festival team \(teamName): \(error)")
-//                    } else {
-//                        print("✅ Successfully added performer \(performerName) to festivalTeams")
-//                        
-//                        // ✅ Also update the main teams collection
-//                        teamsRef.whereField("name", isEqualTo: teamName).getDocuments { teamSnapshot, error in
-//                            if let error = error {
-//                                print("Error finding team in teams collection: \(error)")
-//                                return
-//                            }
-//                            
-//                            guard let teamDoc = teamSnapshot?.documents.first else {
-//                                print("No team found with name \(teamName) in teams collection")
-//                                return
-//                            }
-//                            
-//                            let teamDocRef = teamsRef.document(teamDoc.documentID)
-//                            teamDocRef.updateData(["performers": performers]) { error in
-//                                if let error = error {
-//                                    print("Error updating performers for team \(teamName) in teams collection: \(error)")
-//                                } else {
-//                                    print("✅ Successfully synced performer \(performerName) to teams collection")
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            } else {
-//                print("⚠️ Performer \(performerName) is already on the team \(teamName)")
-//            }
-//        }
-//        
-//        loadData()
-//    }
+
     
     func addPerformer(named performerName: String, toTeam teamName: String) {
         addPerformerToFestivalTeam(performerName: performerName, teamName: teamName)
         addPerformerToTeamCollection(performerName: performerName, teamName: teamName)
         FirebaseManager.shared.checkForExistingPerformers(for: [performerName])
-//        loadData()
-//        loadTeams()
-//        loadPerformers()
     }
 
     private func addPerformerToFestivalTeam(performerName: String, teamName: String) {
@@ -604,8 +539,6 @@ class ScheduleViewModel: ObservableObject {
                     for showInstance in team.showTimes {
                         print("showInstance: \(showInstance)")
                         let show = Performance(teamName: team.teamName, showTime: showInstance, performers: team.performers)
-                        //                        FIXME: does it load correctly?
-                        //                        1:00 ** one of these is for 2:00. WTF!
                         print("Debug: showInstance: \(showInstance)")
                         //                        Only show upcoming shows
                         if show.showTime > now {
@@ -681,7 +614,6 @@ class ScheduleViewModel: ObservableObject {
             
             DispatchQueue.main.async {
                 self.teams = fetchedTeams
-//                self.knownPerformers = Set(fetchedTeams.flatMap { $0.performers })
                 print("✅ Loaded \(fetchedTeams.count) teams from Firestore")
             }
         }

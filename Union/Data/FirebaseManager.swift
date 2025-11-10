@@ -67,7 +67,6 @@ class FirebaseManager {
         }
     }
     
-//    FIXME: could the problem be with empties?
     func checkForExistingTeam(teamName: String, completion: @escaping (Bool) -> Void) {
         db.collection("teams")
             .whereField("name", isEqualTo: teamName)
@@ -318,6 +317,69 @@ class FirebaseManager {
                 }
             }
             completion(festivalTeams)
+        }
+    }
+    
+    func deleteAccount(completion: @escaping (Error?) -> Void) {
+            guard let user = Auth.auth().currentUser else {
+                // User is already logged out or nil
+                let error = NSError(domain: "FirebaseManager", code: 401, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found."])
+                completion(error)
+                return
+            }
+            
+            // 1. Delete the user account
+            user.delete { error in
+                if let error = error {
+                    print("❌ Error deleting user account: \(error.localizedDescription)")
+                    
+                    // Common error case: Requires recent login (e.g., AuthErrorCode.requiresRecentLogin)
+                    // You would handle re-authentication in the UI layer before calling this function again.
+                    completion(error)
+                } else {
+                    print("✅ User account successfully deleted.")
+                    
+                    // 2. Optionally, clear any related data (e.g., their vote)
+                    // The document ID for the vote is the user's UID.
+                    let uid = user.uid
+                    self.db.collection("votes").document(uid).delete { error in
+                        if let error = error {
+                            print("⚠️ Note: Failed to delete user's vote document (\(uid)): \(error.localizedDescription)")
+                        } else {
+                            print("🗑️ User's vote successfully deleted.")
+                        }
+                        
+                        // Call the completion handler after attempting to clean up data
+                        completion(nil)
+                    }
+                }
+            }
+        }
+    
+    /**
+     Reauthenticates the current user using email and password credentials.
+     - Parameter email: The user's email address.
+     - Parameter password: The user's password.
+     - Parameter completion: A closure that returns an optional Error if re-authentication fails.
+     */
+    func reauthenticateUser(email: String, password: String, completion: @escaping (Error?) -> Void) {
+        guard let user = Auth.auth().currentUser else {
+            completion(NSError(domain: "FirebaseManager", code: 401, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found."]))
+            return
+        }
+        
+        // Create the credential using the provided email and password
+        let credential = EmailAuthProvider.credential(withEmail: email, password: password)
+        
+        // Attempt to re-authenticate the user
+        user.reauthenticate(with: credential) { _, error in
+            if let error = error {
+                print("❌ Re-authentication failed: \(error.localizedDescription)")
+                completion(error)
+            } else {
+                print("✅ User successfully re-authenticated.")
+                completion(nil)
+            }
         }
     }
 }
