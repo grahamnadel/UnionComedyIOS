@@ -3,6 +3,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseAuth
 import FirebaseStorage
+import Combine
 
 
 class ScheduleViewModel: ObservableObject {
@@ -24,20 +25,8 @@ class ScheduleViewModel: ObservableObject {
     @Published var festivalEndDate: Date?
     @Published var festivalLocation: String?
     
-    // USER FAVORITES
-    @Published var favoriteTeams: [String] = []
-    @Published var favoritePerformers: [String] = []
-    @AppStorage("favoriteTeams") private var favoriteTeamsData: Data = Data()
-    @AppStorage("favoritePerformers") private var favoritePerformersData: Data = Data()
-    
-    
-    let favoriteTeamColor = Color.yellow
-    let favoritePerformerColor = Color.purple
-    
-    
     init() {
         loadData()
-        loadFavorites()
         loadTeams()
         loadPerformers()
         loadFestivalDatesAndLocation { start, end, location in
@@ -189,47 +178,6 @@ class ScheduleViewModel: ObservableObject {
             print("Error fetching pending users: \(error)")
         }
     }
-    
-    
-    func toggleFavoriteTeam(_ team: String) {
-        if favoriteTeams.contains(team) {
-            favoriteTeams.removeAll { $0 == team }
-        } else {
-            favoriteTeams.append(team)
-        }
-        saveFavorites()
-    }
-    
-    
-    func toggleFavoritePerformer(_ name: String) {
-        if favoritePerformers.contains(name) {
-            favoritePerformers.removeAll { $0 == name }
-        } else {
-            favoritePerformers.append(name)
-        }
-        saveFavorites()
-    }
-    
-    
-    // MARK: - Local Persistence
-    private func saveFavorites() {
-        if let teamData = try? JSONEncoder().encode(favoriteTeams) {
-            favoriteTeamsData = teamData
-        }
-        if let performerData = try? JSONEncoder().encode(favoritePerformers) {
-            favoritePerformersData = performerData
-        }
-    }
-    
-    private func loadFavorites() {
-        if let loadedTeams = try? JSONDecoder().decode([String].self, from: favoriteTeamsData) {
-            favoriteTeams = loadedTeams
-        }
-        if let loadedPerformers = try? JSONDecoder().decode([String].self, from: favoritePerformersData) {
-            favoritePerformers = loadedPerformers
-        }
-    }
-    
     
     func deletePerformance(_ performance: Performance) {
         let db = Firestore.firestore()

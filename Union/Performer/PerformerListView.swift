@@ -5,6 +5,8 @@ import FirebaseFirestore
 struct PerformerListView: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var favoritesViewModel: FavoritesViewModel
+    
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var isShowingPhotoPicker = false
@@ -23,8 +25,8 @@ struct PerformerListView: View {
 
         // Sort favorites first, then alphabetically
         return filtered.sorted { lhs, rhs in
-            let lhsFavorite = scheduleViewModel.favoritePerformers.contains(lhs)
-            let rhsFavorite = scheduleViewModel.favoritePerformers.contains(rhs)
+            let lhsFavorite = favoritesViewModel.favoritePerformers.contains(lhs)
+            let rhsFavorite = favoritesViewModel.favoritePerformers.contains(rhs)
 
             if lhsFavorite && !rhsFavorite {
                 return true
@@ -67,7 +69,7 @@ struct PerformerListView: View {
                                 Text(performer)
                                     .font(.body)
                                     .padding(.leading, 4)
-                                    .foregroundColor(scheduleViewModel.favoritePerformers.contains(performer) ? scheduleViewModel.favoritePerformerColor : .primary)
+                                    .foregroundColor(favoritesViewModel.favoritePerformers.contains(performer) ? favoritesViewModel.favoritePerformerColor : .primary)
 
                                 Spacer()
                             }

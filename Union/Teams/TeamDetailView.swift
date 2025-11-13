@@ -3,6 +3,7 @@ import SwiftUI
 struct TeamDetailView: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var favoritesViewModel: FavoritesViewModel
     @State private var performerURLs: [String: URL] = [:]
     let teamName: String
     
@@ -76,7 +77,7 @@ struct TeamDetailView: View {
                                     
                                     Text(performer)
                                         .font(.body)
-                                        .foregroundColor(scheduleViewModel.favoritePerformers.contains(performer) ? scheduleViewModel.favoritePerformerColor : .primary)
+                                        .foregroundColor(favoritesViewModel.favoritePerformers.contains(performer) ? favoritesViewModel.favoritePerformerColor : .primary)
                                 }
                                 .padding(.vertical, 4)
                         }
@@ -89,10 +90,10 @@ struct TeamDetailView: View {
             
             // MARK: - Favorite Button
             Button {
-                scheduleViewModel.toggleFavoriteTeam(teamName)
+                favoritesViewModel.toggleFavoriteTeam(teamName)
             } label: {
-                Image(systemName: scheduleViewModel.favoriteTeams.contains(teamName) ? "star.fill" : "star")
-                    .foregroundColor(scheduleViewModel.favoriteTeamColor)
+                Image(systemName: favoritesViewModel.favoriteTeams.contains(teamName) ? "star.fill" : "star")
+                    .foregroundColor(favoritesViewModel.favoriteTeamColor)
             }
         }
         .navigationTitle(teamName)

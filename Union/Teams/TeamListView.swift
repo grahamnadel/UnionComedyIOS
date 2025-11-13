@@ -3,7 +3,8 @@ import SwiftUI
 struct TeamListView: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
-    @State private var searchText = ""   // Search field text
+    @EnvironmentObject var favoritesViewModel: FavoritesViewModel
+    @State private var searchText = ""
     @State private var showDeleteAlert = false
     @State private var teamToDelete: String?
 
@@ -32,9 +33,9 @@ struct TeamListView: View {
                             
                             Spacer()
                             
-                            if scheduleViewModel.favoriteTeams.contains(team) {
+                            if favoritesViewModel.favoriteTeams.contains(team) {
                                 Image(systemName: "star.fill")
-                                    .foregroundColor(scheduleViewModel.favoriteTeamColor)
+                                    .foregroundColor(favoritesViewModel.favoriteTeamColor)
                             }
                         }
                         .contentShape(Rectangle())
@@ -63,7 +64,6 @@ struct TeamListView: View {
                     scheduleViewModel.loadTeams()
                 }
             }
-//            .navigationTitle("Teams")
         }
         .alert(isPresented: $showDeleteAlert) {
             SimpleAlert.confirmDeletion(

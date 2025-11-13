@@ -3,6 +3,7 @@ import SwiftUI
 struct ShowtimeDetailView: View {
     let performance: Performance
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
+    @EnvironmentObject var favoritesViewModel: FavoritesViewModel
     @State var performerURLs: [String:URL] = [:]
     
     var body: some View {
@@ -26,19 +27,19 @@ struct ShowtimeDetailView: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            if let index = scheduleViewModel.favoriteTeams.firstIndex(of: performance.teamName) {
-                                scheduleViewModel.favoriteTeams.remove(at: index)
+                            if let index = favoritesViewModel.favoriteTeams.firstIndex(of: performance.teamName) {
+                                favoritesViewModel.favoriteTeams.remove(at: index)
                             } else {
-                                scheduleViewModel.favoriteTeams.append(performance.teamName)
+                                favoritesViewModel.favoriteTeams.append(performance.teamName)
                             }
                         }) {
-                            Image(systemName: scheduleViewModel.favoriteTeams.contains(performance.teamName) ? "star.fill" : "star")
-                                .foregroundColor(scheduleViewModel.favoriteTeamColor)
+                            Image(systemName: favoritesViewModel.favoriteTeams.contains(performance.teamName) ? "star.fill" : "star")
+                                .foregroundColor(favoritesViewModel.favoriteTeamColor)
                                 .imageScale(.large)
                         }
                     }
                 }
-
+                
                 // Show date
                 Text("\(performance.showTime.formatted(date: .abbreviated, time: .shortened))")
                     .font(.headline)
@@ -54,37 +55,19 @@ struct ShowtimeDetailView: View {
                     .multilineTextAlignment(.center)
                 
                 List(performance.performers, id: \.self) { performer in
-                    NavigationLink(destination: PerformerDetailView(performer: performer)) {
-                        HStack {
-//                            TODO: This is reused. Make a separate file
-                            AsyncImage(url: performerURLs[performer]) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                            } placeholder: {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.gray.opacity(0.3))
-                                    .overlay(
-                                        Image(systemName: "person.fill")
-                                            .foregroundColor(.gray)
-                                    )
-                            }
-                            .frame(width: 50, height: 50)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                            Text(performer)
-                                .font(.body)
-                                .foregroundColor(scheduleViewModel.favoritePerformers.contains(performer) ? scheduleViewModel.favoritePerformerColor : .primary)
-                                .padding(.vertical, 4)
-                        }
+                    //                    NavigationLink(destination: PerformerDetailView(performer: performer)) {
+                    NavigationLink {
+                        // Apply the .id(performer) to the DESTINATION view
+                        // This is often the most effective stabilization point.
+                        PerformerDetailView(performer: performer)
+                            .id(performer)
+                    } label: {
+                        // Use the decoupled view as the label
+                        PerformerRowContent(performer: performer, performerURL: performerURLs[performer])
                     }
                 }
                 .listStyle(.insetGrouped)
-                
-                Spacer()
             }
-            .padding()
-//            .navigationTitle("Performance Details")
-//            .navigationBarTitleDisplayMode(.inline)
         }
         .task {
             await loadPerformerURLs()

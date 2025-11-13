@@ -31,18 +31,15 @@ struct UnionApp: App {
     @StateObject var authViewModel = AuthViewModel()
     @StateObject var ownerViewModel = OwnerViewModel()
     
+    @StateObject var favoritesViewModel = FavoritesViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            //            MainView()
-            //                .environmentObject(voteStore)
-            ////                .environmentObject(viewModel)
-            //                .environmentObject(scheduleViewModel)
             RootView()
                 .environmentObject(authViewModel)
                 .environmentObject(scheduleViewModel)
                 .environmentObject(ownerViewModel)
-            //            FestivalView()
-            //                .environmentObject(scheduleViewModel)
+                .environmentObject(favoritesViewModel)
         }
     }
 }

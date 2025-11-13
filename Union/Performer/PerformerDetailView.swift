@@ -6,10 +6,17 @@ struct PerformerDetailView: View {
     let performer: String
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
+    
+    @EnvironmentObject var favoritesViewModel: FavoritesViewModel
+    
     @State private var loadedPerformerURL: URL?
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var isShowingPhotoPicker = false
+    
+    
+    
+    @State private var testColor = false
     
     var performancesForPerformer: [Performance] {
         scheduleViewModel.performances.filter { $0.performers.contains(performer) }
@@ -49,11 +56,12 @@ struct PerformerDetailView: View {
                 BiographyView(performer: performer)
                     .padding()
                 
+//                FIXME: favorite closes sheet
                 Button {
-                    scheduleViewModel.toggleFavoritePerformer(performer)
+                    favoritesViewModel.toggleFavoritePerformer(performer)
                 } label: {
-                    Image(systemName: scheduleViewModel.favoritePerformers.contains(performer) ? "star.fill" : "star")
-                        .foregroundColor(scheduleViewModel.favoritePerformerColor)
+                    Image(systemName: favoritesViewModel.favoritePerformers.contains(performer) ? "star.fill" : "star")
+                        .foregroundColor(favoritesViewModel.favoritePerformerColor)
                 }
             }
         }
