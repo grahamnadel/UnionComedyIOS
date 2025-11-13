@@ -53,6 +53,11 @@ struct DateListView: View {
             }
             .padding(.horizontal)
             
+//            Image("IMG_3541.jpeg")
+//                .resizable()
+//                .scaledToFit()
+
+            
             // 📅 List of grouped shows
             List {
                 ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in

@@ -48,25 +48,28 @@ struct ShowtimeDetailView: View {
                 
                 Divider()
                 
-                // Performers list
-                Text("THE CAST")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .multilineTextAlignment(.center)
                 
-                List(performance.performers, id: \.self) { performer in
-                    //                    NavigationLink(destination: PerformerDetailView(performer: performer)) {
-                    NavigationLink {
-                        // Apply the .id(performer) to the DESTINATION view
-                        // This is often the most effective stabilization point.
-                        PerformerDetailView(performer: performer)
-                            .id(performer)
-                    } label: {
-                        // Use the decoupled view as the label
-                        PerformerRowContent(performer: performer, performerURL: performerURLs[performer])
+                List {
+                    Section(header:
+                                Text("THE CAST")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    ) {
+                        ForEach(performance.performers, id: \.self) { performer in
+                            //                    NavigationLink(destination: PerformerDetailView(performer: performer)) {
+                            NavigationLink {
+                                // Apply the .id(performer) to the DESTINATION view
+                                // This is often the most effective stabilization point.
+                                PerformerDetailView(performer: performer)
+                                    .id(performer)
+                            } label: {
+                                // Use the decoupled view as the label
+                                PerformerRowContent(performer: performer, performerURL: performerURLs[performer])
+                            }
+                        }
+                        .listStyle(.insetGrouped)
                     }
                 }
-                .listStyle(.insetGrouped)
             }
         }
         .task {
