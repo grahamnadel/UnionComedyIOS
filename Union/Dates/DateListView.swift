@@ -10,7 +10,8 @@ struct DateListView: View {
     @State private var showType: ShowType?
     @State private var showDeleteAlert = false
     @State private var performanceToDelete: Performance?
-    @State private var showFilterMenu = false   // 👈 For hamburger filter
+    @State private var showFilterMenu = false
+    @State private var showingFestivalImage = false
     
     // MARK: - Filter + Group
     private var groupedPerformancesByTime: [(key: Date, value: [Performance])] {
@@ -52,14 +53,18 @@ struct DateListView: View {
                 .accessibilityLabel("Filter by show type")
             }
             .padding(.horizontal)
-            
-//            Image("IMG_3541.jpeg")
-//                .resizable()
-//                .scaledToFit()
 
             
             // 📅 List of grouped shows
             List {
+                if let festivalStart = scheduleViewModel.festivalStartDate,
+                   let festivalEndDate = scheduleViewModel.festivalEndDate {
+                    if Date() >= festivalStart && Date() <= festivalEndDate {
+                        Image("Image")
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
                 ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
                     Section(header: Text(showTime, style: .date)) {
                         
