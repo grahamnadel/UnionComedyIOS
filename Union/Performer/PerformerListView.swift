@@ -55,6 +55,7 @@ struct PerformerListView: View {
                                 Text(performer)
                                     .font(.body)
                                     .padding(.leading, 4)
+                                    .foregroundColor(scheduleViewModel.favoritePerformers.contains(performer) ? scheduleViewModel.favoritePerformerColor : .primary)
 
                                 Spacer()
                             }

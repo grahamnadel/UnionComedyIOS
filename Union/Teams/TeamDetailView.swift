@@ -76,7 +76,7 @@ struct TeamDetailView: View {
                                     
                                     Text(performer)
                                         .font(.body)
-                                        .foregroundColor(.primary)
+                                        .foregroundColor(scheduleViewModel.favoritePerformers.contains(performer) ? scheduleViewModel.favoritePerformerColor : .primary)
                                 }
                                 .padding(.vertical, 4)
                         }

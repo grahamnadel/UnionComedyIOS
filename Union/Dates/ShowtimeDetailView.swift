@@ -73,7 +73,7 @@ struct ShowtimeDetailView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                             Text(performer)
                                 .font(.body)
-                                .foregroundColor(.primary)
+                                .foregroundColor(scheduleViewModel.favoritePerformers.contains(performer) ? scheduleViewModel.favoritePerformerColor : .primary)
                                 .padding(.vertical, 4)
                         }
                     }
