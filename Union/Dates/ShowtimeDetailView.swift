@@ -8,35 +8,50 @@ struct ShowtimeDetailView: View {
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 20) {
+                ZStack {
+                    Rectangle()
+                        .fill(Color.yellow)
+                        .frame(height: 80) // or any thickness you like
+                        .frame(maxWidth: .infinity, alignment: .top)
+                        .ignoresSafeArea()
+                    Text("PLAYBILL")
+                        .font(.title)
+                }
                 // Team name + favorite toggle
-                HStack {
-                    Text("Team: \(performance.teamName)")
+                ZStack {
+                    Text(performance.teamName)
                         .font(.title2)
                         .fontWeight(.bold)
                     
-                    Spacer()
-                    
-                    Button(action: {
-                        if let index = scheduleViewModel.favoriteTeams.firstIndex(of: performance.teamName) {
-                            scheduleViewModel.favoriteTeams.remove(at: index)
-                        } else {
-                            scheduleViewModel.favoriteTeams.append(performance.teamName)
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            if let index = scheduleViewModel.favoriteTeams.firstIndex(of: performance.teamName) {
+                                scheduleViewModel.favoriteTeams.remove(at: index)
+                            } else {
+                                scheduleViewModel.favoriteTeams.append(performance.teamName)
+                            }
+                        }) {
+                            Image(systemName: scheduleViewModel.favoriteTeams.contains(performance.teamName) ? "star.fill" : "star")
+                                .foregroundColor(scheduleViewModel.favoriteTeamColor)
+                                .imageScale(.large)
                         }
-                    }) {
-                        Image(systemName: scheduleViewModel.favoriteTeams.contains(performance.teamName) ? "star.fill" : "star")
-                            .foregroundColor(scheduleViewModel.favoriteTeamColor)
-                            .imageScale(.large)
                     }
                 }
+
                 // Show date
-                Text("Show Date: \(performance.showTime.formatted(date: .abbreviated, time: .shortened))")
+                Text("\(performance.showTime.formatted(date: .abbreviated, time: .shortened))")
                     .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .multilineTextAlignment(.center)
                 
                 Divider()
                 
                 // Performers list
-                Text("Performers")
+                Text("THE CAST")
                     .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .multilineTextAlignment(.center)
                 
                 List(performance.performers, id: \.self) { performer in
                     NavigationLink(destination: PerformerDetailView(performer: performer)) {
@@ -68,8 +83,8 @@ struct ShowtimeDetailView: View {
                 Spacer()
             }
             .padding()
-            .navigationTitle("Performance Details")
-            .navigationBarTitleDisplayMode(.inline)
+//            .navigationTitle("Performance Details")
+//            .navigationBarTitleDisplayMode(.inline)
         }
         .task {
             await loadPerformerURLs()

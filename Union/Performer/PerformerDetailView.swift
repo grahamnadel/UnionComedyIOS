@@ -4,7 +4,6 @@ import PhotosUI
 // Detail view showing all teams for a given performer
 struct PerformerDetailView: View {
     let performer: String
-    //    let performerURL: URL?
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @State private var loadedPerformerURL: URL?
