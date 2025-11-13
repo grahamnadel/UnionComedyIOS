@@ -15,15 +15,27 @@ struct PerformerListView: View {
 
 
     var filteredPerformers: [String] {
-        var performers = Array(scheduleViewModel.knownPerformers)
-        if searchText.isEmpty {
-            return performers.sorted()
-        } else {
-            return performers.filter {
-                $0.localizedCaseInsensitiveContains(searchText)
-            }.sorted()
+        let performers = Array(scheduleViewModel.knownPerformers)
+
+        let filtered = searchText.isEmpty
+            ? performers
+            : performers.filter { $0.localizedCaseInsensitiveContains(searchText) }
+
+        // Sort favorites first, then alphabetically
+        return filtered.sorted { lhs, rhs in
+            let lhsFavorite = scheduleViewModel.favoritePerformers.contains(lhs)
+            let rhsFavorite = scheduleViewModel.favoritePerformers.contains(rhs)
+
+            if lhsFavorite && !rhsFavorite {
+                return true
+            } else if !lhsFavorite && rhsFavorite {
+                return false
+            } else {
+                return lhs.localizedCaseInsensitiveCompare(rhs) == .orderedAscending
+            }
         }
     }
+
 
     var body: some View {
         NavigationStack {
