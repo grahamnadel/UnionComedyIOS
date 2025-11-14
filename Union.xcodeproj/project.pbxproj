@@ -78,7 +78,7 @@
 		53847C912E02FEBF00EE649A /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53847C902E02FEBF00EE649A /* ViewModel.swift */; };
 		5395F2CA2EC274B500FBF584 /* ReAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5395F2C92EC274B500FBF584 /* ReAuthView.swift */; };
 		5395F2CC2EC6625E00FBF584 /* PerformerRowContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5395F2CB2EC6625E00FBF584 /* PerformerRowContent.swift */; };
-		5395F2CE2EC666D000FBF584 /* ExperimentalVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5395F2CD2EC666D000FBF584 /* ExperimentalVM.swift */; };
+		5395F2CE2EC666D000FBF584 /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5395F2CD2EC666D000FBF584 /* FavoritesViewModel.swift */; };
 		5395F2CF2EC67AC400FBF584 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53847C802E02F10F00EE649A /* Assets.xcassets */; };
 		5395F2D02EC67AC400FBF584 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53847C802E02F10F00EE649A /* Assets.xcassets */; };
 		5395F2D12EC67AC400FBF584 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53847C802E02F10F00EE649A /* Assets.xcassets */; };
@@ -172,7 +172,7 @@
 		53847C902E02FEBF00EE649A /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		5395F2C92EC274B500FBF584 /* ReAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReAuthView.swift; sourceTree = "<group>"; };
 		5395F2CB2EC6625E00FBF584 /* PerformerRowContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerRowContent.swift; sourceTree = "<group>"; };
-		5395F2CD2EC666D000FBF584 /* ExperimentalVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalVM.swift; sourceTree = "<group>"; };
+		5395F2CD2EC666D000FBF584 /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
 		53B815B22EA6A1F100854645 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		53B815B42EA6A61500854645 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		53B815B62EA6BA3E00854645 /* ShowtimeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowtimeDetailView.swift; sourceTree = "<group>"; };
@@ -264,6 +264,7 @@
 		531DDDB82E70B07400E210EE /* Teams */ = {
 			isa = PBXGroup;
 			children = (
+				5333D6742EBD120B0006CC3B /* TeamListPerformanceRow.swift */,
 				5334687B2E4272FF00E069DB /* TeamListView.swift */,
 				53343A132E4E587300224553 /* TeamDetailView.swift */,
 				53847C8C2E02FC9800EE649A /* TeamView.swift */,
@@ -287,6 +288,11 @@
 		53343A172E53C27A00224553 /* General Views */ = {
 			isa = PBXGroup;
 			children = (
+				5333D6762EBD35910006CC3B /* SetFestivalDatesView.swift */,
+				5333D66C2EBA7C2A0006CC3B /* BookingStatusView.swift */,
+				53B815B22EA6A1F100854645 /* SearchBar.swift */,
+				53DCF7FC2EB29FC000D67BEB /* SimpleAlert.swift */,
+				5333D6722EBBAE190006CC3B /* InfoView.swift */,
 				53847C8A2E02FB7700EE649A /* MainView.swift */,
 				533468772E426E9D00E069DB /* FestivalView.swift */,
 				530C184C2E1D74D8000A80E0 /* SettingsView.swift */,
@@ -326,6 +332,7 @@
 		53343A1A2E53C32500224553 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				5395F2CD2EC666D000FBF584 /* FavoritesViewModel.swift */,
 				53B815D72EAFE09000854645 /* ShowType.swift */,
 				53EAA6F12EA14F4E00BA49C6 /* Team.swift */,
 				5366F1262E0CB1DC00BEC56A /* FirebaseManager.swift */,
@@ -340,6 +347,7 @@
 		53343A1B2E53C44F00224553 /* Performer */ = {
 			isa = PBXGroup;
 			children = (
+				5395F2CB2EC6625E00FBF584 /* PerformerRowContent.swift */,
 				533468892E44F8E700E069DB /* Performer.swift */,
 				531DDD882E577A9A00E210EE /* PerformerDetailView.swift */,
 				53B815D32EAC127500854645 /* BiographyView.swift */,
@@ -357,15 +365,6 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
-				5395F2CD2EC666D000FBF584 /* ExperimentalVM.swift */,
-				5395F2CB2EC6625E00FBF584 /* PerformerRowContent.swift */,
-				5395F2C92EC274B500FBF584 /* ReAuthView.swift */,
-				5333D6762EBD35910006CC3B /* SetFestivalDatesView.swift */,
-				5333D6742EBD120B0006CC3B /* TeamListPerformanceRow.swift */,
-				5333D6722EBBAE190006CC3B /* InfoView.swift */,
-				5333D6702EBA7E1C0006CC3B /* EditUserStatusView.swift */,
-				5333D66E2EBA7DCE0006CC3B /* PendingUsersView.swift */,
-				5333D66C2EBA7C2A0006CC3B /* BookingStatusView.swift */,
 				53B815D52EAD16B400854645 /* TODO.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,
@@ -388,7 +387,6 @@
 			children = (
 				530C184B2E1C5462000A80E0 /* Union.entitlements */,
 				53847C7A2E02F10E00EE649A /* UnionApp.swift */,
-				53DCF7FE2EB2BDA600D67BEB /* GeneralViews */,
 				53B815C42EA938FD00854645 /* Login */,
 				531DDDB92E70B10F00E210EE /* Dates */,
 				53343A1B2E53C44F00224553 /* Performer */,
@@ -415,6 +413,9 @@
 		53B815C42EA938FD00854645 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				5333D6702EBA7E1C0006CC3B /* EditUserStatusView.swift */,
+				5333D66E2EBA7DCE0006CC3B /* PendingUsersView.swift */,
+				5395F2C92EC274B500FBF584 /* ReAuthView.swift */,
 				53B815CF2EAA86BC00854645 /* PendingApprovalView.swift */,
 				53B815CD2EA93AD500854645 /* RootView.swift */,
 				53B815B42EA6A61500854645 /* AppUser.swift */,
@@ -423,15 +424,6 @@
 				53B815C22EA938E800854645 /* UserRole.swift */,
 			);
 			path = Login;
-			sourceTree = "<group>";
-		};
-		53DCF7FE2EB2BDA600D67BEB /* GeneralViews */ = {
-			isa = PBXGroup;
-			children = (
-				53B815B22EA6A1F100854645 /* SearchBar.swift */,
-				53DCF7FC2EB29FC000D67BEB /* SimpleAlert.swift */,
-			);
-			path = GeneralViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -715,7 +707,7 @@
 				531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */,
 				53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */,
 				53B815B72EA6BA3E00854645 /* ShowtimeDetailView.swift in Sources */,
-				5395F2CE2EC666D000FBF584 /* ExperimentalVM.swift in Sources */,
+				5395F2CE2EC666D000FBF584 /* FavoritesViewModel.swift in Sources */,
 				5333D66F2EBA7DCE0006CC3B /* PendingUsersView.swift in Sources */,
 				533468802E42740300E069DB /* Performance.swift in Sources */,
 				533468842E42759700E069DB /* AddPerformanceView.swift in Sources */,
@@ -1004,7 +996,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Union/Union.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Union/Preview Content\"";
 				DEVELOPMENT_TEAM = R72MW9XTRD;
 				ENABLE_PREVIEWS = YES;
@@ -1018,7 +1010,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Tuner.Union;
 				PRODUCT_NAME = "Union Comedy";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1036,7 +1028,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Union/Union.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Union/Preview Content\"";
 				DEVELOPMENT_TEAM = R72MW9XTRD;
 				ENABLE_PREVIEWS = YES;
@@ -1050,7 +1042,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Tuner.Union;
 				PRODUCT_NAME = "Union Comedy";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
