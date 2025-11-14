@@ -12,6 +12,7 @@ import Foundation
 //  For warnings of over/under booking
 //    How far out do they want the warning? Default to 1 month
 //  Email blast all indie teams when in need for a team?
+//  Create a new branch to accomidate how Emily uses the app.
 
 // TODO: List
 
@@ -30,5 +31,4 @@ import Foundation
 
 
 // MARK: Current work:
-//  Fix calendar dates: Check for <= >=
-//  Create a new branch to accomidate how Emily uses the app.
+
