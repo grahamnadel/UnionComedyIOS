@@ -30,4 +30,5 @@ import Foundation
 
 
 // MARK: Current work:
-//    Remove from users collection function
+//  Fix calendar dates: Check for <= >=
+//  Create a new branch to accomidate how Emily uses the app.

@@ -12,8 +12,23 @@ struct SetFestivalDatesView: View {
                 DatePicker("Start Date", selection: $startDate, displayedComponents: .date)
                     .datePickerStyle(.graphical)
                 
-                DatePicker("End Date", selection: $endDate, in: startDate..., displayedComponents: .date)
-                    .datePickerStyle(.graphical)
+                DatePicker(
+                    "End Date",
+                    selection: Binding(
+                        get: { endDate },
+                        set: { newValue in
+                            endDate = Calendar.current.date(
+                                bySettingHour: 23,
+                                minute: 59,
+                                second: 0,
+                                of: newValue
+                            ) ?? newValue
+                        }
+                    ),
+                    in: startDate...,
+                    displayedComponents: .date
+                )
+                .datePickerStyle(.graphical)
             }
 
             Section {
