@@ -15,8 +15,6 @@ import Foundation
 //  Create a new branch to accomidate how Emily uses the app.
 
 // TODO: List
-
-//Priority low to high
 // Separate Firebase and scheduleViewModel
 
 // Review and Edit code
@@ -24,10 +22,8 @@ import Foundation
 // Aesthetics and UI
 //    Human Interface Guidelines
 //    pending Users/All Users toggle is not user friendly
-//  Change colors of showType labels in DatesList
 
-
-                                                    // TODAY:
+                                            // TODAY:
 
 
 // MARK: Current work:
