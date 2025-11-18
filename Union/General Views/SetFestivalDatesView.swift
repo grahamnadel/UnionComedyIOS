@@ -48,7 +48,7 @@ struct SetFestivalDatesView: View {
                 Text("Save Dates")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .background(Color.purple)
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }

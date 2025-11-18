@@ -40,7 +40,7 @@ struct InitialLoginView: View {
             
             if isSignUp {
                 Text("Do you perform on a house team?")
-                    .foregroundColor(selectedRole == nil ? .red : .blue)
+                    .foregroundColor(selectedRole == nil ? .red : .purple)
                 Picker("Role", selection: $selectedRole) {
                     Text("Yes").tag(UserRole.performer as UserRole?)
                     Text("No").tag(UserRole.audience as UserRole?)
@@ -57,7 +57,7 @@ struct InitialLoginView: View {
                         Task { await sendPasswordResetEmail() }
                     }
                     .font(.caption)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.purple)
                 }
             }
             .padding(.horizontal)

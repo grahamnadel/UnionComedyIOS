@@ -48,7 +48,7 @@ struct DateListView: View {
                     Image(systemName: "line.3.horizontal.decrease.circle")
                         .imageScale(.large)
                         .padding(8)
-                        .foregroundColor(.accentColor)
+                        .foregroundColor(.purple)
                 }
                 .accessibilityLabel("Filter by show type")
             }
@@ -59,11 +59,12 @@ struct DateListView: View {
             List {
                 if let festivalStart = scheduleViewModel.festivalStartDate,
                    let festivalEndDate = scheduleViewModel.festivalEndDate {
-                    if Date() >= festivalStart && Date() <= festivalEndDate {
-                        Image("Image")
-                            .resizable()
-                            .scaledToFit()
-                    }
+//                    TODO: fix so that this only appears during the festival
+//                    if Date() >= festivalStart && Date() <= festivalEndDate {
+//                        Image("Image")
+//                            .resizable()
+//                            .scaledToFit()
+//                    }
                 }
                 ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
                     Section(header: Text(showTime, style: .date)) {

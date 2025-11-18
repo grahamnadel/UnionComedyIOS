@@ -73,7 +73,7 @@ struct PerformerDetailView: View {
                     isShowingPhotoPicker = true
                 }) {
                     Image(systemName: "camera.fill")
-                        .foregroundColor(.blue)
+                        .foregroundColor(.purple)
                 }
             }
         }

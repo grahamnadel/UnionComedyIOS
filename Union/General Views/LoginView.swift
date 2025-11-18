@@ -31,7 +31,7 @@
 //                }
 //            }
 //            .padding()
-//            .background(password.isEmpty ? Color.gray : Color.blue)
+//            .background(password.isEmpty ? Color.gray : Color.purple)
 //            .foregroundColor(.white)
 //            .cornerRadius(8)
 //            .disabled(password.isEmpty) // Disable the button if the password field is empty

@@ -24,7 +24,7 @@ import Foundation
 //    pending Users/All Users toggle is not user friendly
 
                                             // TODAY:
-
+//Replace add performers in the date list with adding teams
 
 // MARK: Current work:
 

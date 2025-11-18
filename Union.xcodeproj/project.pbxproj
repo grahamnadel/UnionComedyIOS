@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		530C184D2E1D74D8000A80E0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530C184C2E1D74D8000A80E0 /* SettingsView.swift */; };
+		530F245C2ECCD7660080D292 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530F245B2ECCD7660080D292 /* AccountView.swift */; };
 		531DDD852E54F07A00E210EE /* PerformerSelectionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */; };
 		531DDD892E577A9A00E210EE /* PerformerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD882E577A9A00E210EE /* PerformerDetailView.swift */; };
 		531DDD8B2E57828200E210EE /* PerformanceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */; };
@@ -129,6 +130,7 @@
 /* Begin PBXFileReference section */
 		530C184B2E1C5462000A80E0 /* Union.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Union.entitlements; sourceTree = "<group>"; };
 		530C184C2E1D74D8000A80E0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		530F245B2ECCD7660080D292 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerSelectionList.swift; sourceTree = "<group>"; };
 		531DDD882E577A9A00E210EE /* PerformerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerDetailView.swift; sourceTree = "<group>"; };
 		531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceDetailView.swift; sourceTree = "<group>"; };
@@ -367,6 +369,7 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				530F245B2ECCD7660080D292 /* AccountView.swift */,
 				5395F2D22EC7855900FBF584 /* LoadingView.swift */,
 				53B815D52EAD16B400854645 /* TODO.swift */,
 				53847C792E02F10E00EE649A /* Union */,
@@ -677,6 +680,7 @@
 				53B815D62EAD16B400854645 /* TODO.swift in Sources */,
 				53DCF7F52EB1351700D67BEB /* TeamDetailSection.swift in Sources */,
 				53847C8D2E02FC9800EE649A /* TeamView.swift in Sources */,
+				530F245C2ECCD7660080D292 /* AccountView.swift in Sources */,
 				5334688C2E44FACD00E069DB /* PerformerPhotoPicker.swift in Sources */,
 				53DCF7F92EB135D000D67BEB /* DateInputView.swift in Sources */,
 				5395F2CA2EC274B500FBF584 /* ReAuthView.swift in Sources */,

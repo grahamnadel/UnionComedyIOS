@@ -24,7 +24,7 @@ struct VoteView: View {
                         teamVotedFor = team.name
                     }) {
 //                        FIXME: Temporary color replacement
-                        TeamView(teamColor: Color.blue, teamName: team.name)
+                        TeamView(teamColor: Color.purple, teamName: team.name)
                     }
                 }
             }

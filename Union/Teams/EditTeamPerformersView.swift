@@ -20,7 +20,7 @@ struct EditTeamPerformersView: View {
                             set: { tempSelections[performer] = $0 }
                         ))
                         .labelsHidden()
-                        .tint(.blue)
+                        .tint(.purple)
                     }
                 }
             }

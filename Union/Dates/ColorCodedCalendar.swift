@@ -82,7 +82,7 @@ struct ColorCodedCalendar: View {
                         Text("\(day)")
                             .frame(maxWidth: .infinity, minHeight: 40)
                             .background(
-                                isSelected ? Color.blue.opacity(0.4)
+                                isSelected ? Color.purple.opacity(0.4)
                                 : isSpecial ? Color.orange.opacity(0.7) // Changed color for events
                                 : Color.clear
                             )

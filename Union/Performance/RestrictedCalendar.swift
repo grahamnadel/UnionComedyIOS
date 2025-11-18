@@ -52,8 +52,8 @@
 //                            .background(
 //                                isAllowed
 //                                ? (calendar.isDate(date, inSameDayAs: selectedDate)
-//                                    ? Color.blue.opacity(0.4)
-//                                    : Color.blue.opacity(0.15))
+//                                    ? Color.purple.opacity(0.4)
+//                                    : Color.purple.opacity(0.15))
 //                                : Color.gray.opacity(0.1)
 //                            )
 //                            .foregroundColor(isAllowed ? .primary : .gray)

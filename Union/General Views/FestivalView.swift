@@ -31,13 +31,16 @@ struct FestivalView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Picker("Select View", selection: $selected) {
-                    ForEach(availableOptions, id: \.self) { option in
-                        Text(option.rawValue).tag(option)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding()
+                SegmentedButtons(selection: $selected, options: availableOptions)
+
+                
+//                Picker("Select View", selection: $selected) {
+//                    ForEach(availableOptions, id: \.self) { option in
+//                        Text(option.rawValue).tag(option)
+//                    }
+//                }
+//                .pickerStyle(.segmented)
+//                .padding()
                 
                 switch selected {
                 case .date:
@@ -65,17 +68,9 @@ struct FestivalView: View {
                 }
                 
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Menu {
-                        Button("Sign Out") {
-                            authViewModel.signOut()
-                        }
-                        Button(role: .destructive, action: {
-                            showingDeleteConfirmation = true
-                        }) {
-                            Label("Delete Account", systemImage: "trash")
-                        }
-                    } label: {
-                        Image(systemName: "gear")
+                    NavigationLink(destination: AccountView(showingDeleteConfirmation: $showingDeleteConfirmation)) {
+                        Image(systemName: "person.crop.circle")
+                            .foregroundColor(.black)
                     }
                 }
             }
@@ -140,6 +135,38 @@ struct FestivalView: View {
             scheduleViewModel.removeFromUsersCollection(name: name)
         } else {
             print("Could not unwrap name")
+        }
+    }
+}
+
+
+struct SegmentedButtons<T: Hashable & RawRepresentable>: View where T.RawValue == String {
+    @Binding var selection: T
+    let options: [T]
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(options, id: \.self) { option in
+                    Button {
+                        selection = option
+                    } label: {
+                        Text(option.rawValue)
+                            .font(.headline)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .frame(maxWidth: .infinity)
+                            .background(selection == option ? Color.purple : Color.clear)
+                            .foregroundColor(selection == option ? .white : .purple)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.purple, lineWidth: 1)
+                            )
+                            .cornerRadius(10)
+                    }
+                }
+            }
+            .padding(.horizontal)
         }
     }
 }
