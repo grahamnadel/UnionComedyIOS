@@ -10,10 +10,12 @@ import SwiftData
 import FirebaseCore
 import Firebase
 import FirebaseAppCheck
+import FirebaseMessaging
 
 @main
 struct UnionApp: App {
     //    @StateObject private var voteStore = VoteStore()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     init() {
         // App Check debug provider for simulator / development

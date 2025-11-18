@@ -32,15 +32,6 @@ struct FestivalView: View {
         NavigationStack {
             VStack {
                 SegmentedButtons(selection: $selected, options: availableOptions)
-
-                
-//                Picker("Select View", selection: $selected) {
-//                    ForEach(availableOptions, id: \.self) { option in
-//                        Text(option.rawValue).tag(option)
-//                    }
-//                }
-//                .pickerStyle(.segmented)
-//                .padding()
                 
                 switch selected {
                 case .date:
