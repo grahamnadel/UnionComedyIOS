@@ -38,6 +38,7 @@ struct DateListView: View {
     // MARK: - Body
     var body: some View {
         VStack {
+            PushTestView()
             // 🔍 Search bar + hamburger filter button
             HStack {
                 SearchBar(searchCategory: "team or performer", searchText: $searchText)

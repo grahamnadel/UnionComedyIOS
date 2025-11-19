@@ -11,11 +11,7 @@ import Firebase
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-            
-            // 1. Initialize Firebase
-//            FirebaseApp.configure() // ⬅️ Initialize Firebase services
-            
-            // 2. Set up push notification handling
+//             Set up push notification handling
             self.setupPushNotifications(application: application)
             
             print("Your code here")
