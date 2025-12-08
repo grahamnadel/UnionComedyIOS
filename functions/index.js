@@ -6,13 +6,16 @@ admin.initializeApp();
 exports.sendPush = functions.onRequest(async (req, res) => {
   try {
     const token = req.body.token;
+    const title = req.body.title || "Default Title";
+    const body = req.body.body || "Default body text";
 
     const message = {
       token,
       notification: {
-        title: "Hello from the server!",
-        body: "This is a real push notification."
-      }
+        title: title,
+        body: body
+      },
+      data: req.body.data || {}
     };
 
     const response = await admin.messaging().send(message);
@@ -22,14 +25,6 @@ exports.sendPush = functions.onRequest(async (req, res) => {
     res.status(500).send({ success: false, error });
   }
 });
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
 
 const {setGlobalOptions} = require("firebase-functions");
 const {onRequest} = require("firebase-functions/https");

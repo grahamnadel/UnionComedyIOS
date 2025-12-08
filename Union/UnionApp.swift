@@ -32,6 +32,7 @@ struct UnionApp: App {
     @StateObject var scheduleViewModel = ScheduleViewModel()
     @StateObject var authViewModel = AuthViewModel()
     @StateObject var ownerViewModel = OwnerViewModel()
+    @StateObject var notifications = PushNotificationManager()
     
     @StateObject var favoritesViewModel = FavoritesViewModel()
     
@@ -42,6 +43,7 @@ struct UnionApp: App {
                 .environmentObject(scheduleViewModel)
                 .environmentObject(ownerViewModel)
                 .environmentObject(favoritesViewModel)
+                .environmentObject(notifications)
         }
     }
 }
