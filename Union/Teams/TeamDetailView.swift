@@ -89,12 +89,7 @@ struct TeamDetailView: View {
             }
             
             // MARK: - Favorite Button
-            Button {
-                favoritesViewModel.toggleFavoriteTeam(teamName)
-            } label: {
-                Image(systemName: favoritesViewModel.favoriteTeams.contains(teamName) ? "star.fill" : "star")
-                    .foregroundColor(favoritesViewModel.favoriteTeamColor)
-            }
+            FavoriteTeamButton(teamName: teamName)
         }
         .navigationTitle(teamName)
         .refreshable {

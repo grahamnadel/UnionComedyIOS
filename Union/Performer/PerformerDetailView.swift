@@ -57,12 +57,7 @@ struct PerformerDetailView: View {
                     .padding()
                 
 //                FIXME: favorite closes sheet
-                Button {
-                    favoritesViewModel.toggleFavoritePerformer(performer)
-                } label: {
-                    Image(systemName: favoritesViewModel.favoritePerformers.contains(performer) ? "star.fill" : "star")
-                        .foregroundColor(favoritesViewModel.favoritePerformerColor)
-                }
+                FavoritePerformerButton(performerName: performer)
             }
         }
         .toolbar {

@@ -4,6 +4,7 @@ struct ShowtimeDetailView: View {
     let performance: Performance
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @EnvironmentObject var favoritesViewModel: FavoritesViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State var performerURLs: [String:URL] = [:]
     
     var body: some View {
@@ -26,17 +27,7 @@ struct ShowtimeDetailView: View {
                     
                     HStack {
                         Spacer()
-                        Button(action: {
-                            if let index = favoritesViewModel.favoriteTeams.firstIndex(of: performance.teamName) {
-                                favoritesViewModel.favoriteTeams.remove(at: index)
-                            } else {
-                                favoritesViewModel.favoriteTeams.append(performance.teamName)
-                            }
-                        }) {
-                            Image(systemName: favoritesViewModel.favoriteTeams.contains(performance.teamName) ? "star.fill" : "star")
-                                .foregroundColor(favoritesViewModel.favoriteTeamColor)
-                                .imageScale(.large)
-                        }
+                        FavoriteTeamButton(teamName: performance.teamName)
                     }
                 }
                 

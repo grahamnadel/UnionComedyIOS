@@ -23,6 +23,7 @@ import Foundation
 //    Human Interface Guidelines
 //    pending Users/All Users toggle is not user friendly
 
+// Replace local storage of favorites with firebase
                                             // TODAY:
 //Replace add performers in the date list with adding teams
 

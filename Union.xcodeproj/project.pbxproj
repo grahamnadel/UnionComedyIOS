@@ -102,6 +102,8 @@
 		53B815D42EAC127500854645 /* BiographyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815D32EAC127500854645 /* BiographyView.swift */; };
 		53B815D62EAD16B400854645 /* TODO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815D52EAD16B400854645 /* TODO.swift */; };
 		53B815D82EAFE09000854645 /* ShowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B815D72EAFE09000854645 /* ShowType.swift */; };
+		53CC73692EE7491D0093EFE7 /* FavoriteTeamButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CC73682EE7491D0093EFE7 /* FavoriteTeamButton.swift */; };
+		53CC736B2EE74A9B0093EFE7 /* FavoritePerformerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CC736A2EE74A9B0093EFE7 /* FavoritePerformerButton.swift */; };
 		53DCF7DF2EB015D200D67BEB /* RestrictedCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7DE2EB015D200D67BEB /* RestrictedCalendar.swift */; };
 		53DCF7F12EB01F0D00D67BEB /* ColorCodedCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7F02EB01F0D00D67BEB /* ColorCodedCalendar.swift */; };
 		53DCF7F32EB130ED00D67BEB /* AddDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DCF7F22EB130ED00D67BEB /* AddDateView.swift */; };
@@ -197,6 +199,8 @@
 		53B815D32EAC127500854645 /* BiographyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiographyView.swift; sourceTree = "<group>"; };
 		53B815D52EAD16B400854645 /* TODO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TODO.swift; sourceTree = "<group>"; };
 		53B815D72EAFE09000854645 /* ShowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowType.swift; sourceTree = "<group>"; };
+		53CC73682EE7491D0093EFE7 /* FavoriteTeamButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTeamButton.swift; sourceTree = "<group>"; };
+		53CC736A2EE74A9B0093EFE7 /* FavoritePerformerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePerformerButton.swift; sourceTree = "<group>"; };
 		53DCF7DE2EB015D200D67BEB /* RestrictedCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedCalendar.swift; sourceTree = "<group>"; };
 		53DCF7F02EB01F0D00D67BEB /* ColorCodedCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCodedCalendar.swift; sourceTree = "<group>"; };
 		53DCF7F22EB130ED00D67BEB /* AddDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDateView.swift; sourceTree = "<group>"; };
@@ -373,6 +377,8 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				53CC736A2EE74A9B0093EFE7 /* FavoritePerformerButton.swift */,
+				53CC73682EE7491D0093EFE7 /* FavoriteTeamButton.swift */,
 				530F24602ECCF62F0080D292 /* AppDelegate.swift */,
 				530F24622ECE3D390080D292 /* PushTestView.swift */,
 				530F245B2ECCD7660080D292 /* AccountView.swift */,
@@ -716,10 +722,12 @@
 				533468782E426E9D00E069DB /* FestivalView.swift in Sources */,
 				53B815D22EAAD56F00854645 /* KeyChainHelper.swift in Sources */,
 				5333D6752EBD120B0006CC3B /* TeamListPerformanceRow.swift in Sources */,
+				53CC736B2EE74A9B0093EFE7 /* FavoritePerformerButton.swift in Sources */,
 				530C184D2E1D74D8000A80E0 /* SettingsView.swift in Sources */,
 				53DCF7FD2EB29FC000D67BEB /* SimpleAlert.swift in Sources */,
 				53DCF7DF2EB015D200D67BEB /* RestrictedCalendar.swift in Sources */,
 				53DCF7F72EB1352D00D67BEB /* DateSelectionSection.swift in Sources */,
+				53CC73692EE7491D0093EFE7 /* FavoriteTeamButton.swift in Sources */,
 				531DDDB72E70AB1400E210EE /* CreatePerformerView.swift in Sources */,
 				53EAA6F22EA14F4E00BA49C6 /* Team.swift in Sources */,
 				53B815B72EA6BA3E00854645 /* ShowtimeDetailView.swift in Sources */,
