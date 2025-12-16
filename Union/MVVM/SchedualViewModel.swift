@@ -567,8 +567,8 @@ class ScheduleViewModel: ObservableObject {
         }
     }
     
-    func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date]) {
-        FirebaseManager.shared.createPerformance(id: id, teamName: teamName, performerIds: performerIds, dates: dates)
+    func createPerformance(id: String, teamName: String, isHouseTeam: Bool, performerIds: [String], dates: [Date]) {
+        FirebaseManager.shared.createPerformance(id: id, teamName: teamName, isHouseTeam: isHouseTeam, performerIds: performerIds, dates: dates)
         loadData()
         loadTeams()
     }

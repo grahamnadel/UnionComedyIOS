@@ -10,15 +10,11 @@ struct ShowtimeDetailView: View {
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 20) {
-                ZStack {
-                    Rectangle()
-                        .fill(Color.yellow)
-                        .frame(height: 80) // or any thickness you like
-                        .frame(maxWidth: .infinity, alignment: .top)
-                        .ignoresSafeArea()
-                    Text("PLAYBILL")
-                        .font(.title)
-                }
+                Image("Logo-Union-Letterd")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+                
                 // Team name + favorite toggle
                 ZStack {
                     Text(performance.teamName)

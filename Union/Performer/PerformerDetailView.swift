@@ -28,6 +28,10 @@ struct PerformerDetailView: View {
     var body: some View {
         ScrollView {
             VStack {
+                Text(performer)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                
                 PerformerImageView(performerURL: loadedPerformerURL ?? nil)
                     .frame(width: 250, height: 250)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -61,7 +65,7 @@ struct PerformerDetailView: View {
             }
         }
         .toolbar {
-            if authViewModel.role != .audience &&
+            if authViewModel.role != .audience && authViewModel.approved == true &&
                 loadedPerformerURL == nil && authViewModel.name == performer {
                 Button(action: {
                     selectedPerformer = performer

@@ -1,3 +1,8 @@
+// TODO: Solving the house team reverting the selected team to new team
+/*
+    if the team is an existing team, I cannot toggle the houseTeam bool
+ */
+
 import SwiftUI
 import PhotosUI
 
@@ -8,45 +13,28 @@ struct AddPerformanceView: View {
     @State private var date = Date.nextFriday730PM
     @State var selectedDates: Set<Date> = Set()
     @State private var teamName = ""
-//    @State private var selectedTeamName: String? = nil
     @State private var selectedTeam: Team? = nil
     @State private var newTeamNameInput = ""
     @State private var performerInput = ""
     @State private var performerInputs: Set<PerformerInput> = Set()
-    
     @State private var showOverbookAlert = false
     @State private var overbookedDates: [Date] = []
     @State private var proceedAnyway = false
-    
     @State private var redundantPerformances: [Performance] = []
-    
     @State private var selectedShowType: ShowType? = nil
     @State private var today: Date = {
         let calendar = Calendar.current
         let now = Date()
         return calendar.startOfDay(for: now) // strips time, locks to local midnight
     }()
-    
-    
-    init(date: Date?, showType: ShowType?) {
-        if let date = date {
-            _selectedDates = State(initialValue: Set([date]))
-        } else {
-            _selectedDates = State(initialValue: Set())
-        }
-        
-        if let showType = showType {
-            _selectedShowType = State(initialValue: showType)
-        } else {
-            _selectedShowType = State(initialValue: nil)
-        }
+    @State private var draftHouseTeam: Bool = false
+    var houseTeam: Binding<Bool> {
+        $draftHouseTeam
     }
 
-    
     var isShowTypeSelected: Bool {
         selectedShowType != nil && selectedShowType != .special
     }
-
     
     // This computed property filters suggestions for the user as they type.
 //    TODO: change to get rid of knownPerformers to just Performers?
@@ -61,6 +49,20 @@ struct AddPerformanceView: View {
                 !existingNames.contains(name)
             }
             .sorted()
+    }
+    
+    init(date: Date?, showType: ShowType?) {
+        if let date = date {
+            _selectedDates = State(initialValue: Set([date]))
+        } else {
+            _selectedDates = State(initialValue: Set())
+        }
+        
+        if let showType = showType {
+            _selectedShowType = State(initialValue: showType)
+        } else {
+            _selectedShowType = State(initialValue: nil)
+        }
     }
     
     var body: some View {
@@ -78,7 +80,8 @@ struct AddPerformanceView: View {
                 TeamDetailSection(
                     allTeams: scheduleViewModel.teams,
                     selectedTeam: $selectedTeam,
-                    teamName: $teamName
+                    teamName: $teamName,
+                    houseTeam: houseTeam
                 )
                 
                 // MARK: - List of Selected Dates
@@ -200,6 +203,7 @@ struct AddPerformanceView: View {
                 performerInputs.removeAll()
                 if let newTeam = selectedTeam {
                     teamName = newTeam.name
+                    draftHouseTeam = newTeam.houseTeam
                     
                     // Add unique performers to the selected list
                     for performerName in newTeam.performers {
@@ -207,6 +211,7 @@ struct AddPerformanceView: View {
                     }
                 } else {
                     teamName = ""
+                    draftHouseTeam = false
                 }
                 // Recalculate redundancy when team changes
                 redundantPerformances = blockRedundantTeamSave()
@@ -281,6 +286,7 @@ struct AddPerformanceView: View {
         scheduleViewModel.createPerformance(
             id: UUID().uuidString,
             teamName: teamToSave,
+            isHouseTeam: houseTeam.wrappedValue,
             performerIds: performerInputs.map { $0.name },
             dates: selectedDatesArray
         )

@@ -14,6 +14,7 @@ class AuthViewModel: ObservableObject {
     @Published var user: FirebaseAuth.User?
     @Published var role: UserRole?
     @Published var name: String?
+    @Published var fcmToken: String?
     @Published var favoriteTeams: [String]?
     @Published var favoritePerformers: [String]?
     @Published var approved = false
@@ -43,7 +44,6 @@ class AuthViewModel: ObservableObject {
     func signUp(name: String, email: String, password: String, role: UserRole) async throws {
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
         let approved = (role == .audience)
-//        TODO: adding favorites
         try await db.collection("users").document(result.user.uid).setData([
             "name": name,
             "email": email,
@@ -74,6 +74,7 @@ class AuthViewModel: ObservableObject {
                 self.name = data["name"] as? String ?? "Unknown"
                 self.favoriteTeams = data["favoriteTeams"] as? [String] ?? []
                 self.favoritePerformers = data["favoritePerformers"] as? [String] ?? []
+                self.fcmToken = data["fcmToken"] as? String ?? ""
             } else {
                 // Check if the user was just created (e.g., in the last 5 seconds)
                 // This avoids logging out a new user while their Firestore doc is being created.

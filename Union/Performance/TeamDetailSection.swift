@@ -13,6 +13,7 @@ struct TeamDetailSection: View {
     let allTeams: [Team]
     @Binding var selectedTeam: Team?
     @Binding var teamName: String
+    @Binding var houseTeam: Bool
     
     @State private var newTeamNameInput: String = "" // Local state for new input
     
@@ -25,6 +26,11 @@ struct TeamDetailSection: View {
                     Text(team.name).tag(team as Team?)
                 }
             }
+            
+            Toggle(
+                houseTeam ? "House Team": "Non House Team",
+                isOn: $houseTeam
+            )
             
             if selectedTeam == nil {
                 TextField("New Team Name", text: $newTeamNameInput)

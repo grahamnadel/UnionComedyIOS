@@ -132,7 +132,7 @@ class FirebaseManager {
     }
     
     
-    func createPerformance(id: String, teamName: String, performerIds: [String], dates: [Date]) {
+    func createPerformance(id: String, teamName: String, isHouseTeam: Bool, performerIds: [String], dates: [Date]) {
         checkForExistingTeam(teamName: teamName) { exists in
             if exists {
                 self.checkForExistingPerformance(teamName: teamName) { hasPerformances in

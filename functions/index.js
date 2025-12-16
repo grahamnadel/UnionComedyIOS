@@ -1,51 +1,101 @@
-const functions = require("firebase-functions/v2/https");
+const { onSchedule } = require("firebase-functions/v2/scheduler");
 const admin = require("firebase-admin");
-
+const { logger } = require("firebase-functions");
 admin.initializeApp();
 
-exports.sendPush = functions.onRequest(async (req, res) => {
-  try {
-    const token = req.body.token;
-    const title = req.body.title || "Default Title";
-    const body = req.body.body || "Default body text";
+exports.weeklyEventCheck = onSchedule("every 1 minutes", async (event) => {
+    const db = admin.firestore();
+    const now = new Date();
+    const ninetySixHoursFromNow = new Date(now.getTime() + 96 * 60 * 60 * 1000);
 
-    const message = {
-      token,
-      notification: {
-        title: title,
-        body: body
-      },
-      data: req.body.data || {}
-    };
 
-    const response = await admin.messaging().send(message);
-    res.status(200).send({ success: true, id: response });
-  } catch (error) {
-    console.error("Error sending push:", error);
-    res.status(500).send({ success: false, error });
-  }
+    logger.info(`Weekly check running: ${now}`, { structuredData: true });
+    logger.info(`Looking for performances between ${now} and ${ninetySixHoursFromNow}`, { structuredData: true });
+
+    // Get performances within the next 96 hours
+    const showsSnap = await db.collection("festivalTeams")
+        //.where("showTimes", ">=", now)
+        //.where("showTimes", "<=", ninetySixHoursFromNow)
+        .get();
+
+    if (showsSnap.empty) {
+        logger.info("No upcoming shows within 96 hours.");
+        return;
+    }
+
+    const shows = showsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    // Get all users with FCM tokens and favoriteTeams
+    const usersSnap = await db.collection("users").get();
+
+    for (const userDoc of usersSnap.docs) {
+        const userData = userDoc.data();
+        if (!userData.fcmToken || !Array.isArray(userData.favoriteTeams)) continue;        
+
+	// Find any shows matching user's favorite teams
+        const userShows = shows.filter(show =>
+            userData.favoriteTeams.includes(show.name)
+        );
+
+        for (const show of userShows) {	
+		const secondsValue = show.showTimes[0]._seconds
+		const milliseconds = secondsValue * 1000;
+		const showDate = new Date(milliseconds);
+		const dayOfWeek = showDate.toLocaleDateString('en-US', { weekday: 'long' });
+		const timeString = showDate.toLocaleTimeString('en-US', {
+			hour: 'numeric',
+			minute: '2-digit',
+			hour12: true
+		});
+
+		const dateString = `${dayOfWeek} at ${timeString}`;
+		
+		console.log(`dateString: ${JSON.stringify(dateString, null, 2)}`);
+	            
+		const message = {
+                	token: userData.fcmToken,
+                	notification: {
+                    	title: `${show.name}`,
+                    	body: `${dateString}`
+                	}
+            	};
+// DEBUG
+	console.log(`Debug: token: ${userData.fcmToken}\n userShows: ${userShows}`);		
+
+
+            try {
+                await admin.messaging().send(message);
+		logger.info(`Sent notification to ${userDoc.id} for show ${show.name}`);
+            } catch (error) {
+                logger.error(`Error sending to ${userDoc.id}:`, error);
+            }
+        }
+    }
+
+    logger.info("Weekly notification check complete.");
 });
 
-const {setGlobalOptions} = require("firebase-functions");
-const {onRequest} = require("firebase-functions/https");
-const logger = require("firebase-functions/logger");
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
+//exports.sendPush = functions.onRequest(async (req, res) => {
+//  try {
+//    const token = req.body.token;
+//    const title = req.body.title || "Default Title";
+//    const body = req.body.body || "Default body text";
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+//    const message = {
+//      token,
+//      notification: {
+//        title: title,
+//        body: body
+//      },
+//      data: req.body.data || {}
+//    };
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+//    const response = await admin.messaging().send(message);
+//    res.status(200).send({ success: true, id: response });
+//  } catch (error) {
+//    console.error("Error sending push:", error);
+//    res.status(500).send({ success: false, error });
+//  }
+//});
+
