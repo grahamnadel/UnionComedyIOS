@@ -5,8 +5,9 @@ struct EditTeamPerformersView: View {
     
     let teamName: String
     @State private var showCreatePerformer = false
-    @State private var tempSelections: [String: Bool] = [:] // Local toggle state
+    @State private var tempSelections: [String: Bool] = [:]
     @State private var draftHouseTeam = false
+    @State private var teamPerformers: Set<String> = []
     
     var body: some View {
         List {
@@ -16,9 +17,19 @@ struct EditTeamPerformersView: View {
                         Text(performer)
                         Spacer()
                         
+//                        Toggle("", isOn: Binding(
+//                            get: { tempSelections[performer] ?? isPerformerInTeam(performer) },
+//                            set: { tempSelections[performer] = $0 }
+//                        ))
                         Toggle("", isOn: Binding(
-                            get: { tempSelections[performer] ?? isPerformerInTeam(performer) },
-                            set: { tempSelections[performer] = $0 }
+                            get: { teamPerformers.contains(performer) },
+                            set: { isOn in
+                                if isOn {
+                                    teamPerformers.insert(performer)
+                                } else {
+                                    teamPerformers.remove(performer)
+                                }
+                            }
                         ))
                         .labelsHidden()
                         .tint(.purple)
@@ -33,6 +44,12 @@ struct EditTeamPerformersView: View {
                 }
                 .buttonStyle(.borderedProminent)
             }
+        }
+        .onAppear {
+            teamPerformers = Set(scheduleViewModel.teams
+                .filter { $0.name == teamName }
+                .flatMap { $0.performers })
+            print("Team Performers: \(teamPerformers)")
         }
         .navigationTitle("Edit \(teamName)")
         .listStyle(.insetGrouped)
@@ -63,27 +80,45 @@ struct EditTeamPerformersView: View {
     
     /// Apply all toggle changes to Firestore
     private func applyChanges() {
-        for (performer, isOn) in tempSelections {
+        for performer in teamPerformers {
             Task {
-                if isOn && !isPerformerInTeam(performer) {
+//                Add new performers
+                if !isPerformerInTeam(performer) {
                     scheduleViewModel.addPerformer(named: performer, toTeam: teamName)
-                } else if !isOn && isPerformerInTeam(performer) {
-                    scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer)
-                    scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: performer)
                 }
-                scheduleViewModel.loadData()
-                scheduleViewModel.loadTeams()
-                scheduleViewModel.loadPerformers()
-                tempSelections.removeAll()
             }
+//          Remove performers
+            if let team = scheduleViewModel.teams.first(where: { $0.name == teamName }) {
+                //  Loop through performers currently on the team
+                for performer in team.performers {
+                    Task {
+                        // If this performer is NOT in teamPerformers, remove them
+                        if !teamPerformers.contains(performer) {
+                            scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer)
+                            scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: performer)
+                        }
+                    }
+                }
+            }
+            
+            scheduleViewModel.loadData()
+            scheduleViewModel.loadTeams()
+            scheduleViewModel.loadPerformers()
         }
         
-        // Reload the data once after all updates
-//        scheduleViewModel.loadData()
-//        scheduleViewModel.loadTeams()
-//        scheduleViewModel.loadPerformers()
-        
-        // Clear temp selections
-//        tempSelections.removeAll()
+//        for (performer, isOn) in tempSelections {
+//            Task {
+//                if isOn && !isPerformerInTeam(performer) {
+//                    scheduleViewModel.addPerformer(named: performer, toTeam: teamName)
+//                } else if !isOn && isPerformerInTeam(performer) {
+//                    scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer)
+//                    scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: performer)
+//                }
+//                scheduleViewModel.loadData()
+//                scheduleViewModel.loadTeams()
+//                scheduleViewModel.loadPerformers()
+//                tempSelections.removeAll()
+//            }
+//        }
     }
 }
