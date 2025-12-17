@@ -5,6 +5,7 @@ struct TeamDetailView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var favoritesViewModel: FavoritesViewModel
     @State private var performerURLs: [String: URL] = [:]
+    @State private var isHouseTeam: Bool = false
     let teamName: String
     
     var team: Team? {
@@ -19,23 +20,24 @@ struct TeamDetailView: View {
     
     var body: some View {
         VStack {
-//            TODO: add this feature of selecting indie or house team
-//            if authViewModel.role == .owner {
+            if authViewModel.role == .owner {
 //                if let team = team {
-//                    Toggle(isOn: Binding(
-//                        get: { team.houseTeam },
-//                        set: { newValue in
-//                            if let index = scheduleViewModel.teams.firstIndex(where: { $0.id == team.id }) {
-//                                scheduleViewModel.teams[index].houseTeam = newValue
-//                                scheduleViewModel.updateTeamType(teamName: teamName, isHouseTeam: newValue)
-//                            }
-//                        }
-//                    )) {
-//                        Text(team.houseTeam ? "House Team" : "Indie Team")
-//                    }
-//                    .padding()
+                    Toggle(isOn: $isHouseTeam) {
+                        Text(isHouseTeam ? "House Team" : "Indie Team")
+                    }
+                    .padding()
+                    .onChange(of: isHouseTeam) { newValue in
+                            if let currentTeam = team,
+                               let index = scheduleViewModel.teams.firstIndex(where: { $0.id == currentTeam.id }) {
+                                scheduleViewModel.teams[index].houseTeam = newValue
+                                scheduleViewModel.updateTeamType(
+                                    teamName: teamName,
+                                    isHouseTeam: newValue
+                                )
+                            }
+                        }
 //                }
-//            }
+            }
             List {
                 // MARK: - Performances
                 if !performancesForTeam.isEmpty {
@@ -61,25 +63,25 @@ struct TeamDetailView: View {
                 if let team = team {
                     Section(header: Text("Performers")) {
                         ForEach(team.performers, id: \.self) { performer in
-                                HStack {
-                                    AsyncImage(url: performerURLs[performer]) { image in
-                                        image.resizable().aspectRatio(contentMode: .fill)
-                                    } placeholder: {
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .fill(Color(.systemGray6))
-                                            .overlay(
-                                                Image(systemName: "person.fill")
-                                                    .foregroundColor(.gray)
-                                            )
-                                    }
-                                    .frame(width: 50, height: 50)
-                                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                                    
-                                    Text(performer)
-                                        .font(.body)
-                                        .foregroundColor(favoritesViewModel.favoritePerformers.contains(performer) ? favoritesViewModel.favoritePerformerColor : .primary)
+                            HStack {
+                                AsyncImage(url: performerURLs[performer]) { image in
+                                    image.resizable().aspectRatio(contentMode: .fill)
+                                } placeholder: {
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(Color(.systemGray6))
+                                        .overlay(
+                                            Image(systemName: "person.fill")
+                                                .foregroundColor(.gray)
+                                        )
                                 }
-                                .padding(.vertical, 4)
+                                .frame(width: 50, height: 50)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                
+                                Text(performer)
+                                    .font(.body)
+                                    .foregroundColor(favoritesViewModel.favoritePerformers.contains(performer) ? favoritesViewModel.favoritePerformerColor : .primary)
+                            }
+                            .padding(.vertical, 4)
                         }
                         .task {
                             await loadPerformerURLs()
@@ -90,6 +92,16 @@ struct TeamDetailView: View {
             
             // MARK: - Favorite Button
             FavoriteTeamButton(teamName: teamName)
+        }
+        .onAppear {
+            if let team = team {
+                isHouseTeam = team.houseTeam
+            }
+        }
+        .onChange(of: team?.houseTeam) { newValue in
+            if let newValue {
+                isHouseTeam = newValue
+            }
         }
         .navigationTitle(teamName)
         .refreshable {

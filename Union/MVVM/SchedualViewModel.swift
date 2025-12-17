@@ -548,7 +548,9 @@ class ScheduleViewModel: ObservableObject {
             let fetchedTeams: [Team] = snapshot?.documents.compactMap { document in
                 let data = document.data()
                 guard let name = data["name"] as? String,
-                      let performers = data["performers"] as? [String] else {
+                      let performers = data["performers"] as? [String],
+                      let houseTeam = data["houseTeam"] as? Bool
+                else {
                     return nil
                 }
                 
@@ -556,7 +558,8 @@ class ScheduleViewModel: ObservableObject {
                 return Team(
                     name: name,
                     id: document.documentID,
-                    performers: performers
+                    performers: performers,
+                    houseTeam: houseTeam
                 )
             } ?? []
             

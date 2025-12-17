@@ -167,7 +167,8 @@ class FirebaseManager {
                             "name": teamName,
                             "performers": performerIds,
                             "showTimes": dates,
-                            "id": id
+                            "id": id,
+                            "houseTeam": isHouseTeam
                         ]) { error in
                             if let error = error {
                                 print("Error writing team: \(error)")
@@ -180,12 +181,13 @@ class FirebaseManager {
             } else {
                 
                 self.checkForExistingPerformers(for: performerIds)
-                self.createTeam(teamName: teamName, performers: performerIds)
+                self.createTeam(teamName: teamName, performers: performerIds, isHouseTeam: isHouseTeam)
                 self.db.collection("festivalTeams").document(id).setData([
                     "name": teamName,
                     "performers": performerIds,
                     "showTimes": dates,
-                    "id": id
+                    "id": id,
+                    "houseTeam": isHouseTeam
                 ]) { error in
                     if let error = error {
                         print("Error writing team: \(error)")
@@ -197,8 +199,7 @@ class FirebaseManager {
         }
     }
     
-    func createTeam(teamName: String, performers: [String]) {
-        print("Called createTeam")
+    func createTeam(teamName: String, performers: [String], isHouseTeam: Bool) {
             // 1. Check if a team with this name already exists in the "teams" collection
             db.collection("teams")
                 .whereField("name", isEqualTo: teamName)
@@ -220,7 +221,8 @@ class FirebaseManager {
                     let id = UUID().uuidString
                     self.db.collection("teams").document(id).setData([
                         "name": teamName,
-                        "performers": performers
+                        "performers": performers,
+                        "houseTeam": isHouseTeam
                     ]) { error in
                         if let error = error {
                             print("Error writing team to 'teams' collection: \(error)")

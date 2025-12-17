@@ -14,23 +14,29 @@ struct TeamDetailSection: View {
     @Binding var selectedTeam: Team?
     @Binding var teamName: String
     @Binding var houseTeam: Bool
-    
-    @State private var newTeamNameInput: String = "" // Local state for new input
-    
+    @State private var newTeamNameInput: String = ""
+    var sortedTeams: [Team] {
+        allTeams.sorted {
+            ($0.houseTeam ? 0 : 1) < ($1.houseTeam ? 0 : 1)
+        }
+    }
+
     var body: some View {
         Section(header: Text("Team Details")) {
             Picker("Team Name", selection: $selectedTeam) {
                 Text("New Team...").tag(nil as Team?)
                 
-                ForEach(allTeams, id: \.self) { team in
+                ForEach(sortedTeams, id: \.self) { team in
                     Text(team.name).tag(team as Team?)
                 }
             }
-            
-            Toggle(
-                houseTeam ? "House Team": "Non House Team",
-                isOn: $houseTeam
-            )
+            if let selectedTeam = selectedTeam {
+            } else {
+                Toggle(
+                    houseTeam ? "House Team": "Non House Team",
+                    isOn: $houseTeam
+                )
+            }
             
             if selectedTeam == nil {
                 TextField("New Team Name", text: $newTeamNameInput)

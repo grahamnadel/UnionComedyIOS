@@ -38,8 +38,6 @@ struct DateListView: View {
     // MARK: - Body
     var body: some View {
         VStack {
-            UpcomingShowPushTestView()
-//            PushTestView()
             // 🔍 Search bar + hamburger filter button
             HStack {
                 SearchBar(searchCategory: "team or performer", searchText: $searchText)
@@ -59,19 +57,19 @@ struct DateListView: View {
             
             // 📅 List of grouped shows
             List {
-                if let festivalStart = scheduleViewModel.festivalStartDate,
-                   let festivalEndDate = scheduleViewModel.festivalEndDate {
-//                    TODO: fix so that this only appears during the festival
+//          TODO: fix so that this only appears during the festival
+//                if let festivalStart = scheduleViewModel.festivalStartDate,
+//                   let festivalEndDate = scheduleViewModel.festivalEndDate {
 //                    if Date() >= festivalStart && Date() <= festivalEndDate {
 //                        Image("Image")
 //                            .resizable()
 //                            .scaledToFit()
 //                    }
-                }
+//                }
                 ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
                     Section(header: Text(showTime, style: .date)) {
                         
-                        // ✅ Keep festival / non-festival label logic
+                        // Keep festival / non-festival label logic
                         if let festivalStart = scheduleViewModel.festivalStartDate,
                            let festivalEndDate = scheduleViewModel.festivalEndDate,
                            let festivalLocation = scheduleViewModel.festivalLocation {
@@ -96,7 +94,6 @@ struct DateListView: View {
                             }
                         }
                         
-                        // 🎭 Each performance
                         ForEach(performances, id: \.id) { performance in
                             ShowDate(performance: performance)
                                 .onTapGesture {
@@ -126,7 +123,6 @@ struct DateListView: View {
             }
         }
         
-        // 📱 Filter sheet (opened by hamburger)
         .sheet(isPresented: $showFilterMenu) {
             NavigationView {
                 List {
@@ -153,7 +149,7 @@ struct DateListView: View {
             .presentationDetents([.medium])
         }
         
-        // 🧾 Edit + Detail + Delete alert
+        // Edit + Detail + Delete alert
         .sheet(item: $editingPerformance) { performance in
             EditShowDateView(performance: performance, newShowTime: newShowTime)
         }

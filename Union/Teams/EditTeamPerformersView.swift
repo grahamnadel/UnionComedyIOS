@@ -6,6 +6,7 @@ struct EditTeamPerformersView: View {
     let teamName: String
     @State private var showCreatePerformer = false
     @State private var tempSelections: [String: Bool] = [:] // Local toggle state
+    @State private var draftHouseTeam = false
     
     var body: some View {
         List {
@@ -70,10 +71,10 @@ struct EditTeamPerformersView: View {
                     scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer)
                     scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: performer)
                 }
-                await scheduleViewModel.loadData()
-                await scheduleViewModel.loadTeams()
-                await scheduleViewModel.loadPerformers()
-                await tempSelections.removeAll()
+                scheduleViewModel.loadData()
+                scheduleViewModel.loadTeams()
+                scheduleViewModel.loadPerformers()
+                tempSelections.removeAll()
             }
         }
         

@@ -7,17 +7,45 @@ struct TeamListView: View {
     @State private var searchText = ""
     @State private var showDeleteAlert = false
     @State private var teamToDelete: String?
-
-    var filteredTeams: [String] {
-        let teams = scheduleViewModel.teams.map { $0.name }
-        if searchText.isEmpty {
-            return teams.sorted()
+    
+    var teamList: [String] {
+        if authViewModel.role == .owner {
+            return filteredAllTeams
         } else {
-            return teams.filter {
-                $0.localizedCaseInsensitiveContains(searchText)
-            }.sorted()
+            return filteredHouseTeams
         }
     }
+    
+    var filteredAllTeams: [String] {
+        scheduleViewModel.teams
+            .filter {
+                searchText.isEmpty ||
+                $0.name.localizedCaseInsensitiveContains(searchText)
+            }
+            .sorted {
+                if $0.houseTeam != $1.houseTeam {
+                    return $0.houseTeam && !$1.houseTeam   // house teams first
+                } else {
+                    return $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+                }
+            }
+            .map { $0.name }
+    }
+    
+    
+    var filteredHouseTeams: [String] {
+        scheduleViewModel.teams
+            .filter { $0.houseTeam }
+            .filter {
+                searchText.isEmpty ||
+                $0.name.localizedCaseInsensitiveContains(searchText)
+            }
+            .sorted {
+                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+            }
+            .map { $0.name }
+    }
+
 
     var body: some View {
         NavigationStack {
@@ -26,7 +54,7 @@ struct TeamListView: View {
                     .padding(.horizontal)
 
                 List {
-                    ForEach(filteredTeams, id: \.self) { team in
+                    ForEach(teamList, id: \.self) { team in
                         HStack {
                             Text(team)
                                 .font(.body)
@@ -49,7 +77,7 @@ struct TeamListView: View {
                     .onDelete { indexSet in
                         guard authViewModel.role == .owner else { return }
                         if let index = indexSet.first {
-                            teamToDelete = filteredTeams[index]
+                            teamToDelete = teamList[index]
                             showDeleteAlert = true
                         }
                     }
