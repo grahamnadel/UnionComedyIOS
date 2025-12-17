@@ -18,9 +18,11 @@ struct ShowDate: View {
             VStack(alignment: .leading) {
                 Text(performance.teamName)
                     .font(.headline)
-                Text("Performers: \(performance.performers.joined(separator: ", "))")
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+//  Removed as Emily's preference
+                
+//                Text("Performers: \(performance.performers.joined(separator: ", "))")
+//                    .font(.footnote)
+//                    .foregroundColor(.secondary)
             }
 
             Spacer()
@@ -31,7 +33,6 @@ struct ShowDate: View {
                     Image(systemName: "star.fill")
                         .foregroundColor(favoritesViewModel.favoriteTeamColor)
                 }
-//                FIXME:
                 if performance.performers.contains(where: { favoritesViewModel.favoritePerformers.contains($0) }) {
                     Image(systemName: "star.fill")
                         .foregroundColor(favoritesViewModel.favoritePerformerColor)

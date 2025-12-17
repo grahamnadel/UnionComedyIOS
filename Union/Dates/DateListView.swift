@@ -75,10 +75,11 @@ struct DateListView: View {
                            let festivalLocation = scheduleViewModel.festivalLocation {
                             
                             if showTime < festivalStart || showTime > festivalEndDate {
-                                if let showType = ShowType.dateToShow(date: showTime)?.displayName {
+                                if let showType = ShowType.dateToShow(date: showTime) {
                                     HStack {
-                                        Text(showType)
+                                        Text(showType.displayName)
                                             .bold()
+                                            .foregroundColor(showType.showColor)
                                         Spacer()
                                         Text(showTime.formatted(.dateTime.hour().minute()))
                                     }

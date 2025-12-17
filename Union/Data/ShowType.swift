@@ -13,6 +13,18 @@ enum ShowType: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
     
+    var showColor: Color {
+        switch self {
+        case .fridayNightFusion: return .red
+        case .fridayWeekendShow: return .pink
+        case .saturdayWeekendShow: return .purple
+        case .pickle: return .indigo
+        case .cageMatch: return .teal
+        case .classShow: return .cyan
+        case .special: return .black
+        }
+    }
+    
     var dayToInt: Int? {
         switch self {
         case .fridayNightFusion: return 6
