@@ -17,13 +17,22 @@ struct PerformerListView: View {
 
 
     var filteredPerformers: [String] {
+        // 1️⃣ Get all performers who belong to house teams
+        let houseTeamPerformers = scheduleViewModel.teams
+            .filter { $0.houseTeam }        // only house teams
+            .flatMap { $0.performers }      // get all performers
+        let houseTeamSet = Set(houseTeamPerformers) // for fast lookup
+
+        // 2️⃣ Start with all known performers
         let performers = Array(scheduleViewModel.knownPerformers)
 
-        let filtered = searchText.isEmpty
-            ? performers
-            : performers.filter { $0.localizedCaseInsensitiveContains(searchText) }
+        // 3️⃣ Filter: only house-team performers + search text
+        let filtered = performers.filter { performer in
+            houseTeamSet.contains(performer) &&
+            (searchText.isEmpty || performer.localizedCaseInsensitiveContains(searchText))
+        }
 
-        // Sort favorites first, then alphabetically
+        // 4️⃣ Sort favorites first, then alphabetically
         return filtered.sorted { lhs, rhs in
             let lhsFavorite = favoritesViewModel.favoritePerformers.contains(lhs)
             let rhsFavorite = favoritesViewModel.favoritePerformers.contains(rhs)
@@ -37,6 +46,7 @@ struct PerformerListView: View {
             }
         }
     }
+
 
 
     var body: some View {
