@@ -7,6 +7,9 @@ struct DateListView: View {
     @State private var newShowTime = Date()
     @State private var searchText = ""
     @State private var selectedPerformance: Performance?
+    
+    @State private var selectedPerformances: Performances?
+    
     @State private var showType: ShowType?
     @State private var showDeleteAlert = false
     @State private var performanceToDelete: Performance?
@@ -53,19 +56,19 @@ struct DateListView: View {
                 .accessibilityLabel("Filter by show type")
             }
             .padding(.horizontal)
-
+            
             
             // 📅 List of grouped shows
             List {
-//          TODO: fix so that this only appears during the festival
-//                if let festivalStart = scheduleViewModel.festivalStartDate,
-//                   let festivalEndDate = scheduleViewModel.festivalEndDate {
-//                    if Date() >= festivalStart && Date() <= festivalEndDate {
-//                        Image("Image")
-//                            .resizable()
-//                            .scaledToFit()
-//                    }
-//                }
+                //          TODO: fix so that this only appears during the festival
+                //                if let festivalStart = scheduleViewModel.festivalStartDate,
+                //                   let festivalEndDate = scheduleViewModel.festivalEndDate {
+                //                    if Date() >= festivalStart && Date() <= festivalEndDate {
+                //                        Image("Image")
+                //                            .resizable()
+                //                            .scaledToFit()
+                //                    }
+                //                }
                 ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
                     Section(header: Text(showTime, style: .date)) {
                         
@@ -95,11 +98,9 @@ struct DateListView: View {
                             }
                         }
                         
+                        //                        FIXME: Change this to have both teams as one button which leads the user to the total show (two teams)
                         ForEach(performances, id: \.id) { performance in
                             ShowDate(performance: performance)
-                                .onTapGesture {
-                                    selectedPerformance = performance
-                                }
                                 .onLongPressGesture {
                                     if authViewModel.role == .owner {
                                         editingPerformance = performance
@@ -113,6 +114,14 @@ struct DateListView: View {
                                 showDeleteAlert = true
                             }
                         } : nil)
+                    }
+                    .onTapGesture {
+                        if let performances = groupedPerformancesByTime
+                            .first(where: { $0.key == showTime })?
+                            .value {
+                            selectedPerformances = Performances(performances: performances)
+                            
+                        }
                     }
                 }
             }
@@ -154,8 +163,9 @@ struct DateListView: View {
         .sheet(item: $editingPerformance) { performance in
             EditShowDateView(performance: performance, newShowTime: newShowTime)
         }
-        .sheet(item: $selectedPerformance) { performance in
-            ShowtimeDetailView(performance: performance)
+//        FIXME: temporary
+        .sheet(item: $selectedPerformances) { performance in
+            ShowtimeDetailView(performances: performance)
         }
         .alert(isPresented: $showDeleteAlert) {
             SimpleAlert.confirmDeletion(

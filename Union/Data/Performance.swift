@@ -15,6 +15,11 @@ struct Performance: Identifiable, Codable, Hashable {
     var performers: [String]
 }
 
+struct Performances: Identifiable, Codable, Hashable {
+    var id = UUID()
+    var performances: [Performance]
+}
+
 //FIXME: is this necessary if I have a Team struct? or that I have performances. What is the difference? why not just load an array of Performances?
 struct TeamData: Identifiable, Codable, Hashable {
     var id: String

@@ -18,11 +18,6 @@ struct ShowDate: View {
             VStack(alignment: .leading) {
                 Text(performance.teamName)
                     .font(.headline)
-//  Removed as Emily's preference
-                
-//                Text("Performers: \(performance.performers.joined(separator: ", "))")
-//                    .font(.footnote)
-//                    .foregroundColor(.secondary)
             }
 
             Spacer()
