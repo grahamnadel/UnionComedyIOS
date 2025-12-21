@@ -8,8 +8,10 @@ struct ShowtimeDetailView: View {
     @State var performerURLs: [String:URL] = [:]
     
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading, spacing: 20) {
+        NavigationStack {
+            VStack(spacing: 0) {
+                
+                // Logo
                 Image("Logo-Union-Letterd")
                     .resizable()
                     .scaledToFit()
@@ -21,71 +23,77 @@ struct ShowtimeDetailView: View {
                                 .frame(maxHeight: .infinity, alignment: .top)
                         }
                     )
-
-                ForEach(performances.performances, id: \.id) { performance in
-                    
-                    // Team name + favorite toggle
-                    ZStack {
-                        Text(performance.teamName)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                        
-                        HStack {
-                            Spacer()
-                            FavoriteTeamButton(teamName: performance.teamName)
-                        }
-                    }
-                    
-                    // Show date
-                    Text("\(performance.showTime.formatted(date: .abbreviated, time: .shortened))")
+                    .padding(.vertical, 16)
+                
+                
+                // List
+                List {
+                    Section {
+                        Text("SHOWTIME")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .multilineTextAlignment(.center)
+                        Text(
+                            performances.performances[0].showTime.formatted(
+                                date: .abbreviated,
+                                time: .shortened
+                            )
+                        )
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.center)
+                    }
                     
-                    Divider()
-                    
-                    
-                    List {
-                        Section(header:
-                                    Text("THE CAST")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                        ) {
-                            ForEach(performance.performers, id: \.self) { performer in
-                                //                    NavigationLink(destination: PerformerDetailView(performer: performer)) {
-                                NavigationLink {
-                                    // Apply the .id(performer) to the DESTINATION view
-                                    // This is often the most effective stabilization point.
-                                    PerformerDetailView(performer: performer)
-                                        .id(performer)
-                                } label: {
-                                    // Use the decoupled view as the label
-                                    PerformerRowContent(performer: performer, performerURL: performerURLs[performer])
+                    ForEach(performances.performances, id: \.id) { performance in
+                        Section(
+                            header: VStack(spacing: 8) {
+                                ZStack {
+                                    Text(performance.teamName)
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                    
+                                    HStack {
+                                        Spacer()
+                                        FavoriteTeamButton(teamName: performance.teamName)
+                                    }
                                 }
                             }
-                            .listStyle(.insetGrouped)
+                        ) {
+                            ForEach(performance.performers, id: \.self) { performer in
+                                NavigationLink(value: performer) {
+                                    PerformerRowContent(
+                                        performer: performer,
+                                        performerURL: performerURLs[performer]
+                                    )
+                                }
+                            }
                         }
                     }
                 }
+                .listStyle(.insetGrouped)
+            }
+            .navigationDestination(for: String.self) { performer in
+                PerformerDetailView(performer: performer)
             }
         }
+        
         .task {
             await loadPerformerURLs()
         }
     }
     
     private func loadPerformerURLs() async {
-//        for performance in performances {
-//            let performers = performance.performers
-//            for performer in performers {
-//                if performerURLs[performer] == nil {
-//                    print("getting performer image url")
-//                    if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
-//                        performerURLs[performer] = url
-//                    }
-//                }
-//            }
-//        }
+        for performance in performances.performances {
+            let performers = performance.performers
+            for performer in performers {
+                if performerURLs[performer] == nil {
+                    print("getting performer image url")
+                    if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
+                        performerURLs[performer] = url
+                    }
+                }
+            }
+        }
     }
 }
 
