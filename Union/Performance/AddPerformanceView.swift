@@ -161,7 +161,19 @@ struct AddPerformanceView: View {
                     Button("Save") {
                         savePerformance()
                     }
-                    .disabled(teamName.isEmpty || performerInputs.isEmpty || selectedDates.isEmpty || !redundantPerformances.isEmpty )
+//                    .disabled(
+//                        teamName.isEmpty ||
+//                        performerInputs.isEmpty && (selectedTeam?.houseTeam == false || selectedShowType != .classShow) ||
+//                        selectedDates.isEmpty ||
+//                        !redundantPerformances.isEmpty
+//                    )
+                    .disabled(
+                        teamName.isEmpty ||
+                        (selectedTeam?.houseTeam == true && performerInputs.isEmpty && selectedShowType != .classShow) ||
+                        selectedDates.isEmpty ||
+                        !redundantPerformances.isEmpty
+                    )
+
                 }
             }
             .alert(isPresented: $showOverbookAlert) {
