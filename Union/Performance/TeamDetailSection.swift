@@ -14,13 +14,14 @@ struct TeamDetailSection: View {
     @Binding var selectedTeam: Team?
     @Binding var teamName: String
     @Binding var houseTeam: Bool
+    @Binding var selectedShowType: ShowType?
     @State private var newTeamNameInput: String = ""
     var sortedTeams: [Team] {
         allTeams.sorted {
             ($0.houseTeam ? 0 : 1) < ($1.houseTeam ? 0 : 1)
         }
     }
-
+    
     var body: some View {
         Section(header: Text("Team Details")) {
             Picker("Team Name", selection: $selectedTeam) {
@@ -30,17 +31,21 @@ struct TeamDetailSection: View {
                     Text(team.name).tag(team as Team?)
                 }
             }
-            if let selectedTeam = selectedTeam {
-            } else {
-                Toggle(
-                    houseTeam ? "House Team": "Non House Team",
-                    isOn: $houseTeam
-                )
+            if let selectedShowType {
+                if selectedShowType != .classShow {
+                    if let _ = selectedTeam {
+                    } else {
+                        Toggle(
+                            houseTeam ? "House Team": "Non House Team",
+                            isOn: $houseTeam
+                        )
+                    }
+                }
             }
             
             if selectedTeam == nil {
                 TextField("New Team Name", text: $newTeamNameInput)
-                    // Update the final teamName binding directly from local state
+                // Update the final teamName binding directly from local state
                     .onChange(of: newTeamNameInput) {
                         teamName = newTeamNameInput
                     }

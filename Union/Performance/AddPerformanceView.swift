@@ -1,8 +1,3 @@
-// TODO: Solving the house team reverting the selected team to new team
-/*
-    if the team is an existing team, I cannot toggle the houseTeam bool
- */
-
 import SwiftUI
 import PhotosUI
 
@@ -81,7 +76,8 @@ struct AddPerformanceView: View {
                     allTeams: scheduleViewModel.teams,
                     selectedTeam: $selectedTeam,
                     teamName: $teamName,
-                    houseTeam: houseTeam
+                    houseTeam: houseTeam,
+                    selectedShowType: $selectedShowType
                 )
                 
                 // MARK: - List of Selected Dates
@@ -161,15 +157,11 @@ struct AddPerformanceView: View {
                     Button("Save") {
                         savePerformance()
                     }
-//                    .disabled(
-//                        teamName.isEmpty ||
-//                        performerInputs.isEmpty && (selectedTeam?.houseTeam == false || selectedShowType != .classShow) ||
-//                        selectedDates.isEmpty ||
-//                        !redundantPerformances.isEmpty
-//                    )
                     .disabled(
                         teamName.isEmpty ||
-                        (selectedTeam?.houseTeam == true && performerInputs.isEmpty && selectedShowType != .classShow) ||
+//                        performerInputs.isEmpty && (selectedTeam?.houseTeam == false || selectedShowType != .classShow) ||
+                        (selectedTeam?.houseTeam == true && performerInputs.isEmpty) ||
+                        selectedShowType != .classShow ||
                         selectedDates.isEmpty ||
                         !redundantPerformances.isEmpty
                     )
