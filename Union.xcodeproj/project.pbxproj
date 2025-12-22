@@ -66,7 +66,6 @@
 		5366F15F2E0CB30F00BEC56A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 5366F15E2E0CB30F00BEC56A /* FirebaseStorage */; };
 		5366F1612E0CB30F00BEC56A /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 5366F1602E0CB30F00BEC56A /* FirebaseStorageCombine-Community */; };
 		5366F1632E0CB30F00BEC56A /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 5366F1622E0CB30F00BEC56A /* FirebaseVertexAI */; };
-		536E33B12EF06C570005F7E9 /* Logo-Union-Letterd .png in Resources */ = {isa = PBXBuildFile; fileRef = 536E33B02EF06C570005F7E9 /* Logo-Union-Letterd .png */; };
 		537C49D02E1C4E0D00104B36 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 537C49CF2E1C4E0D00104B36 /* FirebaseAuth */; };
 		537C49D22E1C4E0D00104B36 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 537C49D12E1C4E0D00104B36 /* FirebaseCore */; };
 		537C49D42E1C4E0D00104B36 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 537C49D32E1C4E0D00104B36 /* FirebaseFirestore */; };
@@ -167,7 +166,6 @@
 		533468892E44F8E700E069DB /* Performer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performer.swift; sourceTree = "<group>"; };
 		5334688B2E44FACD00E069DB /* PerformerPhotoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerPhotoPicker.swift; sourceTree = "<group>"; };
 		5366F1262E0CB1DC00BEC56A /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
-		536E33B02EF06C570005F7E9 /* Logo-Union-Letterd .png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Logo-Union-Letterd .png"; sourceTree = "<group>"; };
 		537C49942E1C428F00104B36 /* UnionComedyMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnionComedyMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		537C49A62E1C429100104B36 /* UnionComedyMacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnionComedyMacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		537C49B02E1C429100104B36 /* UnionComedyMacUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnionComedyMacUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -420,7 +418,6 @@
 				53343A172E53C27A00224553 /* General Views */,
 				533468752E426DB000E069DB /* GoogleService-Info.plist */,
 				53847C802E02F10F00EE649A /* Assets.xcassets */,
-				536E33B02EF06C570005F7E9 /* Logo-Union-Letterd .png */,
 				53847C822E02F10F00EE649A /* Preview Content */,
 			);
 			path = Union;
@@ -642,7 +639,6 @@
 			files = (
 				53847C842E02F10F00EE649A /* Preview Assets.xcassets in Resources */,
 				533468762E426DB000E069DB /* GoogleService-Info.plist in Resources */,
-				536E33B12EF06C570005F7E9 /* Logo-Union-Letterd .png in Resources */,
 				53847C812E02F10F00EE649A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

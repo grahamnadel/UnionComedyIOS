@@ -10,23 +10,11 @@ struct ShowtimeDetailView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                
-                // Logo
-                Image("Logo-Union-Letterd")
+                Image("UnionLogoCrop")
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: .infinity)
-                    .mask(
-                        GeometryReader { geo in
-                            Rectangle()
-                                .frame(height: geo.size.height * 2 / 3)
-                                .frame(maxHeight: .infinity, alignment: .top)
-                        }
-                    )
-                    .padding(.vertical, 16)
+//                    .frame(maxWidth: .infinity)
                 
-                
-                // List
                 List {
                     Section {
                         Text("SHOWTIME")

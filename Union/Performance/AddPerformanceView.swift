@@ -20,7 +20,7 @@ struct AddPerformanceView: View {
     @State private var today: Date = {
         let calendar = Calendar.current
         let now = Date()
-        return calendar.startOfDay(for: now) // strips time, locks to local midnight
+        return calendar.startOfDay(for: now)
     }()
     @State private var draftHouseTeam: Bool = false
     var houseTeam: Binding<Bool> {
