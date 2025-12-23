@@ -161,7 +161,7 @@ struct AddPerformanceView: View {
                         teamName.isEmpty ||
 //                        performerInputs.isEmpty && (selectedTeam?.houseTeam == false || selectedShowType != .classShow) ||
                         (selectedTeam?.houseTeam == true && performerInputs.isEmpty) ||
-                        selectedShowType != .classShow ||
+//                        selectedShowType != .classShow ||
                         selectedDates.isEmpty ||
                         !redundantPerformances.isEmpty
                     )

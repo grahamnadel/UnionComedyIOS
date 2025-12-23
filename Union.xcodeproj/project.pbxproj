@@ -11,6 +11,7 @@
 		530F245C2ECCD7660080D292 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530F245B2ECCD7660080D292 /* AccountView.swift */; };
 		530F24612ECCF62F0080D292 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530F24602ECCF62F0080D292 /* AppDelegate.swift */; };
 		530F24632ECE3D390080D292 /* PushTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530F24622ECE3D390080D292 /* PushTestView.swift */; };
+		531CDA9B2EFB0A7D00C42193 /* TeamImageEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531CDA9A2EFB0A7D00C42193 /* TeamImageEnum.swift */; };
 		531DDD852E54F07A00E210EE /* PerformerSelectionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */; };
 		531DDD892E577A9A00E210EE /* PerformerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD882E577A9A00E210EE /* PerformerDetailView.swift */; };
 		531DDD8B2E57828200E210EE /* PerformanceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */; };
@@ -138,6 +139,7 @@
 		530F245B2ECCD7660080D292 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		530F24602ECCF62F0080D292 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		530F24622ECE3D390080D292 /* PushTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTestView.swift; sourceTree = "<group>"; };
+		531CDA9A2EFB0A7D00C42193 /* TeamImageEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamImageEnum.swift; sourceTree = "<group>"; };
 		531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerSelectionList.swift; sourceTree = "<group>"; };
 		531DDD882E577A9A00E210EE /* PerformerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerDetailView.swift; sourceTree = "<group>"; };
 		531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceDetailView.swift; sourceTree = "<group>"; };
@@ -323,8 +325,8 @@
 				53B815C52EA9392F00854645 /* AuthViewModel.swift */,
 				53B815CB2EA93A0C00854645 /* AdminViewModel.swift */,
 				53847C902E02FEBF00EE649A /* ViewModel.swift */,
-				533468812E42752D00E069DB /* SchedualViewModel.swift */,
 				53847C8E2E02FEBA00EE649A /* Model.swift */,
+				533468812E42752D00E069DB /* SchedualViewModel.swift */,
 			);
 			path = MVVM;
 			sourceTree = "<group>";
@@ -387,6 +389,7 @@
 				530F245B2ECCD7660080D292 /* AccountView.swift */,
 				5395F2D22EC7855900FBF584 /* LoadingView.swift */,
 				53B815D52EAD16B400854645 /* TODO.swift */,
+				531CDA9A2EFB0A7D00C42193 /* TeamImageEnum.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,
 			);
@@ -693,6 +696,7 @@
 				5366F1272E0CB1DC00BEC56A /* FirebaseManager.swift in Sources */,
 				53829C302E0DC6AF00F284B7 /* VoteStore.swift in Sources */,
 				53B815B52EA6A61500854645 /* AppUser.swift in Sources */,
+				531CDA9B2EFB0A7D00C42193 /* TeamImageEnum.swift in Sources */,
 				53B815D62EAD16B400854645 /* TODO.swift in Sources */,
 				53CC736D2EE755480093EFE7 /* UpcomingShowPushTestView.swift in Sources */,
 				53DCF7F52EB1351700D67BEB /* TeamDetailSection.swift in Sources */,

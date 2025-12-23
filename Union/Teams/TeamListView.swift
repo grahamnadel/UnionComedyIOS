@@ -56,8 +56,9 @@ struct TeamListView: View {
                 List {
                     ForEach(teamList, id: \.self) { team in
                         HStack {
-                            Text(team)
-                                .font(.body)
+                            Image("\(team)")
+                                .resizable()
+                                .frame(width: 100, height: 100)
                             
                             Spacer()
                             
