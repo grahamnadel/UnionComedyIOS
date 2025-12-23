@@ -28,8 +28,16 @@ struct EditUserStatusView: View {
                         Text("Owner").tag(UserRole.owner)
                     }
                     .pickerStyle(.menu)
-                    .onChange(of: appUser.role) { newValue in
+//                    FIXME:
+                    .onChange(of: appUser.role) { oldValue, newValue in
                         Task {
+                            if newValue != .audience {
+                                FirebaseManager.shared.checkForExistingPerformers(for: ["\(appUser.name)"])
+                            }
+                            if newValue == .audience {
+                                scheduleViewModel.removePerformerFromPerformersCollection(performerName: appUser.name)
+                                scheduleViewModel.removePerformerFromTeamsCollection(performerName: appUser.name)
+                            }
                             await scheduleViewModel.updateRole(for: appUser)
                         }
                     }

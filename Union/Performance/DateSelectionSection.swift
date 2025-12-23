@@ -30,7 +30,7 @@ struct DateSelectionSection: View {
             
             Button("Add Date") {
                 let dateToAdd: Date
-                if let type = selectedShowType, type != .special, let defaultTime = type.defaultTime {
+                if let type = selectedShowType, type != .special, type != .classShow, let defaultTime = type.defaultTime {
                     print("type.defaultTime: \(String(describing: type.defaultTime))")
                     dateToAdd = combineDate(date: newShowDate, hour: defaultTime.hour, minute: defaultTime.minute)
                     print("dateToAdd: \(String(describing: dateToAdd))")

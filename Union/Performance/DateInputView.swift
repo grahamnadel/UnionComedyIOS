@@ -13,7 +13,7 @@ struct DateInput: View {
     @Binding var newShowDate: Date
     
     var body: some View {
-        if selectedShowType == .special || selectedShowType == nil {
+        if selectedShowType == .special || selectedShowType == nil || selectedShowType == .classShow {
             // Use a full date/time picker for special
             DatePicker("Date & Time", selection: $newShowDate, displayedComponents: [.date, .hourAndMinute])
         } else if let weekday = selectedShowType?.weekday {
