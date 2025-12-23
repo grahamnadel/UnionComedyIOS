@@ -58,7 +58,7 @@ struct DateListView: View {
             
             // 📅 ScrollView with grouped shows
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 0) {
                     ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
                         VStack(alignment: .leading, spacing: 12) {
                             // Show type and time
@@ -68,18 +68,7 @@ struct DateListView: View {
                                 
                                 if showTime < festivalStart || showTime > festivalEndDate {
                                     if let showType = ShowType.dateToShow(date: showTime) {
-                                        VStack {
-                                            Text(showType.displayName)
-                                                .bold()
-                                                .foregroundColor(showType.showColor)
-                                            HStack {
-                                                Text(showTime, style: .date)
-                                                    .font(.headline)
-                                                    .padding(.horizontal)
-                                                Spacer()
-                                                Text(showTime.formatted(.dateTime.hour().minute()))
-                                            }
-                                        }
+                                        PerformancesLogisticsView(showType: showType, showTime: showTime)
                                         HStack(spacing: 16) {
                                             ForEach(performances, id: \.id) { performance in
                                                 ShowDate(performance: performance)
@@ -87,13 +76,7 @@ struct DateListView: View {
                                             }
                                         }
                                         .padding(.horizontal)
-                                        // This ensures the tap gesture catches even the empty space between items
-                                        .contentShape(Rectangle())
                                         Divider()
-                                            .padding(.horizontal)
-                                            .onTapGesture {
-                                                selectedPerformances = Performances(performances: performances)
-                                            }
                                             .padding(.horizontal)
                                     }
                                 } else {
@@ -108,11 +91,16 @@ struct DateListView: View {
                                 }
                             }
                         }
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            selectedPerformances = Performances(performances: performances)
+                        }
                         .padding(.vertical, 8)
                     }
                 }
                 .padding(.vertical)
             }
+            
             .refreshable {
                 scheduleViewModel.loadData()
                 scheduleViewModel.loadTeams()
