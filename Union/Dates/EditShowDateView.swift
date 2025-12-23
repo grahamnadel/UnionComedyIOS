@@ -22,6 +22,7 @@ struct EditShowDateView: View {
                     .fontWeight(.bold)
 
                 VStack(alignment: .leading) {
+//                    TODO: Make this a picker?
                     Text("Team: \(performance.teamName)")
                         .font(.headline)
                     Text("Performers: \(performance.performers.joined(separator: ", "))")

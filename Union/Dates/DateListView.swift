@@ -70,10 +70,18 @@ struct DateListView: View {
                                     if let showType = ShowType.dateToShow(date: showTime) {
                                         PerformancesLogisticsView(showType: showType, showTime: showTime)
                                         HStack(spacing: 16) {
+                                            Spacer()
                                             ForEach(performances, id: \.id) { performance in
                                                 ShowDate(performance: performance)
                                                     .frame(width: 150)
+//                                                TODO: Add ability to swap team
+                                                    .onLongPressGesture {
+                                                        if authViewModel.role == .owner {
+                                                            editingPerformance = performance
+                                                        }
+                                                    }
                                             }
+                                            Spacer()
                                         }
                                         .padding(.horizontal)
                                         Divider()

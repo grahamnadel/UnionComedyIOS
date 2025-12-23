@@ -32,7 +32,7 @@ struct ShowDate: View {
                 }
             }
 
-            Spacer()
+//            Spacer()
 
             // Favorite indicators
             VStack(spacing: 4) {
