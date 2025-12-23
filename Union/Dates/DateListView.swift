@@ -41,7 +41,6 @@ struct DateListView: View {
     // MARK: - Body
     var body: some View {
         VStack {
-            // 🔍 Search bar + hamburger filter button
             HStack {
                 SearchBar(searchCategory: "team or performer", searchText: $searchText)
                 
@@ -57,75 +56,63 @@ struct DateListView: View {
             }
             .padding(.horizontal)
             
-            
-            // 📅 List of grouped shows
-            List {
-                //          TODO: fix so that this only appears during the festival
-                //                if let festivalStart = scheduleViewModel.festivalStartDate,
-                //                   let festivalEndDate = scheduleViewModel.festivalEndDate {
-                //                    if Date() >= festivalStart && Date() <= festivalEndDate {
-                //                        Image("Image")
-                //                            .resizable()
-                //                            .scaledToFit()
-                //                    }
-                //                }
-                ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
-                    Section(header: Text(showTime, style: .date)) {
-                        
-                        // Keep festival / non-festival label logic
-                        if let festivalStart = scheduleViewModel.festivalStartDate,
-                           let festivalEndDate = scheduleViewModel.festivalEndDate,
-                           let festivalLocation = scheduleViewModel.festivalLocation {
-                            
-                            if showTime < festivalStart || showTime > festivalEndDate {
-                                if let showType = ShowType.dateToShow(date: showTime) {
+            // 📅 ScrollView with grouped shows
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
+                        VStack(alignment: .leading, spacing: 12) {
+                            // Show type and time
+                            if let festivalStart = scheduleViewModel.festivalStartDate,
+                               let festivalEndDate = scheduleViewModel.festivalEndDate,
+                               let festivalLocation = scheduleViewModel.festivalLocation {
+                                
+                                if showTime < festivalStart || showTime > festivalEndDate {
+                                    if let showType = ShowType.dateToShow(date: showTime) {
+                                        VStack {
+                                            Text(showType.displayName)
+                                                .bold()
+                                                .foregroundColor(showType.showColor)
+                                            HStack {
+                                                Text(showTime, style: .date)
+                                                    .font(.headline)
+                                                    .padding(.horizontal)
+                                                Spacer()
+                                                Text(showTime.formatted(.dateTime.hour().minute()))
+                                            }
+                                        }
+                                        HStack(spacing: 16) {
+                                            ForEach(performances, id: \.id) { performance in
+                                                ShowDate(performance: performance)
+                                                    .frame(width: 150)
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                        // This ensures the tap gesture catches even the empty space between items
+                                        .contentShape(Rectangle())
+                                        Divider()
+                                            .padding(.horizontal)
+                                            .onTapGesture {
+                                                selectedPerformances = Performances(performances: performances)
+                                            }
+                                            .padding(.horizontal)
+                                    }
+                                } else {
                                     HStack {
-                                        Text(showType.displayName)
+                                        Text("Festival Show: at \(festivalLocation)")
                                             .bold()
-                                            .foregroundColor(showType.showColor)
+                                            .foregroundColor(.purple)
                                         Spacer()
                                         Text(showTime.formatted(.dateTime.hour().minute()))
                                     }
-                                }
-                            } else {
-                                HStack {
-                                    Text("Festival Show: at \(festivalLocation)")
-                                        .bold()
-                                        .foregroundColor(.purple)
-                                    Spacer()
-                                    Text(showTime.formatted(.dateTime.hour().minute()))
+                                    .padding(.horizontal)
                                 }
                             }
                         }
-                        
-                        //                        FIXME: Change this to have both teams as one button which leads the user to the total show (two teams)
-                        ForEach(performances, id: \.id) { performance in
-                            ShowDate(performance: performance)
-                                .onLongPressGesture {
-                                    if authViewModel.role == .owner {
-                                        editingPerformance = performance
-                                        newShowTime = performance.showTime
-                                    }
-                                }
-                        }
-                        .onDelete(perform: authViewModel.role == .owner ? { indexSet in
-                            if let index = indexSet.first {
-                                performanceToDelete = performances[index]
-                                showDeleteAlert = true
-                            }
-                        } : nil)
-                    }
-                    .onTapGesture {
-                        if let performances = groupedPerformancesByTime
-                            .first(where: { $0.key == showTime })?
-                            .value {
-                            selectedPerformances = Performances(performances: performances)
-                            
-                        }
+                        .padding(.vertical, 8)
                     }
                 }
+                .padding(.vertical)
             }
-            .listStyle(.insetGrouped)
             .refreshable {
                 scheduleViewModel.loadData()
                 scheduleViewModel.loadTeams()
@@ -163,7 +150,6 @@ struct DateListView: View {
         .sheet(item: $editingPerformance) { performance in
             EditShowDateView(performance: performance, newShowTime: newShowTime)
         }
-//        FIXME: temporary
         .sheet(item: $selectedPerformances) { performance in
             ShowtimeDetailView(performances: performance)
         }

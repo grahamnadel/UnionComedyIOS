@@ -12,12 +12,24 @@ struct ShowDate: View {
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
     @EnvironmentObject var favoritesViewModel: FavoritesViewModel
     let performance: Performance
+    var isHouseTeam: Bool {
+            scheduleViewModel.teams.first(where: { $0.name == performance.teamName })?.houseTeam ?? false
+        }
     
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             VStack(alignment: .leading) {
-                Text(performance.teamName)
-                    .font(.headline)
+//                TODO: only make an image if there is one
+                if isHouseTeam {
+                    Image(performance.teamName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 100)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                } else {
+                    Text(performance.teamName)
+                        .font(.caption)
+                }
             }
 
             Spacer()
