@@ -661,12 +661,20 @@ class ScheduleViewModel: ObservableObject {
         }
     }
 
-    
-    func removePerformerFromTeamsCollection(performerName: String) {
+
+    func removePerformerFromTeamsCollection(performerName: String, team: String? = nil) {
         let db = Firestore.firestore()
         let teamsRef = db.collection("teams")
         
-        teamsRef.getDocuments { snapshot, error in
+        // If a specific team is provided, query only that team
+        let query: Query
+        if let teamName = team {
+            query = teamsRef.whereField("name", isEqualTo: teamName)
+        } else {
+            query = teamsRef
+        }
+        
+        query.getDocuments { snapshot, error in
             if let error = error {
                 print("❌ Error fetching teams: \(error)")
                 return
@@ -694,7 +702,7 @@ class ScheduleViewModel: ObservableObject {
 
     func removePerformerFromFirebase(teamName: String?, performerName: String) {
         removePerformerFromPerformersCollection(performerName: performerName)
-        removePerformerFromTeamsCollection(performerName: performerName)
+        removePerformerFromTeamsCollection(performerName: performerName, team: nil)
         removePerformerFromFestivalTeamsCollection(performerName: performerName)
         
         // Refresh UI

@@ -94,7 +94,7 @@ struct EditTeamPerformersView: View {
                     Task {
                         // If this performer is NOT in teamPerformers, remove them
                         if !teamPerformers.contains(performer) {
-                            scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer)
+                            scheduleViewModel.removePerformerFromTeamsCollection(performerName: performer, team: teamName)
                             scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: performer)
                         }
                     }

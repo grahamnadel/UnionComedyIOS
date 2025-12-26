@@ -119,7 +119,7 @@ struct FestivalView: View {
             if authViewModel.role != .audience {
                 print("name for deletion: \(name)")
                 scheduleViewModel.removePerformerFromFirebase(teamName: nil, performerName: name)
-                scheduleViewModel.removePerformerFromTeamsCollection(performerName: name)
+                scheduleViewModel.removePerformerFromTeamsCollection(performerName: name, team: nil)
                 scheduleViewModel.removePerformerFromFestivalTeamsCollection(performerName: name)
                 scheduleViewModel.removePerformerFromPerformersCollection(performerName: name)
             }
