@@ -952,12 +952,15 @@ class ScheduleViewModel: ObservableObject {
             return
         }
         
+        guard let newTeamPerformers = teams.first(where: { $0.name == newTeamName })?.performers else {
+            print("Could not find the new team: \(newTeamName)")
+            return
+        }
+        
         if newTeamName.isEmpty {
             print("No new team name provided")
             return
         }
-        
-        let performersToMove = oldPerformance.performers
         
         // 2️⃣ Remove the old performance
         deletePerformance(oldPerformance)
@@ -967,14 +970,9 @@ class ScheduleViewModel: ObservableObject {
             id: UUID().uuidString,
             teamName: newTeamName,
             isHouseTeam: teams.first(where: { $0.name == newTeamName })?.houseTeam ?? false,
-            performerIds: performersToMove,
+            performerIds: newTeamPerformers,
             dates: [showTime]
         )
-        
-        // 4️⃣ Add performers to new team collections
-        for performer in performersToMove {
-            addPerformer(named: performer, toTeam: newTeamName)
-        }
         
         // 5️⃣ Refresh local state
         loadData()
