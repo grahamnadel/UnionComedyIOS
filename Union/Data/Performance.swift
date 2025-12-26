@@ -10,7 +10,7 @@ import SwiftUI
 
 struct Performance: Identifiable, Codable, Hashable {
     var id = UUID()
-    let teamName: String
+    var teamName: String
     var showTime: Date
     var performers: [String]
 }

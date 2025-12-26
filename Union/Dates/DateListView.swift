@@ -115,7 +115,9 @@ struct DateListView: View {
                 scheduleViewModel.loadPerformers()
             }
         }
-        
+        .onChange(of: editingPerformance) {
+            newShowTime = editingPerformance?.showTime ?? Date()
+        }
         .sheet(isPresented: $showFilterMenu) {
             NavigationView {
                 List {

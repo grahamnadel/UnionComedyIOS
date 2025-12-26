@@ -94,10 +94,14 @@ class ScheduleViewModel: ObservableObject {
             //                        If the user will no longer be a performer, remove them from the performers
             if let originalRole = document.get("role") as? String {
                 print("originalRole: \(originalRole)")
-                if originalRole == UserRole.coach.rawValue || originalRole == UserRole.performer.rawValue || originalRole == UserRole.owner.rawValue  && (user.role == UserRole.audience) {
-                    print("removing \(user.name) from \(user.role) due to role change")
+                if (originalRole == UserRole.coach.rawValue ||
+                    originalRole == UserRole.performer.rawValue ||
+                    originalRole == UserRole.owner.rawValue) &&
+                    user.role == UserRole.audience {
+                    
                     removePerformerFromFirebase(teamName: nil, performerName: user.name)
                 }
+
             }
             
             try await document.reference.updateData([
@@ -601,6 +605,7 @@ class ScheduleViewModel: ObservableObject {
             }
         }
     }
+    
     func removePerformerFromPerformersCollection(performerName: String) {
         let db = Firestore.firestore()
         let performersRef = db.collection("performers")
@@ -939,5 +944,41 @@ class ScheduleViewModel: ObservableObject {
             completion(startDate, endDate, location)
         }
     }
+    
+    func swapPerformance(showTime: Date, originalTeam oldTeamName: String, newTeam newTeamName: String) {
+        // 1️⃣ Find the old performance
+        guard let oldPerformance = performances.first(where: { $0.teamName == oldTeamName && $0.showTime == showTime }) else {
+            print("⚠️ No performance found for \(oldTeamName) at \(showTime)")
+            return
+        }
+        
+        if newTeamName.isEmpty {
+            print("No new team name provided")
+            return
+        }
+        
+        let performersToMove = oldPerformance.performers
+        
+        // 2️⃣ Remove the old performance
+        deletePerformance(oldPerformance)
+        
+        // 3️⃣ Add the performance to the new team
+        FirebaseManager.shared.createPerformance(
+            id: UUID().uuidString,
+            teamName: newTeamName,
+            isHouseTeam: teams.first(where: { $0.name == newTeamName })?.houseTeam ?? false,
+            performerIds: performersToMove,
+            dates: [showTime]
+        )
+        
+        // 4️⃣ Add performers to new team collections
+        for performer in performersToMove {
+            addPerformer(named: performer, toTeam: newTeamName)
+        }
+        
+        // 5️⃣ Refresh local state
+        loadData()
+    }
+
 }
 

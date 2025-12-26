@@ -13,6 +13,12 @@ struct EditShowDateView: View {
     let performance: Performance
     @State private var editingPerformance: Performance?
     @State var newShowTime: Date
+    @State private var selectedTeam: Team?
+    var sortedTeams: [Team] {
+        scheduleViewModel.teams.sorted {
+            ($0.houseTeam ? 0 : 1) < ($1.houseTeam ? 0 : 1)
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -22,12 +28,16 @@ struct EditShowDateView: View {
                     .fontWeight(.bold)
 
                 VStack(alignment: .leading) {
-//                    TODO: Make this a picker?
-                    Text("Team: \(performance.teamName)")
-                        .font(.headline)
-                    Text("Performers: \(performance.performers.joined(separator: ", "))")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                    Picker("Team Name", selection: $selectedTeam) {
+                        Text("New Team...").tag(nil as Team?)
+                        
+                        ForEach(sortedTeams, id: \.self) { team in
+                            Text(team.name).tag(team as Team?)
+                        }
+                    }
+//                    Text("Performers: \(performance.performers.joined(separator: ", "))")
+//                        .font(.subheadline)
+//                        .foregroundColor(.secondary)
                 }
 
                 DatePicker("Show Time", selection: $newShowTime, displayedComponents: [.date, .hourAndMinute])
@@ -47,9 +57,17 @@ struct EditShowDateView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
                         updatePerformanceTime(performance)
+//                        if 
+                        updatePerformanceTeam(Performance(teamName: performance.teamName, showTime: newShowTime, performers: performance.performers))
+                        updatePerformanceTeam(performance)
                         editingPerformance = nil
                     }
                 }
+            }
+        }
+        .onAppear {
+            selectedTeam = scheduleViewModel.teams.first {
+                $0.name == performance.teamName
             }
         }
     }
@@ -59,4 +77,9 @@ struct EditShowDateView: View {
             scheduleViewModel.performances[index].showTime = newShowTime
         }
     }
+    
+    private func updatePerformanceTeam(_ performance: Performance) {
+        scheduleViewModel.swapPerformance(showTime: performance.showTime, originalTeam: performance.teamName, newTeam: selectedTeam?.name ?? "")
+    }
 }
+

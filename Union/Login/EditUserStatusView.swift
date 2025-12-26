@@ -35,8 +35,8 @@ struct EditUserStatusView: View {
                                 FirebaseManager.shared.checkForExistingPerformers(for: ["\(appUser.name)"])
                             }
                             if newValue == .audience {
-                                scheduleViewModel.removePerformerFromPerformersCollection(performerName: appUser.name)
-                                scheduleViewModel.removePerformerFromTeamsCollection(performerName: appUser.name)
+//                                scheduleViewModel.removePerformerFromPerformersCollection(performerName: appUser.name)
+//                                scheduleViewModel.removePerformerFromTeamsCollection(performerName: appUser.name)
                             }
                             await scheduleViewModel.updateRole(for: appUser)
                         }
