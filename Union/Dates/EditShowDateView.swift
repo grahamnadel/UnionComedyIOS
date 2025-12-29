@@ -35,9 +35,6 @@ struct EditShowDateView: View {
                             Text(team.name).tag(team as Team?)
                         }
                     }
-//                    Text("Performers: \(performance.performers.joined(separator: ", "))")
-//                        .font(.subheadline)
-//                        .foregroundColor(.secondary)
                 }
 
                 DatePicker("Show Time", selection: $newShowTime, displayedComponents: [.date, .hourAndMinute])
@@ -57,7 +54,6 @@ struct EditShowDateView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
                         updatePerformanceTime(performance)
-//                        if 
                         updatePerformanceTeam(Performance(teamName: performance.teamName, showTime: newShowTime, performers: performance.performers))
                         updatePerformanceTeam(performance)
                         editingPerformance = nil

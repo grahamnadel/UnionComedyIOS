@@ -57,10 +57,10 @@ struct TeamDetailSection: View {
                     }
             }
         }
-//        .onChange(of: selectedShowType) { newValue in
-//            if newValue == .classShow {
-//                selectedTeam = nil
-//            }
-//        }
+        .onChange(of: selectedShowType) { newValue in
+            if newValue == .classShow {
+                selectedTeam = nil
+            }
+        }
     }
 }

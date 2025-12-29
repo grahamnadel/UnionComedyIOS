@@ -6,10 +6,7 @@ struct DateListView: View {
     @State private var editingPerformance: Performance?
     @State private var newShowTime = Date()
     @State private var searchText = ""
-    @State private var selectedPerformance: Performance?
-    
     @State private var selectedPerformances: Performances?
-    
     @State private var showType: ShowType?
     @State private var showDeleteAlert = false
     @State private var performanceToDelete: Performance?
