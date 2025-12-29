@@ -74,12 +74,20 @@ struct DateListView: View {
                                             ForEach(performances, id: \.id) { performance in
                                                 ShowDate(performance: performance)
                                                     .frame(width: 150)
-//                                                TODO: Add ability to swap team
-                                                    .onLongPressGesture {
-                                                        if authViewModel.role == .owner {
-                                                            editingPerformance = performance
+                                                    .contextMenu {
+                                                            if authViewModel.role == .owner {
+                                                                Button("Edit Performance") {
+                                                                    editingPerformance = performance
+                                                                }
+                                                                
+                                                                Button(role: .destructive) {
+                                                                    performanceToDelete = performance
+                                                                    showDeleteAlert = true
+                                                                } label: {
+                                                                    Label("Delete Performance", systemImage: "trash")
+                                                                }
+                                                            }
                                                         }
-                                                    }
                                             }
                                             Spacer()
                                         }
