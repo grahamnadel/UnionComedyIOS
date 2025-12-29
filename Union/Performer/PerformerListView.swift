@@ -11,7 +11,6 @@ struct PerformerListView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var isShowingPhotoPicker = false
     @State private var searchText = ""
-    @State private var performerImageURLs: [String: URL] = [:]  // Cache URLs by performer name
     @State private var showDeleteAlert = false
     @State private var performerToDelete: String?
 
@@ -48,7 +47,6 @@ struct PerformerListView: View {
     }
 
 
-
     var body: some View {
         NavigationStack {
             VStack {
@@ -57,14 +55,15 @@ struct PerformerListView: View {
 
                 List {
                     ForEach(filteredPerformers, id: \.self) { performer in
-                        let performerURL = performerImageURLs[performer]
+                        let performerURL = scheduleViewModel.performerImageURLs[performer]
+
 
                         NavigationLink(destination: PerformerDetailView(performer: performer)) {
                             HStack {
+                                let performerURL = scheduleViewModel.performerImageURLs[performer]
+
                                 AsyncImage(url: performerURL) { image in
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
+                                    image.resizable().aspectRatio(contentMode: .fill)
                                 } placeholder: {
                                     RoundedRectangle(cornerRadius: 8)
                                         .fill(Color.gray.opacity(0.3))
@@ -75,7 +74,7 @@ struct PerformerListView: View {
                                 }
                                 .frame(width: 50, height: 50)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
-
+                                
                                 Text(performer)
                                     .font(.body)
                                     .padding(.leading, 4)
@@ -98,12 +97,8 @@ struct PerformerListView: View {
                     scheduleViewModel.loadData()
                     scheduleViewModel.loadTeams()
                     scheduleViewModel.loadPerformers()
-                    await loadPerformerImageURLs()
                 }
-            }
-//            .navigationTitle("Performers")
-            .task {
-                await loadPerformerImageURLs()
+
             }
             .photosPicker(
                 isPresented: $isShowingPhotoPicker,
@@ -131,20 +126,7 @@ struct PerformerListView: View {
             )
         }
     }
-    
-
-    // 🔹 Load image URLs for all performers
-    private func loadPerformerImageURLs() async {
-        for performer in filteredPerformers {
-            if performerImageURLs[performer] == nil {
-                print("getting performer image url")
-                if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
-                    performerImageURLs[performer] = url
-                }
-            }
-        }
-    }
-
+  
     // 🔹 Upload a new photo
     private func loadImage(from item: PhotosPickerItem, for performer: String) {
         item.loadTransferable(type: Data.self) { result in
@@ -154,9 +136,8 @@ struct PerformerListView: View {
                     Task { @MainActor in
                         await scheduleViewModel.savePerformerImage(for: performer, imageData: imageData)
                         // Refresh that performer’s image
-                        if let url = await scheduleViewModel.getPerformerImageURL(for: performer) {
-                            performerImageURLs[performer] = url
-                        }
+                        await scheduleViewModel.refreshPerformerImage(for: performer)
+
                     }
                 }
             case .failure(let error):

@@ -28,14 +28,14 @@ struct PerformerDetailView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Text(performer)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                
                 PerformerImageView(performerURL: loadedPerformerURL ?? nil)
                     .frame(width: 250, height: 250)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .navigationTitle(performer)
+                    .padding()
+                Text("Teams")
+                    .font(.title)
+                    .fontWeight(.bold)
                 ForEach(teamsForPerformer, id: \.self) { team in
                         HStack {
                             Text(team)
@@ -60,13 +60,11 @@ struct PerformerDetailView: View {
                 BiographyView(performer: performer)
                     .padding()
                 
-//                FIXME: favorite closes sheet
                 FavoritePerformerButton(performerName: performer)
             }
         }
         .toolbar {
-            if authViewModel.role != .audience && authViewModel.approved == true &&
-                loadedPerformerURL == nil && authViewModel.name == performer {
+            if authViewModel.role != .audience && authViewModel.approved == true && authViewModel.name == performer {
                 Button(action: {
                     selectedPerformer = performer
                     isShowingPhotoPicker = true

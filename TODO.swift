@@ -28,7 +28,7 @@ import Foundation
 //Replace add performers in the date list with adding teams
 
 // MARK: Current work:
-// 1. Class show type so you don’t need to add performers
+/// Opening the page for performerList has a long delay for showing the pictures. Instead, try opening the images asap upon opening the app
 
 // https://console.firebase.google.com/project/unioncomedy-2d46f/overview
 // https://us-central1-unioncomedy-2d46f.cloudfunctions.net/sendPush

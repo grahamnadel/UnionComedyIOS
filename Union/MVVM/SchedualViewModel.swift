@@ -25,6 +25,8 @@ class ScheduleViewModel: ObservableObject {
     @Published var festivalEndDate: Date?
     @Published var festivalLocation: String?
     
+    @Published var performerImageURLs: [String: URL] = [:]
+    
     init() {
         loadData()
         loadTeams()
@@ -530,6 +532,10 @@ class ScheduleViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.knownPerformers = performerSet
                 print("✅ Loaded \(performerSet.count) performers from Firestore")
+                Task {
+                    await self.preloadPerformerImages()      // preload URLs **after performers are known**
+                    await self.warmPerformerImageCache()    // warm the image cache
+                }
             }
         }
     }
@@ -986,5 +992,53 @@ class ScheduleViewModel: ObservableObject {
         loadData()
     }
 
+    @MainActor
+    func preloadPerformerImages() async {
+        let performers = Array(knownPerformers)
+
+        await withTaskGroup(of: Void.self) { group in
+            for performer in performers {
+                if performerImageURLs[performer] == nil {
+                    group.addTask {
+                        if let url = await self.getPerformerImageURL(for: performer) {
+                            await MainActor.run {
+                                self.performerImageURLs[performer] = url
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        print("✅ Preloaded \(performerImageURLs.count) performer image URLs")
+    }
+    
+    @MainActor
+    func refreshPerformerImage(for performer: String) async {
+        if let url = await getPerformerImageURL(for: performer) {
+            performerImageURLs[performer] = url
+        }
+    }
+    
+    @MainActor
+    func warmPerformerImageCache() async {
+        let urls = performerImageURLs.values
+
+        for url in urls {
+            let request = URLRequest(
+                url: url,
+                cachePolicy: .returnCacheDataElseLoad,
+                timeoutInterval: 30
+            )
+
+            do {
+                _ = try await URLSession.shared.data(for: request)
+            } catch {
+                print("⚠️ Failed to warm image cache for \(url): \(error)")
+            }
+        }
+
+        print("🔥 Image cache warmed")
+    }
 }
 
