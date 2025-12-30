@@ -59,10 +59,10 @@ struct UnionApp: App {
         
         appearance.configureWithOpaqueBackground()
 
-        appearance.backgroundColor = swiftUIPurple
+        appearance.backgroundColor = .black
 
         // Optional: selected / unselected icon + text colors
-        appearance.stackedLayoutAppearance.selected.iconColor = .white
+        appearance.stackedLayoutAppearance.selected.iconColor = swiftUIPurple
         appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
             .foregroundColor: UIColor.white
         ]

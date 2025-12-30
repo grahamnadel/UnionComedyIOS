@@ -30,8 +30,13 @@ struct FestivalView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                SegmentedButtons(selection: $selected, options: availableOptions)
+            VStack(spacing: 0) {
+                VStack {
+                    SegmentedButtons(selection: $selected, options: availableOptions)
+                        .padding()
+                }
+                .background(.black)
+                .ignoresSafeArea(edges: .horizontal)
                 
                 switch selected {
                 case .date:
@@ -46,6 +51,7 @@ struct FestivalView: View {
                 
                 Spacer()
             }
+            
             .toolbar {
                 // Trailing plus button (only if owner logged in)
                 if authViewModel.role == .owner {
@@ -61,7 +67,7 @@ struct FestivalView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink(destination: AccountView(showingDeleteConfirmation: $showingDeleteConfirmation)) {
                         Image(systemName: "person.crop.circle")
-                            .foregroundColor(.black)
+                            .foregroundColor(.blue)
                     }
                 }
             }

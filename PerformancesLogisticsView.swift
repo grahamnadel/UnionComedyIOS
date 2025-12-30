@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct PerformancesLogisticsView: View {
-    let showType: ShowType
+//    let showType: ShowType
     let showTime: Date
     
     var body: some View {
@@ -20,14 +20,16 @@ struct PerformancesLogisticsView: View {
                 .padding(.horizontal)
             
             HStack(alignment: .center) {
-                Text(showType.displayName.uppercased())
-                    .font(.caption)
-                    .fontWeight(.heavy)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 4)
-                    .background(showType.showColor.opacity(0.15))
-                    .foregroundColor(showType.showColor)
-                    .clipShape(Capsule())
+                if let showType = ShowType.dateToShow(date: showTime) {
+                    Text(showType.displayName.uppercased())
+                        .font(.caption)
+                        .fontWeight(.heavy)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background(showType.showColor.opacity(0.15))
+                        .foregroundColor(showType.showColor)
+                        .clipShape(Capsule())
+                }
                 
                 Spacer()
                 

@@ -38,21 +38,23 @@ struct DateListView: View {
     // MARK: - Body
     var body: some View {
         VStack {
-            HStack {
-                SearchBar(searchCategory: "team or performer", searchText: $searchText)
-                
-                Button {
-                    showFilterMenu.toggle()
-                } label: {
-                    Image(systemName: "line.3.horizontal.decrease.circle")
-                        .imageScale(.large)
-                        .padding(8)
-                        .foregroundColor(.purple)
+            VStack {
+                HStack {
+                    SearchBar(searchCategory: "team or performer", searchText: $searchText)
+                    
+                    Button {
+                        showFilterMenu.toggle()
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            .imageScale(.large)
+                            .padding(8)
+                            .foregroundColor(.yellow)
+                    }
+                    .accessibilityLabel("Filter by show type")
                 }
-                .accessibilityLabel("Filter by show type")
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
-            
+            .background(.purple)
             // 📅 ScrollView with grouped shows
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
@@ -64,8 +66,8 @@ struct DateListView: View {
                                let festivalLocation = scheduleViewModel.festivalLocation {
                                 
                                 if showTime < festivalStart || showTime > festivalEndDate {
-                                    if let showType = ShowType.dateToShow(date: showTime) {
-                                        PerformancesLogisticsView(showType: showType, showTime: showTime)
+//                                    if let showType = ShowType.dateToShow(date: showTime) {
+                                        PerformancesLogisticsView(showTime: showTime)
                                         HStack(spacing: 16) {
                                             Spacer()
                                             ForEach(performances, id: \.id) { performance in
@@ -91,7 +93,7 @@ struct DateListView: View {
                                         .padding(.horizontal)
                                         Divider()
                                             .padding(.horizontal)
-                                    }
+//                                    }
                                 } else {
                                     HStack {
                                         Text("Festival Show: at \(festivalLocation)")
@@ -131,9 +133,11 @@ struct DateListView: View {
                         showFilterMenu = false
                     }
                     ForEach(ShowType.allCases) { type in
-                        Button(type.displayName) {
-                            showType = type
-                            showFilterMenu = false
+                        if type != .classShow {
+                            Button(type.displayName) {
+                                showType = type
+                                showFilterMenu = false
+                            }
                         }
                     }
                 }

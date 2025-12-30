@@ -6,29 +6,22 @@
 //
 
 import Foundation
-// MARK: Check with Client
-//  Have bio and detail views for indie performers
-//    Separate Union and Indie teams
-//  For warnings of over/under booking
-//    How far out do they want the warning? Default to 1 month
-//  Email blast all indie teams when in need for a team?
-//  Create a new branch to accomidate how Emily uses the app.
-
-// TODO: List
-// Separate Firebase and scheduleViewModel
 
 // Review and Edit code
 
 // Aesthetics and UI
 //    Human Interface Guidelines
-//    pending Users/All Users toggle is not user friendly
-
-// Replace local storage of favorites with firebase
-                                            // TODAY:
-//Replace add performers in the date list with adding teams
 
 // MARK: Current work:
-/// Opening the page for performerList has a long delay for showing the pictures. Instead, try opening the images asap upon opening the app
+// 1. Not showing classShows on date list
+
+
+
+
+
+
+
+
 
 // https://console.firebase.google.com/project/unioncomedy-2d46f/overview
 // https://us-central1-unioncomedy-2d46f.cloudfunctions.net/sendPush
