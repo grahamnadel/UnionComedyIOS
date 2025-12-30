@@ -33,7 +33,6 @@ struct PerformerRowContent: View {
             
             Text(performer)
                 .font(.body)
-//            FIXME:
                 .foregroundColor(favoritesViewModel.favoritePerformers.contains(performer) ? favoritesViewModel.favoritePerformerColor : .primary)
                 .padding(.vertical, 4)
         }

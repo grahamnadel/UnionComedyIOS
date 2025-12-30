@@ -1,7 +1,5 @@
 import SwiftUI
 
-//TODO: Allow user to select how many months ahead to look at
-
 enum BookingStatus: String, CaseIterable {
     case unBooked
     case underBooked

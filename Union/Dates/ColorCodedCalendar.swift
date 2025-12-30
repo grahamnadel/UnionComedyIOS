@@ -73,7 +73,6 @@ struct ColorCodedCalendar: View {
                 ForEach(daysInMonth, id: \.self) { date in
                     let day = calendar.component(.day, from: date)
                     let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
-                    // FIXED: Check against the external eventDates array
                     let isSpecial = eventDates.contains { calendar.isDate($0, inSameDayAs: date) }
                     
                     Button {

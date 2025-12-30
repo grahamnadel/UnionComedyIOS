@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 const { logger } = require("firebase-functions");
 admin.initializeApp();
 
-exports.weeklyEventCheck = onSchedule("every 1 minutes", async (event) => {
+exports.weeklyEventCheck = onSchedule("0 19 * * 4", async (event) => {
     const db = admin.firestore();
     const now = new Date();
     const ninetySixHoursFromNow = new Date(now.getTime() + 96 * 60 * 60 * 1000);

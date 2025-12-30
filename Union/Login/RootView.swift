@@ -13,7 +13,7 @@ struct RootView: View {
                 LoadingScreen()
             } else {
                 if let _ = authViewModel.user {
-                    if let role = authViewModel.role {
+                    if let _ = authViewModel.role {
                         // Main Content Tabs
                         TabView {
                             FestivalView()

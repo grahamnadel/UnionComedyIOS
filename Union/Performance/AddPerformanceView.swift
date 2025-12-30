@@ -32,7 +32,6 @@ struct AddPerformanceView: View {
     }
     
     // This computed property filters suggestions for the user as they type.
-//    TODO: change to get rid of knownPerformers to just Performers?
     var filteredSuggestions: [String] {
         let existingNames = Set(performerInputs.map(\.name))
         // Ensure performerInput is not empty to avoid showing all suggestions initially.

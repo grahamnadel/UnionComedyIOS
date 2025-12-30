@@ -28,7 +28,6 @@ struct EditUserStatusView: View {
                         Text("Owner").tag(UserRole.owner)
                     }
                     .pickerStyle(.menu)
-//                    FIXME:
                     .onChange(of: appUser.role) { oldValue, newValue in
                         Task {
                             if newValue != .audience {

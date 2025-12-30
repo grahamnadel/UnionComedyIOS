@@ -554,7 +554,6 @@ class ScheduleViewModel: ObservableObject {
             }
             
             // ✅ compactMap allows `nil` returns inside
-            //            TODO: find where teams are saved and add indie/house team bool
             let fetchedTeams: [Team] = snapshot?.documents.compactMap { document in
                 let data = document.data()
                 guard let name = data["name"] as? String,

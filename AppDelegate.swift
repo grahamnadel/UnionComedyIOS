@@ -49,8 +49,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("Firebase registration token: \(String(describing: fcmToken))")
         
-        // TODO: If you have a backend, send this token to your server
-        // so it can send messages to this specific device.
         let data = ["token": fcmToken]
         print("FCM Token data sent to backend: \(data)")
         Messaging.messaging().token { token, error in

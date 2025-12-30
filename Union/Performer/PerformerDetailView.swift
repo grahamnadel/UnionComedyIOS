@@ -59,8 +59,8 @@ struct PerformerDetailView: View {
                 
                 BiographyView(performer: performer)
                     .padding()
-                
-                FavoritePerformerButton(performerName: performer)
+//                TODO: Add following performer feature
+//                FavoritePerformerButton(performerName: performer)
             }
         }
         .toolbar {

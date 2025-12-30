@@ -19,7 +19,6 @@ struct ShowDate: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             VStack(alignment: .leading) {
-//                TODO: only make an image if there is one
                 if isHouseTeam {
                     Image(performance.teamName)
                         .resizable()

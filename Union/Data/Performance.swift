@@ -28,3 +28,9 @@ struct TeamData: Identifiable, Codable, Hashable {
     var performers: [String]
 }
 
+struct Team: Identifiable, Decodable, Hashable {
+    var name: String
+    let id: String
+    var performers: [String]
+    var houseTeam = false
+}
