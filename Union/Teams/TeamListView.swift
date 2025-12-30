@@ -53,8 +53,11 @@ struct TeamListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                SearchBar(searchCategory: "team", searchText: $searchText)
-                    .padding(.horizontal)
+                VStack {
+                    SearchBar(searchCategory: "team", searchText: $searchText)
+                        .padding(.horizontal)
+                }
+                .background(.purple)
 
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 16) {

@@ -50,8 +50,11 @@ struct PerformerListView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                SearchBar(searchCategory: "performer", searchText: $searchText)
-                    .padding(.horizontal)
+                VStack {
+                    SearchBar(searchCategory: "performer", searchText: $searchText)
+                        .padding(.horizontal)
+                }
+                .background(.purple)
 
                 List {
                     ForEach(filteredPerformers, id: \.self) { performer in
