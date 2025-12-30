@@ -10,9 +10,12 @@ struct ShowtimeDetailView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                Image("UnionLogoCrop")
-                    .resizable()
-                    .scaledToFit()                
+                VStack {
+                    Image("UnionLogoCrop")
+                        .resizable()
+                        .scaledToFit()
+                }
+                .background(.black)
                 List {
                     Section {
                         Text("SHOWTIME")

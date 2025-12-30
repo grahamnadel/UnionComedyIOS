@@ -59,53 +59,14 @@ struct DateListView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
-                        VStack(alignment: .leading, spacing: 12) {
-                            // Show type and time
-                            if let festivalStart = scheduleViewModel.festivalStartDate,
-                               let festivalEndDate = scheduleViewModel.festivalEndDate,
-                               let festivalLocation = scheduleViewModel.festivalLocation {
-                                
-                                if showTime < festivalStart || showTime > festivalEndDate {
-//                                    if let showType = ShowType.dateToShow(date: showTime) {
-                                        PerformancesLogisticsView(showTime: showTime)
-                                        HStack(spacing: 16) {
-                                            Spacer()
-                                            ForEach(performances, id: \.id) { performance in
-                                                ShowDate(performance: performance)
-                                                    .frame(width: 150)
-                                                    .contextMenu {
-                                                            if authViewModel.role == .owner {
-                                                                Button("Edit Performance") {
-                                                                    editingPerformance = performance
-                                                                }
-                                                                
-                                                                Button(role: .destructive) {
-                                                                    performanceToDelete = performance
-                                                                    showDeleteAlert = true
-                                                                } label: {
-                                                                    Label("Delete Performance", systemImage: "trash")
-                                                                }
-                                                            }
-                                                        }
-                                            }
-                                            Spacer()
-                                        }
-                                        .padding(.horizontal)
-                                        Divider()
-                                            .padding(.horizontal)
-//                                    }
-                                } else {
-                                    HStack {
-                                        Text("Festival Show: at \(festivalLocation)")
-                                            .bold()
-                                            .foregroundColor(.purple)
-                                        Spacer()
-                                        Text(showTime.formatted(.dateTime.hour().minute()))
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-                        }
+                        
+                        DateListItemView(
+                            editingPerformance: $editingPerformance,
+                            showDeleteAlert: $showDeleteAlert,
+                            performanceToDelete: $performanceToDelete,
+                            showTime: showTime,
+                            performances: performances
+                        )
                         .contentShape(Rectangle())
                         .onTapGesture {
                             selectedPerformances = Performances(performances: performances)
