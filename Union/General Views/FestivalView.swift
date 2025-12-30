@@ -5,7 +5,7 @@ import SwiftUI
 
 struct FestivalView: View {
     enum sortSelection: String, CaseIterable {
-        case date = "Date"
+        case date = "Shows"
         case performers = "Performers"
         case teams = "Teams"
         case pendingApproval = "Admin"

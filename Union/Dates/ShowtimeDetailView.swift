@@ -33,15 +33,12 @@ struct ShowtimeDetailView: View {
                     ForEach(performances.performances, id: \.id) { performance in
                         Section(
                             header: VStack(spacing: 8) {
-                                ZStack {
+                                HStack {
                                     Text(performance.teamName)
                                         .font(.title2)
                                         .fontWeight(.bold)
-                                    
-                                    HStack {
-                                        Spacer()
-                                        FavoriteTeamButton(teamName: performance.teamName)
-                                    }
+                                    Spacer()
+                                    FavoriteTeamButton(teamName: performance.teamName)
                                 }
                             }
                         ) {

@@ -12,6 +12,9 @@ struct FavoriteTeamButton: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var favoritesViewModel: FavoritesViewModel
     let teamName: String
+    var isFollowing: Bool {
+        authViewModel.favoriteTeams?.contains(teamName) ?? false
+    }
     
     var body: some View {
         Button(action: {
@@ -26,13 +29,16 @@ struct FavoriteTeamButton: View {
                 }
             }
         }) {
-            Image(systemName:
-                authViewModel.favoriteTeams?.contains(teamName) == true
-                ? "star.fill"
-                : "star"
-            )
+            FollowButton(isFollowing: isFollowing)
                 .foregroundColor(favoritesViewModel.favoriteTeamColor)
                 .imageScale(.large)
+//            Image(systemName:
+//                authViewModel.favoriteTeams?.contains(teamName) == true
+//                ? "star.fill"
+//                : "star"
+//            )
+//                .foregroundColor(favoritesViewModel.favoriteTeamColor)
+//                .imageScale(.large)
         }
     }
 }

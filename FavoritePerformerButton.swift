@@ -5,6 +5,9 @@ struct FavoritePerformerButton: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var favoritesViewModel: FavoritesViewModel
     let performerName: String
+    var isFollowing: Bool {
+        authViewModel.favoritePerformers?.contains(performerName) ?? false
+    }
     
     var body: some View {
         Button(action: {
@@ -19,11 +22,7 @@ struct FavoritePerformerButton: View {
                 }
             }
         }) {
-            Image(systemName:
-                    authViewModel.favoritePerformers?.contains(performerName) == true
-                ? "star.fill"
-                : "star"
-            )
+            FollowButton(isFollowing: isFollowing)
             .foregroundColor(favoritesViewModel.favoritePerformerColor)
                 .imageScale(.large)
         }
