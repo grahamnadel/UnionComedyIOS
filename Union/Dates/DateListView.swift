@@ -55,6 +55,7 @@ struct DateListView: View {
                 .padding(.horizontal)
             }
             .background(.purple)
+            
             // 📅 ScrollView with grouped shows
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
@@ -70,7 +71,7 @@ struct DateListView: View {
                         .onTapGesture {
                             selectedPerformances = Performances(performances: performances)
                         }
-                        .padding()
+                        .padding(.horizontal)
                         .background(Color(.systemBackground))
                         .cornerRadius(12)
                         .shadow(color: Color.black.opacity(0.5), radius: 4, x: 0, y: 2)

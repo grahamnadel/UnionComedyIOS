@@ -9,11 +9,10 @@ import Foundation
 import SwiftUI
 
 struct PerformancesLogisticsView: View {
-    //    let showType: ShowType
     let showTime: Date
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(spacing: 0) {
             if let showType = ShowType.dateToShow(date: showTime) {
                 Text(showType.displayName.uppercased())
                     .font(.caption)
@@ -24,27 +23,23 @@ struct PerformancesLogisticsView: View {
                     .foregroundColor(showType.showColor)
                     .clipShape(Capsule())
                     .frame(maxWidth: .infinity, alignment: .center)
-                    .padding()
+                    .padding(.vertical, 4)
             }
-            HStack {
-                Text(showTime, format: .dateTime
-                    .weekday(.wide)
-                    .month(.abbreviated)
-                    .day()
-                )
-                .font(.title3)
-                .fontWeight(.bold)
-                .padding(.horizontal)
-                
-                Spacer()
-                
-                Text(showTime.formatted(.dateTime.hour().minute()))
-                    .font(.system(.subheadline, design: .rounded))
-                    .bold()
-                    .foregroundColor(.secondary)
-            }
-            .padding(.horizontal)
             
+            Text(showTime, format: .dateTime
+                .weekday(.wide)
+                .month(.abbreviated)
+                .day()
+            )
+            .font(.callout)
+            .fontWeight(.bold)
+            
+            Text(showTime.formatted(.dateTime.hour().minute()))
+                .font(.system(.subheadline, design: .rounded))
+                .bold()
+                .foregroundColor(.secondary)
         }
+        .padding(.horizontal)
+        
     }
 }
