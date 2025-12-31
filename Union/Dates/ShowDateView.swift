@@ -20,7 +20,7 @@ struct ShowDate: View {
         HStack(alignment: .top, spacing: 8) {
             VStack(alignment: .leading) {
                 if isHouseTeam {
-                    Image(performance.teamName)
+                    Image(performance.teamName.lowercased())
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: 100)
