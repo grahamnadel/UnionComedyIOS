@@ -81,36 +81,18 @@ struct AddPerformanceView: View {
                 
                 // MARK: - List of Selected Dates
                 if !selectedDates.isEmpty {
-                    Section(header: Text("Dates to Add")) {
-                        let sortedDates = selectedDates.sorted()
-                        ForEach(sortedDates, id: \.self) { selectedDate in
-                            HStack {
-                                Text(selectedDate, style: .date) + Text(", ") + Text(selectedDate, style: .time)
-                                    .foregroundColor(
-                                        // The coloring condition is now correct
-                                        redundantPerformances.contains(where: { $0.showTime == selectedDate })
-                                        ? .red
-                                        : .green
-                                    )
-                                
-                                // Display an indicator if the team is already booked for this time
-                                if redundantPerformances.contains(where: { $0.showTime == selectedDate }) {
-                                    Spacer()
-                                    Image(systemName: "exclamationmark.triangle.fill")
-                                        .foregroundColor(.red)
-                                        .help("Team already scheduled for this time.")
-                                }
-                            }
-                        }
-                        .onDelete { indexSet in
-                            let sortedDates = selectedDates.sorted()
-                            let datesToRemove = indexSet.map { sortedDates[$0] }
-                            selectedDates.subtract(datesToRemove)
-                        }
+                    if !selectedDates.isEmpty {
+                        SelectedDatesSection(
+                            selectedDates: $selectedDates,
+                            redundantPerformances: redundantPerformances
+                        )
                     }
+
                 }
                 
                 // MARK: - Add Performers
+//                FIXME: not showing the performers for medusa, candy cig,
+                /// Performer list is not empty
                 Section(header: Text("Add Performers")) {
                     HStack {
                         TextField("Performer Name", text: $performerInput)
@@ -158,9 +140,7 @@ struct AddPerformanceView: View {
                     }
                     .disabled(
                         teamName.isEmpty ||
-//                        performerInputs.isEmpty && (selectedTeam?.houseTeam == false || selectedShowType != .classShow) ||
                         (selectedTeam?.houseTeam == true && performerInputs.isEmpty) ||
-//                        selectedShowType != .classShow ||
                         selectedDates.isEmpty ||
                         !redundantPerformances.isEmpty
                     )

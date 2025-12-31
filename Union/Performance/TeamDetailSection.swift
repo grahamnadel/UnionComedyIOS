@@ -24,14 +24,12 @@ struct TeamDetailSection: View {
     
     var body: some View {
         Section(header: Text("Team Details")) {
-//            if selectedShowType != .classShow {
-                Picker("Team Name", selection: $selectedTeam) {
-                    Text("New Team...").tag(nil as Team?)
-                    ForEach(sortedTeams, id: \.self) { team in
-                        Text(team.name).tag(team as Team?)
-                    }
+            Picker("Team Name", selection: $selectedTeam) {
+                Text("New Team...").tag(nil as Team?)
+                ForEach(sortedTeams, id: \.self) { team in
+                    Text(team.name).tag(team as Team?)
                 }
-//            }
+            }
             if let selectedShowType {
                 if selectedShowType != .classShow {
                     if let _ = selectedTeam {

@@ -13,6 +13,7 @@
 		531CDA9F2F0438A100C42193 /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531CDA9E2F0438A100C42193 /* FollowButton.swift */; };
 		531CDAA12F044CC000C42193 /* AppBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531CDAA02F044CC000C42193 /* AppBackground.swift */; };
 		531CDAA32F0471D000C42193 /* DateListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531CDAA22F0471D000C42193 /* DateListItemView.swift */; };
+		531CDAB02F05B88400C42193 /* SelectedDatesSectionVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531CDAAF2F05B88400C42193 /* SelectedDatesSectionVIew.swift */; };
 		531DDD852E54F07A00E210EE /* PerformerSelectionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */; };
 		531DDD892E577A9A00E210EE /* PerformerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD882E577A9A00E210EE /* PerformerDetailView.swift */; };
 		531DDD8B2E57828200E210EE /* PerformanceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */; };
@@ -140,6 +141,7 @@
 		531CDA9E2F0438A100C42193 /* FollowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
 		531CDAA02F044CC000C42193 /* AppBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackground.swift; sourceTree = "<group>"; };
 		531CDAA22F0471D000C42193 /* DateListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateListItemView.swift; sourceTree = "<group>"; };
+		531CDAAF2F05B88400C42193 /* SelectedDatesSectionVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedDatesSectionVIew.swift; sourceTree = "<group>"; };
 		531DDD842E54F07A00E210EE /* PerformerSelectionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerSelectionList.swift; sourceTree = "<group>"; };
 		531DDD882E577A9A00E210EE /* PerformerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformerDetailView.swift; sourceTree = "<group>"; };
 		531DDD8A2E57828200E210EE /* PerformanceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceDetailView.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 		53847C6E2E02F10E00EE649A = {
 			isa = PBXGroup;
 			children = (
+				531CDAAF2F05B88400C42193 /* SelectedDatesSectionVIew.swift */,
 				53B815D52EAD16B400854645 /* TODO.swift */,
 				53847C792E02F10E00EE649A /* Union */,
 				53847C782E02F10E00EE649A /* Products */,
@@ -714,6 +717,7 @@
 				53DCF7F92EB135D000D67BEB /* DateInputView.swift in Sources */,
 				5395F2CA2EC274B500FBF584 /* ReAuthView.swift in Sources */,
 				53B815B32EA6A1F100854645 /* SearchBar.swift in Sources */,
+				531CDAB02F05B88400C42193 /* SelectedDatesSectionVIew.swift in Sources */,
 				53847C8F2E02FEBA00EE649A /* Model.swift in Sources */,
 				53B815CE2EA93AD500854645 /* RootView.swift in Sources */,
 				53B815C62EA9392F00854645 /* AuthViewModel.swift in Sources */,

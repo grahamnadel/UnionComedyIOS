@@ -18,19 +18,23 @@ struct ShowtimeDetailView: View {
                 .background(.black)
                 List {
                     Section {
-                        Text("SHOWTIME")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .multilineTextAlignment(.center)
-                        Text(
-                            performances.performances[0].showTime.formatted(
-                                date: .abbreviated,
-                                time: .shortened
+                        VStack(spacing: 4) {
+                            Text("SHOWTIME")
+                                .font(.headline)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                            
+                            Divider()
+                            
+                            Text(
+                                performances.performances[0].showTime.formatted(
+                                    date: .abbreviated,
+                                    time: .shortened
+                                )
                             )
-                        )
-                        .font(.headline)
+                            .font(.callout)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                        }
                         .frame(maxWidth: .infinity)
-                        .multilineTextAlignment(.center)
                     }
                     
                     ForEach(performances.performances, id: \.id) { performance in
@@ -45,6 +49,7 @@ struct ShowtimeDetailView: View {
                                 }
                             }
                         ) {
+//                            FIXME: not showing performers
                             ForEach(performance.performers, id: \.self) { performer in
                                 NavigationLink(value: performer) {
                                     PerformerRowContent(

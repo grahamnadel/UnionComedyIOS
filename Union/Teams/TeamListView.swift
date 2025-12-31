@@ -65,7 +65,7 @@ struct TeamListView: View {
                             NavigationLink(destination: TeamDetailView(teamName: team)) {
                                 VStack {
                                     ZStack(alignment: .topTrailing) {
-                                        Image(team)
+                                        Image(team.lowercased())
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
                                             .frame(maxWidth: .infinity)
