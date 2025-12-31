@@ -153,8 +153,8 @@ struct SegmentedButtons<T: Hashable & RawRepresentable>: View where T.RawValue =
                             .padding(.vertical, 8)
                             .padding(.horizontal, 16)
                             .frame(maxWidth: .infinity)
-                            .background(selection == option ? Color.purple : Color.clear)
-                            .foregroundColor(selection == option ? .white : .purple)
+                            .background(selection == option ? Color.clear : Color.purple)
+                            .foregroundColor(selection == option ? .purple : .white)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(Color.purple, lineWidth: 1)
