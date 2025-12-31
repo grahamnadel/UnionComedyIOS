@@ -37,7 +37,7 @@ struct DateListView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             VStack {
                 HStack {
                     SearchBar(searchCategory: "team or performer", searchText: $searchText)
@@ -59,7 +59,6 @@ struct DateListView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(groupedPerformancesByTime, id: \.key) { showTime, performances in
-                        
                         DateListItemView(
                             editingPerformance: $editingPerformance,
                             showDeleteAlert: $showDeleteAlert,
@@ -71,7 +70,11 @@ struct DateListView: View {
                         .onTapGesture {
                             selectedPerformances = Performances(performances: performances)
                         }
-                        .padding(.vertical, 8)
+                        .padding()
+                        .background(Color(.systemBackground))
+                        .cornerRadius(12)
+                        .shadow(color: Color.black.opacity(0.5), radius: 4, x: 0, y: 2)
+                        .padding(.vertical, 4)
                     }
                 }
                 .padding(.vertical)

@@ -13,8 +13,8 @@ struct ShowDate: View {
     @EnvironmentObject var favoritesViewModel: FavoritesViewModel
     let performance: Performance
     var isHouseTeam: Bool {
-            scheduleViewModel.teams.first(where: { $0.name == performance.teamName })?.houseTeam ?? false
-        }
+        scheduleViewModel.teams.first(where: { $0.name == performance.teamName })?.houseTeam ?? false
+    }
     
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
@@ -30,9 +30,7 @@ struct ShowDate: View {
                         .font(.caption)
                 }
             }
-
-//            Spacer()
-
+            
             // Favorite indicators
             VStack(spacing: 4) {
                 if favoritesViewModel.favoriteTeams.contains(performance.teamName) {

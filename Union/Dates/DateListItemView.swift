@@ -18,16 +18,15 @@ struct DateListItemView: View {
     let performances: [Performance]
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 0) {
             // Show type and time
             if let festivalStart = scheduleViewModel.festivalStartDate,
                let festivalEndDate = scheduleViewModel.festivalEndDate,
                let festivalLocation = scheduleViewModel.festivalLocation {
                 
                 if showTime < festivalStart || showTime > festivalEndDate {
-                    //                                    if let showType = ShowType.dateToShow(date: showTime) {
                     PerformancesLogisticsView(showTime: showTime)
-                    HStack(spacing: 16) {
+                    HStack(spacing: 0) {
                         Spacer()
                         ForEach(performances, id: \.id) { performance in
                             ShowDate(performance: performance)
@@ -52,7 +51,6 @@ struct DateListItemView: View {
                     .padding(.horizontal)
                     Divider()
                         .padding(.horizontal)
-                    //                                    }
                 } else {
                     HStack {
                         Text("Festival Show: at \(festivalLocation)")
