@@ -23,10 +23,16 @@ struct RootView: View {
                                         await scheduleViewModel.fetchUsers()
                                     }
                                 }
-                                .tabItem { Label("Schedule", systemImage: "calendar") }
+                                .tabItem {
+                                    Image(systemName: "calendar")
+                                }
+
                             
                             InfoView()
-                                .tabItem { Label("Info", systemImage: "info.circle") }
+                                .tabItem {
+                                    Image(systemName: "info.circle")
+                                }
+
                         }
                     } else {
                         ProgressView("Loading user data…")

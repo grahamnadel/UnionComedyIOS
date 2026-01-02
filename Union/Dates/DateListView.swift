@@ -40,21 +40,18 @@ struct DateListView: View {
         VStack(spacing: 0) {
             VStack {
                 HStack {
-                    SearchBar(searchCategory: "team or performer", searchText: $searchText)
-                    
-                    Button {
-                        showFilterMenu.toggle()
-                    } label: {
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                            .imageScale(.large)
-                            .padding(8)
-                            .foregroundColor(.yellow)
-                    }
-                    .accessibilityLabel("Filter by show type")
+                    SearchBar(
+                        searchCategory: "team or performer",
+                        searchText: $searchText,
+                        onFilterTap: {
+                            showFilterMenu.toggle()
+                        }
+                    )
                 }
+                .padding(.top)
                 .padding(.horizontal)
             }
-            .background(.purple)
+//            .background(.purple)
             
             // 📅 ScrollView with grouped shows
             ScrollView {

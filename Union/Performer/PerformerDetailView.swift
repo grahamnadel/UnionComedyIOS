@@ -3,62 +3,78 @@ import PhotosUI
 
 // Detail view showing all teams for a given performer
 struct PerformerDetailView: View {
-    let performer: String
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var scheduleViewModel: ScheduleViewModel
-    
     @EnvironmentObject var favoritesViewModel: FavoritesViewModel
-    
     @State private var loadedPerformerURL: URL?
     @State private var selectedPerformer: String?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var isShowingPhotoPicker = false
-    
-    
-    
+    @State private var teamsForPerformer = [String]()
     @State private var testColor = false
-    
+    let performer: String
     var performancesForPerformer: [Performance] {
         scheduleViewModel.performances.filter { $0.performers.contains(performer) }
             .sorted { $0.showTime < $1.showTime }
     }
     
-    @State private var teamsForPerformer = [String]()
-    
     var body: some View {
         ScrollView {
             VStack {
-                PerformerImageView(performerURL: loadedPerformerURL ?? nil)
-                    .frame(width: 250, height: 250)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .navigationTitle(performer)
-                    .padding()
-                Text("Teams")
-                    .font(.title)
-                    .fontWeight(.bold)
-                ForEach(teamsForPerformer, id: \.self) { team in
-                        HStack {
-                            Text(team)
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color(.systemGray6))
-                                .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-                        )
-//                    }
-                    .buttonStyle(.plain)
-                    .padding(.horizontal)
-                    .padding(.vertical, 4)
+                Text(performer.uppercased())
+                    .font(.system(size: 28, weight: .bold, design: .serif))
+                    .kerning(2)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(lineWidth: 3)
+                    )
+                    .shadow(radius: 10)
+                    .padding(.bottom)
+                
+                if let loadedPerformerURL = loadedPerformerURL {
+                    PerformerImageView(performerURL: loadedPerformerURL)
+                        .frame(width: 250, height: 250)
+                        .clipShape(Circle())
+                        .navigationTitle(performer)
+                    Rectangle()
+                        .opacity(0.0)
+                        .frame(width: 100, height: 25)
                 }
-                .padding()
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Teams")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.horizontal)
+
+                    VStack(spacing: 8) { // spacing between each team card
+                        ForEach(teamsForPerformer, id: \.self) { team in
+                            HStack {
+                                Text(team)
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+                                Spacer()
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(Color(.systemGray6))
+                                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                            )
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+
                 
                 BiographyView(performer: performer)
                     .padding()
+                
 //                TODO: Add following performer feature
 //                FavoritePerformerButton(performerName: performer)
             }

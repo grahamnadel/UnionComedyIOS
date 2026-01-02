@@ -67,7 +67,7 @@ struct FestivalView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     NavigationLink(destination: AccountView(showingDeleteConfirmation: $showingDeleteConfirmation)) {
                         Image(systemName: "person.crop.circle")
-                            .foregroundColor(.blue)
+                            .foregroundColor(.purple)
                     }
                 }
             }
