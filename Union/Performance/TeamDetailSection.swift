@@ -58,6 +58,10 @@ struct TeamDetailSection: View {
         .onChange(of: selectedShowType) { newValue in
             if newValue == .classShow {
                 selectedTeam = nil
+            } else if newValue == .mishmash {
+                selectedTeam = allTeams.first {
+                    $0.name.lowercased() == "mishmash"
+                }
             }
         }
     }
