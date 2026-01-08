@@ -796,6 +796,7 @@ class ScheduleViewModel: ObservableObject {
                     }
                 }
             } else {
+                print("Fellthrough")
                 // Unknown or special shows: treat as underBooked
                 underBooked[.special, default: []].append(showTime)
             }
@@ -804,7 +805,7 @@ class ScheduleViewModel: ObservableObject {
         //            Check to through all upcoming show dats to see which ones are booked so some degree (fully, partially, over). remove all booked dates to get the unbooked ones
         for type in ShowType.allCases {
             print("showType type: \(type)")
-            //                all upcoming dates for the showType
+            // all upcoming dates for the showType
             var allDates = upcomingShowDates[type.rawValue]
             print("allDates for upcomingShowDates[\(type)]: upcomingShowDates[\(type.rawValue)]: \(allDates ?? [])\n")
             if let allDates = allDates {
@@ -831,6 +832,7 @@ class ScheduleViewModel: ObservableObject {
         var saturdayWeekendShowTimes: [Date] = []
         var pickleTimes: [Date] = []
         var cageMatchTimes: [Date] = []
+        var mishmashTimes: [Date] = []
         
         for date in oneMonth {
             switch calendar.component(.weekday, from: date) {
@@ -849,6 +851,9 @@ class ScheduleViewModel: ObservableObject {
                 if let pickle = calendar.date(bySettingHour: 21, minute: 0, second: 0, of: date) {
                     pickleTimes.append(pickle)
                 }
+                if let mishmash = calendar.date(bySettingHour: 16, minute: 0, second: 0, of: date) {
+                    mishmashTimes.append(mishmash)
+                }
             case 1: // Sunday
                 if let cageMatch = calendar.date(bySettingHour: 19, minute: 30, second: 0, of: date) {
                     cageMatchTimes.append(cageMatch)
@@ -858,7 +863,7 @@ class ScheduleViewModel: ObservableObject {
             }
         }
         
-        return ["fridayNightFusion": fridayNightFusionTimes, "fridayWeekendShow": fridayWeekendShowTimes, "saturdayWeekendShow": saturdayWeekendShowTimes, "pickle": pickleTimes, "cageMatch": cageMatchTimes]
+        return ["fridayNightFusion": fridayNightFusionTimes, "fridayWeekendShow": fridayWeekendShowTimes, "saturdayWeekendShow": saturdayWeekendShowTimes, "pickle": pickleTimes, "cageMatch": cageMatchTimes, "mishmash": mishmashTimes]
     }
     
     
@@ -875,13 +880,10 @@ class ScheduleViewModel: ObservableObject {
     func getBookingDates(for status: BookingStatus) -> [ShowType : [Date]] {
         switch status {
         case .unBooked:
-            // Return the raw array
             return unBooked
         case .underBooked:
-            // Could return a pre-sorted array here if needed
             return underBooked
         case .booked:
-            // Could apply additional filtering
             return fullyBooked
         case .overBooked:
             return overBooked

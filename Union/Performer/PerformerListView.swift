@@ -54,7 +54,7 @@ struct PerformerListView: View {
                     SearchBar(searchCategory: "performer", searchText: $searchText)
                         .padding(.horizontal)
                 }
-                .background(.purple)
+                .padding(.top)
 
                 List {
                     ForEach(filteredPerformers, id: \.self) { performer in

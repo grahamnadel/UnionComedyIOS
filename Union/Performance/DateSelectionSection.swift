@@ -47,14 +47,14 @@ struct DateSelectionSection: View {
                     print("nextShowDate: \(String(describing: nextShowDate))")
                     newShowDate = nextShowDate
                 }
+            } else {
+                print("Could not unwrap showType for \(String(describing: selectedShowType))")
             }
         }
     }
     
     // Get the next non-fully booked show, prioritizing underbooked
     private func getNextWeekdayDate() -> Date? {
-//        let calendar = Calendar.current
-
         if let showType = selectedShowType {
             let unBookedShows = scheduleViewModel.unBooked[showType]
             let underBookedShows = scheduleViewModel.underBooked[showType]

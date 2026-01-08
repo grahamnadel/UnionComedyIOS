@@ -57,7 +57,7 @@ struct TeamListView: View {
                     SearchBar(searchCategory: "team", searchText: $searchText)
                         .padding(.horizontal)
                 }
-                .background(.purple)
+                .padding(.top)
 
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 16) {
