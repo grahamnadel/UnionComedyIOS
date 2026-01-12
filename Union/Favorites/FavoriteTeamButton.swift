@@ -32,13 +32,6 @@ struct FavoriteTeamButton: View {
             FollowButton(isFollowing: isFollowing)
                 .foregroundColor(favoritesViewModel.favoriteTeamColor)
                 .imageScale(.large)
-//            Image(systemName:
-//                authViewModel.favoriteTeams?.contains(teamName) == true
-//                ? "star.fill"
-//                : "star"
-//            )
-//                .foregroundColor(favoritesViewModel.favoriteTeamColor)
-//                .imageScale(.large)
         }
     }
 }

@@ -34,7 +34,7 @@ struct PerformerDetailView: View {
                     .padding(.bottom)
                 
                 if let loadedPerformerURL = loadedPerformerURL {
-                    PerformerImageView(performerURL: loadedPerformerURL)
+                    PerformerImageView(performerURL: loadedPerformerURL, performerName: performer)
                         .frame(width: 250, height: 250)
                         .clipShape(Circle())
                         .navigationTitle(performer)

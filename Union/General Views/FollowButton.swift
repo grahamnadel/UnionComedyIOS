@@ -13,15 +13,15 @@ struct FollowButton: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
-            .fill(isFollowing ? .blue : .white)
+            .fill(isFollowing ? .purple : .white)
             .frame(width: 105, height: 35)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(.blue, lineWidth: 2)
+                    .strokeBorder(.purple, lineWidth: 2)
             )
             .overlay(
                 Text(isFollowing ? "Unfollow" : "Follow")
-                    .foregroundColor(isFollowing ? .white : .blue)
+                    .foregroundColor(isFollowing ? .white : .purple)
             )
     }
 }

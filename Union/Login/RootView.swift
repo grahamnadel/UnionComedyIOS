@@ -24,13 +24,14 @@ struct RootView: View {
                                     }
                                 }
                                 .tabItem {
-                                    Image(systemName: "calendar")
+                                    Image(systemName: "house")
+                                    Text("Home")
                                 }
-
                             
                             InfoView()
                                 .tabItem {
                                     Image(systemName: "info.circle")
+                                    Text("Info")
                                 }
 
                         }
