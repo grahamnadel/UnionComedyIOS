@@ -19,64 +19,102 @@ struct PerformerDetailView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack {
-                Text(performer.uppercased())
-                    .font(.system(size: 28, weight: .bold, design: .serif))
-                    .kerning(2)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(lineWidth: 3)
-                    )
-                    .shadow(radius: 10)
-                    .padding(.bottom)
-                
-                if let loadedPerformerURL = loadedPerformerURL {
-                    PerformerImageView(performerURL: loadedPerformerURL, performerName: performer)
-                        .frame(width: 250, height: 250)
-                        .clipShape(Circle())
-                        .navigationTitle(performer)
-                    Rectangle()
-                        .opacity(0.0)
-                        .frame(width: 100, height: 25)
-                }
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Teams")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.horizontal)
-
-                    VStack(spacing: 8) { // spacing between each team card
-                        ForEach(teamsForPerformer, id: \.self) { team in
-                            HStack {
-                                Text(team)
-                                    .font(.headline)
-                                    .foregroundColor(.primary)
-                                Spacer()
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color(.systemGray6))
-                                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+        ZStack {
+            // Gradient background
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color(red: 0.15, green: 0.13, blue: 0.20),
+                    Color(red: 0.25, green: 0.15, blue: 0.35),
+                    Color(red: 0.15, green: 0.13, blue: 0.20)
+                ]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+            
+            ScrollView {
+                VStack {
+                    Text(performer.uppercased())
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundColor(.white)
+                        .kerning(1.5)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.white.opacity(0.05))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(Color.white.opacity(0.2), lineWidth: 2)
+                                )
+                                .background(.ultraThinMaterial.opacity(0.3))
+                                .cornerRadius(16)
+                        )
+                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
+                        .padding(.top, 8)
+                        .padding(.bottom)
+                    
+                    if let loadedPerformerURL = loadedPerformerURL {
+                        PerformerImageView(performerURL: loadedPerformerURL, performerName: performer)
+                            .frame(width: 250, height: 250)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle()
+                                    .stroke(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                Color.purple.opacity(0.6),
+                                                Color.pink.opacity(0.6)
+                                            ]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ),
+                                        lineWidth: 4
+                                    )
                             )
-                            .buttonStyle(.plain)
-                        }
+                            .shadow(color: Color.purple.opacity(0.4), radius: 20, x: 0, y: 10)
+                            .navigationTitle(performer)
+                        Rectangle()
+                            .opacity(0.0)
+                            .frame(width: 100, height: 25)
                     }
-                    .padding(.horizontal)
-                }
+                    
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Teams")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.horizontal)
 
-                
-                BiographyView(performer: performer)
-                    .padding()
-                
-//                TODO: Add following performer feature
-//                FavoritePerformerButton(performerName: performer)
+                        VStack(spacing: 8) { // spacing between each team card
+                            ForEach(teamsForPerformer, id: \.self) { team in
+                                HStack {
+                                    Text(team)
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                    Spacer()
+                                }
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color(.systemGray6))
+                                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                                )
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+
+                    
+                    BiographyView(performer: performer)
+                        .padding()
+                    
+    //                TODO: Add following performer feature
+    //                FavoritePerformerButton(performerName: performer)
+                }
             }
         }
         .toolbar {
