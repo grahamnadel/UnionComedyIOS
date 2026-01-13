@@ -35,24 +35,25 @@ struct PerformerDetailView: View {
             ScrollView {
                 VStack {
                     Text(performer.uppercased())
-                        .font(.system(size: 28, weight: .bold))
+                        .font(.title) // Uses default system font
+                        .fontWeight(.heavy)
                         .foregroundColor(.white)
                         .kerning(1.5)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.white.opacity(0.05))
+                        .padding(.horizontal, 28)
+                        .padding(.vertical, 12)
+                        .background {
+                            // This replaces all previous background/overlay logic
+                            Capsule()
+                                .fill(.white.opacity(0.1))
+                                .background(.ultraThinMaterial) // The blur
+                                .clipShape(Capsule()) // Ensures the blur doesn't leak into a rectangle
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(Color.white.opacity(0.2), lineWidth: 2)
+                                    Capsule()
+                                        .stroke(Color.white.opacity(0.2), lineWidth: 1.5)
                                 )
-                                .background(.ultraThinMaterial.opacity(0.3))
-                                .cornerRadius(16)
-                        )
-                        .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
-                        .padding(.top, 8)
-                        .padding(.bottom)
+                        }
+                        .shadow(color: Color.black.opacity(0.2), radius: 8, x: 0, y: 4)
+                        .padding(.vertical, 16)
                     
                     if let loadedPerformerURL = loadedPerformerURL {
                         PerformerImageView(performerURL: loadedPerformerURL, performerName: performer)
@@ -79,30 +80,21 @@ struct PerformerDetailView: View {
                             .frame(width: 100, height: 25)
                     }
                     
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Teams")
+                    VStack(spacing: 8) {
+                        Text("Featured On")
                             .font(.title2)
                             .fontWeight(.semibold)
-                            .foregroundColor(.white)
+                            .foregroundColor(.gray)
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.horizontal)
 
-                        VStack(spacing: 8) { // spacing between each team card
+                        VStack(spacing: 8) {
                             ForEach(teamsForPerformer, id: \.self) { team in
-                                HStack {
-                                    Text(team)
-                                        .font(.headline)
-                                        .foregroundColor(.white)
-                                    Spacer()
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color(.systemGray6))
-                                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-                                )
-                                .buttonStyle(.plain)
+                                Image(team.lowercased())
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxWidth: 200, alignment: .center)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
                         }
                         .padding(.horizontal)
