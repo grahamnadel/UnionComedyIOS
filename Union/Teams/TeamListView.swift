@@ -54,8 +54,8 @@ struct TeamListView: View {
         NavigationStack {
             VStack {
                 VStack {
-                    SearchBar(searchCategory: "Team", searchText: $searchText)
-                        .padding(.horizontal)
+                    ModernSearchBar(searchText: $searchText, placeholder: "Search Teams...")
+                        .frame(maxWidth: .infinity)
                 }
                 .padding(.top)
 
